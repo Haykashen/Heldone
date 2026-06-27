@@ -6,7 +6,7 @@ import { TTask } from "@/utils/types";
 import { getFormatedDay, getNewTask, getTaskByDays } from '@/utils/utils';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RelativePathString, router } from "expo-router";
-import { useCallback, useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AgendaList, CalendarProvider, LocaleConfig } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,13 +23,15 @@ LocaleConfig.defaultLocale = 'rus';
 
 const list = () => {
   const { task, setTask } = useContext(Context);
-  const sortTask = getTaskByDays(task)
-  const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem item={item} />;
-  }, []);
+  let sortTask = getTaskByDays(task)
+
+  useEffect(()=>{
+    sortTask = getTaskByDays(task)
+  },[task])
+
+  
 
   const handlePress = (id: string) => {
-    /*router.push({pathname: '/components/cards/placeCard',params: { placeID: item.id, otherParam: 'anything you want here' }})*/
     router.push(('/' + id) as RelativePathString)
   }
 
@@ -41,6 +43,7 @@ const list = () => {
     setData("todo", JSON.stringify(sortedArray))
     handlePress(newTask.id)
   }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
@@ -50,21 +53,22 @@ const list = () => {
         </Pressable>
       </View>
       <CalendarProvider
-        date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(new Date())}//
+        date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(new Date())}
         // onDateChanged={onDateChanged}
         onDateChanged={(date, updateSource) => { console.log('onDateChanged', date) }}
         showTodayButton
 
         // disabledOpacity={0.6}
         theme={{
-          todayButtonTextColor: '#63B4FF'
+          todayButtonTextColor: '#007aff',
+          todayButtonFontWeight:'bold'
         }}
       // todayBottomMargin={16}
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >
         <AgendaList
           sections={sortTask}
-          renderItem={renderItem}
+          renderItem={({ item }: any) => <AgendaItem item={item} />}
           // scrollToNextEvent
           sectionStyle={{ backgroundColor: '#031F2B', }}
         // dayFormat={'yyyy-MM-d'}
@@ -73,13 +77,13 @@ const list = () => {
 
       <Pressable
         onPress={handleAdd}
-        style={{ margin: 10, height: 60, width: 60, borderRadius: 45, backgroundColor: "#4894FE", position: 'absolute', bottom: 15, right: 15, alignItems: 'center', justifyContent: 'center' }}>
+        style={{ margin: 10, height: 60, width: 60, borderRadius: 45, backgroundColor: '#007aff', position: 'absolute', bottom: 15, right: 15, alignItems: 'center', justifyContent: 'center' }}>
         <MaterialDesignIcons name={"plus"} size={34} color={"white"} />
       </Pressable>
     </SafeAreaView>
   )
 }
-
+//"#4894FE"
 export default list
 
 const style = (Theme:any)=> StyleSheet.create({

@@ -3,8 +3,14 @@ import uuid from 'react-native-uuid';
 import Categorys from '../data/Category';
 import TaskStatus from '../data/TaskStatus';
 import TimeStatus from '../data/TimeStatus';
-import { TMarkedDays, TTask, TTaskByDays } from "./types";
+import { TTask, TTaskByDays } from "./types";
 
+
+export function getCalendarTitle(date: Date) {
+  let title = new Date(date).toLocaleDateString("ru-RU", { year: "numeric", month: "long" }).split('')
+  title[0] = title[0].toUpperCase()
+  return title.join('');
+}
 
 export function getFormatedDay(date:Date){
   let dateArray = (date).toLocaleDateString().split('.');
@@ -12,15 +18,15 @@ export function getFormatedDay(date:Date){
   return strDate;
 } 
 
-export function getMarkedDays(tasks:[]){
-  let res:TMarkedDays = {}
-  tasks.forEach((item:TTask)=> {
-    let strDate = getFormatedDay(new Date(item.date));
-    if(!(res[strDate]))
-      res[strDate] = {marked:true};
-  })
-  return res;  
-}
+// export function getMarkedDays(tasks:[]){
+//   let res:TMarkedDays = {}
+//   tasks.forEach((item:TTask)=> {
+//     let strDate = getFormatedDay(new Date(item.date));
+//     if(!(res[strDate]))
+//       res[strDate] = {marked:true};
+//   })
+//   return res;  
+// }
 
 export function getTaskByDays(task:[]){
   let res:TTaskByDays = {}
@@ -36,6 +42,18 @@ export function getTaskByDays(task:[]){
     resObj.push({title:key, data:res[key].data})
   }
   return resObj;
+}
+
+export function getMultiDotsDays(task:[]){
+  const code = { key: 'code', color: 'green' };
+  let res:{[key:string]:{dots:any}} = {}
+  task.forEach((item:TTask)=> {
+    let strDate = getFormatedDay(new Date(item.date));
+    if(!(res[strDate]))
+      res[strDate] = {dots:[]};
+    res[strDate].dots.push({key: res[strDate].dots.length, color: item.category.color})  
+  })
+  return res;
 }
 
 export function notifyMessage(msg: string) {
@@ -58,20 +76,14 @@ export function setTimeStatus(item: TTask) {
   else
     item.timeStatus = TimeStatus.Overdue;
 }
-    // if((status.id!== 'Completed'))
-    // {
-    //   if(currentTime.toLocaleDateString() === new Date(date).toLocaleDateString())
-    //     setIcon('clock-alert-outline')
-    //   else
-    //     setIcon('clock-remove-outline')
-    // }  
-    // if(new Date(date).getTime() > currentTime.getTime())
-    // {     
-    //   if(currentTime.toLocaleDateString() === new Date(date).toLocaleDateString()){
-    //     setColor(statusColors.Warning)      
-    //   }
-    //   else{
-    //     setColor(statusColors.Success)  
-    //   }
-    // }
-export const getNewTask = ()=>({ id: uuid.v4(), date:new Date(), title: '', category: Categorys.Target, status: TaskStatus.Upcoming, timeStatus: TimeStatus.Overdue, notes: '' });
+
+export const getNewTask = ()=>({ 
+  id: uuid.v4(), 
+  date:new Date(), 
+  title: '', 
+  category: 
+  Categorys.Target, 
+  status: TaskStatus.Upcoming, 
+  timeStatus: TimeStatus.Overdue, 
+  notes: '' 
+});

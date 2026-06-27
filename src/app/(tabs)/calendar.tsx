@@ -3,7 +3,7 @@ import AgendaItem from '@/components/items/AgendaItem';
 import { Context } from '@/context/context';
 import { setData } from '@/store/setData';
 import { TTask } from "@/utils/types";
-import { getFormatedDay, getMarkedDays, getNewTask, getTaskByDays } from '@/utils/utils';
+import { getCalendarTitle, getFormatedDay, getMultiDotsDays, getNewTask, getTaskByDays } from '@/utils/utils';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RelativePathString, router } from "expo-router";
 import { useCallback, useContext, useRef } from 'react';
@@ -25,30 +25,14 @@ interface Props {
   weekView?: boolean;
 }
 
-const code = { key: 'code', color: 'green' };
-
-function getTaskByDay(task:[]){
-  let res:{[key:string]:{dots:any}} = {}
-  task.forEach((item:TTask)=> {
-    let date = new Date(item.date)
-    let dateArray = (date).toLocaleDateString().split('.');
-    let strDate = dateArray[2]+'-'+dateArray[1]+'-'+dateArray[0];//(date).toLocaleDateString().split('.').join('-')
-    if(!(res[strDate]))
-      res[strDate] = {dots:[]};
-    res[strDate].dots.push({...code, key: res[strDate].dots.length})  
-  })
-  return res;
-}
 
 const calendar = (props: Props) => {
   const { task, setTask } = useContext(Context);
   const {weekView} = props;
-  const sortTask = getTaskByDays(task)
-  const markedDays = getMarkedDays(task)
   const CHEVRON = require('@/assets/images/next.png');
 
-  const taskMultiDots = getTaskByDay(task);
-  
+  const sortTask = getTaskByDays(task)
+  const taskMultiDots = getMultiDotsDays(task);
   
   const renderItem = useCallback(({item}: any) => {
     return <AgendaItem item={item}/>;
@@ -69,22 +53,12 @@ const calendar = (props: Props) => {
 
   const renderHeader = useCallback(
     (date: Date) => {
-
-      const rotationInDegrees = rotation.current.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '-180deg']
-      });
-      let title = new Date(date).toLocaleDateString("ru-RU", { year: "numeric", month: "long"}).split('')
-      title[0] = title[0].toUpperCase()
+      const title = getCalendarTitle(new Date(date))
+      const rotationInDegrees = rotation.current.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '-180deg'] });
 
       return (
-        <Pressable style={{
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10
-  }} onPress={toggleCalendarExpansion}>
-          <Text style={{fontSize: 16, fontWeight: 'bold', marginRight: 6}}>{title.join('')}</Text>
+        <Pressable style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 10, gap:5}} onPress={toggleCalendarExpansion}>
+          <Text style={{fontSize: 16, fontWeight: 'bold', marginRight: 6}}>{title}</Text>
           <Animated.Image source={CHEVRON} style={{transform: [{rotate: '90deg'}, {rotate: rotationInDegrees}]}}/>
         </Pressable>
       );
@@ -129,13 +103,14 @@ const calendar = (props: Props) => {
         showTodayButton
         // disabledOpacity={0.6}
         theme={{
-          todayButtonTextColor: '#63B4FF'
+          todayButtonTextColor: '#007aff',
+          todayButtonFontWeight:'bold'
         }}
       // todayBottomMargin={16}
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >
         {weekView ? (
-          <WeekCalendar firstDay={1} markedDates={markedDays} />
+          <WeekCalendar firstDay={1} markedDates={taskMultiDots} />
         ) : (
           <ExpandableCalendar
             showWeekNumbers
@@ -143,6 +118,8 @@ const calendar = (props: Props) => {
             ref={calendarRef}
             onCalendarToggled={onCalendarToggled}
             markingType="multi-dot"
+            markedDates={taskMultiDots}
+            firstDay={1}
             // horizontal={false}
             // hideArrows
             // disablePan
@@ -160,17 +137,13 @@ const calendar = (props: Props) => {
               selectedDayBackgroundColor: '#63B4FF',
               selectedDayTextColor: 'white',
               // dot (marked date)
-              dotColor: '#63B4FF',
+              dotColor: '#007aff',
             }}
-            // disableAllTouchEventsForDisabledDays
-            firstDay={1}
-            //markedDates= {markedDays}
-            markedDates={taskMultiDots}
+            // disableAllTouchEventsForDisabledDays                        
           //   leftArrowImageSource={leftArrowIcon}
           //   rightArrowImageSource={rightArrowIcon}
           // animateScroll
           // closeOnDayPress={false}
-
           />
         )}
         <AgendaList
@@ -181,10 +154,9 @@ const calendar = (props: Props) => {
         // dayFormat={'yyyy-MM-d'}
         />
       </CalendarProvider>
-
       <Pressable
         onPress={handleAdd}
-        style={{ margin: 10, height: 60, width: 60, borderRadius: 45, backgroundColor: "#4894FE", position: 'absolute', bottom: 15, right: 15, alignItems: 'center', justifyContent: 'center' }}>
+        style={{ margin: 10, height: 60, width: 60, borderRadius: 45, backgroundColor: '#007aff', position: 'absolute', bottom: 15, right: 15, alignItems: 'center', justifyContent: 'center' }}>
         <MaterialDesignIcons name={"plus"} size={34} color={"white"} />
       </Pressable>
     </SafeAreaView>

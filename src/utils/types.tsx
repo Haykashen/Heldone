@@ -16,7 +16,7 @@ export type TDataDir = {
 export type TPropsItem = {item:TItem}
 export type TItem = TTask & {onItemPress: (() => void), onCompletePress: (() => void), onDeletePress: (() => void)};//id:string
 export type TTask = {id:string, date:Date, title:string, category:TDataItem, status:TDataItem, timeStatus:TDataItem, notes?:string};
-export type TMarkedDays = {[key:string]:{marked:boolean}}
+//export type TMarkedDays = {[key:string]:{marked:boolean}}
 export type TTaskByDays  = {[key:string]:{data:any}}
 
 export interface ITranslate {

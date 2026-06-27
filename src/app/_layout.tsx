@@ -8,9 +8,8 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="[todoID]" />
           <Stack.Screen name="(notice)" />
-          <Stack.Screen name="notice"
+          <Stack.Screen name="[todoID]" 
             options={{
               presentation: 'formSheet',
               gestureDirection: 'vertical',
@@ -18,8 +17,8 @@ export default function RootLayout() {
               animation: 'slide_from_bottom',
               sheetGrabberVisible: true,
               sheetInitialDetentIndex: 0,
-              sheetAllowedDetents: [0.5, 0.7, 1.0]
-            }}
+              sheetAllowedDetents: [0.7, 1.0]
+            }}          
           />
         </Stack>
       </SafeAreaProvider>

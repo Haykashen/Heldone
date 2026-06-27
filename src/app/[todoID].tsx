@@ -4,8 +4,8 @@ import TaskStatus from '@/data/TaskStatus';
 import { TTask } from '@/utils/types';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
-import { useLocalSearchParams } from "expo-router";
-import { useContext, useEffect, useState } from "react";
+import { Redirect, router, useLocalSearchParams } from "expo-router";
+import { useContext, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"; //AppState, 
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,11 +15,17 @@ const taskCard = () => {
   const { todoID } = useLocalSearchParams();
   const { task, setTask } = useContext(Context);
   const [currTask, setCurrentTask] = useState(task.find((item:TTask)=> item.id === todoID))
-  const [date, setDate] = useState(new Date());
+
+  if (!currTask) {
+    return <Redirect href="/list" />;
+  }
+  // Picker
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState<DateTimePickerMode | undefined >('date');
 
-   const showMode = (currentMode:DateTimePickerMode | undefined) => {
+  const [focused, setFocused] = useState('')
+
+  const showMode = (currentMode:DateTimePickerMode | undefined) => {
     setShow(true);
     setMode(currentMode);
   };
@@ -29,12 +35,6 @@ const taskCard = () => {
   };
 
   let datetime = currTask? currTask.date.toLocaleDateString()+' '+currTask.date.toLocaleTimeString():new Date().toLocaleTimeString();
-
-
-
-  useEffect(() => {
-
-  }, [])
 
   const changeTitle = (newTitle:string)=>{
     setCurrentTask({...currTask, title: newTitle})
@@ -55,8 +55,10 @@ const taskCard = () => {
   }
 
   const handleBack = async()=>{
-    ////router.back()
-    //router.push('/tabHome')
+    if(router.canGoBack())
+      router.back()
+    else
+      router.push('/index')
   }  
 
   const handleDone = async()=>{
@@ -69,20 +71,27 @@ const taskCard = () => {
     //deleteTask(currTask.id, task, setTask)
     handleBack()
   }
-  if(!currTask)
-    return(
-    <View>
-      <Text>!currTask</Text>
-    </View>
-    )
+
+
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ display: 'flex', flexDirection: 'column', maxWidth: 600, width: '100%', gap: 10, paddingHorizontal: 5 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', justifyContent: 'center', alignItems: 'center', maxWidth: 600 }}>
+        <View style={{width:'100%', flexDirection: 'row', marginTop: 10, marginHorizontal: 10, justifyContent: 'space-between' }}>
+          <Pressable onPress={handleBack}>
+            <MaterialDesignIcons name={'arrow-u-left-top'} color={"#ffb900"} size={34} />
+            <Text style={{ color: '#ffb900', fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
+          </Pressable>
+          <Text  style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Задача</Text>
+          <Pressable >
+            <MaterialDesignIcons name={'check'} color={"#63B4FF"} size={20} />  
+            <Text  style={{ color: '#63B4FF', fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
+          </Pressable>
+        </View>
+        <View style={{flexDirection: 'column', width: '100%', gap: 10, paddingHorizontal: 5 }}>
           {show && (
             <DateTimePicker
               accentColor='red'
-              value={date}
+              value={currTask.date}
               onValueChange={(event, selectedDate) => {
                 setCurrentTask({ ...currTask, date: selectedDate })
                 if (mode === 'time')
@@ -97,32 +106,50 @@ const taskCard = () => {
               presentation="dialog"
             />
           )}
+
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-            <Pressable onPress={showDatepicker} style={{ flexDirection: 'row', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
-              <Text style={{color:'white'}}>{datetime}</Text>
+            <Pressable 
+              onPress={showDatepicker} 
+              style={{ flexDirection: 'row', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
+              <Text style={{ color: 'white' }}>{datetime}</Text>
               <MaterialDesignIcons name='calendar-month-outline' color={'white'} size={24} />
             </Pressable>
-            <Pressable onPress={changeStatus} style={{ flexDirection: 'row', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
-              <Text style={{color:'white'}}>{currTask.status.name.ru} </Text>
+            <Pressable 
+              onPress={changeStatus} 
+              style={{ flexDirection: 'row', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
+              <Text style={{ color: 'white' }}>{currTask.status.name.ru} </Text>
               <MaterialDesignIcons name={currTask.status.icon as any} color={(currTask.status.color)} size={24} />
             </Pressable>
           </View>
           {/* <CategoryPanel category={currTask.category.name.en} onPressCategory={changeCategory} language={language} /> */}
           <View style={{ flexDirection: 'column', gap: 5, width: '100%', height: 50 }}>
-            <TextInput onChangeText={(text) => changeTitle(text)} placeholder={'Title...'} value={currTask.title} autoFocus={true} maxLength={40} />
+            <TextInput 
+              style={{color:'white', borderColor: focused=='Title'? '#63B4FF' : 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }} 
+              onFocus={()=>setFocused('Title')}
+              onChangeText={(text) => changeTitle(text)} 
+              placeholder={'Title...'} 
+              placeholderTextColor={'gray'}
+              value={currTask.title} 
+              autoFocus={true} 
+              maxLength={40} 
+            />
           </View>
           <View style={{ flexDirection: 'column', gap: 5, width: '100%', height: 300 }}>
-            <TextInput onChangeText={(text) => changeNotes(text)} placeholder={'Notes...'} value={currTask.notes} multiline={true} textAlignVertical='top' />
+            <TextInput 
+              style={{color:'white', borderColor: focused=='Notes'? '#63B4FF' : 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }} 
+              onFocus={()=>setFocused('Notes')}
+              onChangeText={(text) => changeNotes(text)} 
+              placeholder={'Notes...'} 
+              placeholderTextColor={'gray'}
+              value={currTask.notes} 
+              multiline={true} 
+              textAlignVertical='top' />
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', gap: 30, marginTop: 20 }}>
-            <Pressable style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15 }} onPress={handleDelete}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 20}}>
+            <Pressable 
+              style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, width:'60%', justifyContent: 'center', alignItems:'center'  }} 
+              onPress={handleDelete}>
               <MaterialDesignIcons name={'trash-can-outline'} color={"red"} size={34} />
-            </Pressable>
-            <Pressable style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15 }} onPress={handleBack}>
-              <MaterialDesignIcons name={'arrow-u-left-top'} color={"#ffb900"} size={34} />
-            </Pressable>
-            <Pressable style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15 }} onPress={handleDone}>
-              <MaterialDesignIcons name={'check'} color={"#63B4FF"} size={20} />
             </Pressable>
           </View>
         </View>
