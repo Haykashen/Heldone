@@ -1,34 +1,28 @@
-import { router } from "expo-router";
-//import { useContext } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native"; // TouchableOpacity,  FlatList, Image,Text, 
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-// import { Context } from './context/context';
-// import { ITranslate } from "./utils/types";
+
+import BottomSheet from '@expo/ui/community/bottom-sheet';
+import { useRef } from 'react';
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+
+const DATA = Array.from({ length: 50 }, (_, i) => `Item ${i + 1}`);
 
 const notice = () => {
+  const sheetRef = useRef<BottomSheet>(null);
 
-  //const { language, theme } = useContext(Context);  
-  //const styles = style(theme)  
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{
-        flex: 1,
-        backgroundColor: 'black',
-        alignItems: 'center',
-        gap: 5,
-        padding: 5,
-      }}>
-        <View style={{ maxWidth: 1260, width: '100%', paddingHorizontal: 10, gap: 5 }}>
-          <View style={{ backgroundColor: 'grey', width: 45, height: 2, borderRadius: 20, marginHorizontal: 'auto', marginTop: 5 }}></View>
-          <View style={{ height: 30, flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Text style={{ color: 'green' }}>Notice</Text>
-            <Pressable style={{ height: '100%', alignItems: 'baseline' }} onPress={() => router.push('/notice')}>
-              <Text style={{ color: 'silver' }}>Отметить все</Text>
-            </Pressable>
-          </View>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <View style={{ flex: 1 }}>
+      <Button title="Open" onPress={() => sheetRef.current?.snapToIndex(0)} />
+
+      <BottomSheet ref={sheetRef} snapPoints={['50%', '90%']} index={-1} enablePanDownToClose>
+        <FlatList
+          nestedScrollEnabled
+          style={{ flex: 1 }}
+          data={DATA}
+          keyExtractor={item => item}
+          contentContainerStyle={{ padding: 24 }}
+          renderItem={({ item }) => <Text style={{ paddingVertical: 16 }}>{item}</Text>}
+        />
+      </BottomSheet>
+    </View>
   );
 }
 

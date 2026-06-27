@@ -1,3 +1,4 @@
+import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 //import React from "react";
@@ -11,21 +12,34 @@ export default function TabsLayout() {
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: '#4894FE',
-          tabBarShowLabel: true,
+          tabBarInactiveTintColor:'grey',
+          tabBarShowLabel: false,
           headerShown:false
-
+          
         }}>
-        <Tabs.Screen name="tabHome" options={{
-          headerShown: false,
+        <Tabs.Screen name="index" options={{
           title: 'Home',
-        }} />        
-        <Tabs.Screen name="tabExpandableCalendar" options={{
-          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialDesignIcons name={focused ? 'home' : 'home-outline'} color={color} size={24} />
+          ),          
+        }} />  
+        <Tabs.Screen name="list" options={{
+          title: 'List',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialDesignIcons name={focused ? 'clipboard-text' : 'clipboard-text-outline'} color={color} size={24} />
+          ),          
+        }} />                 
+        <Tabs.Screen name="calendar" options={{
           title: 'Calendar',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialDesignIcons name={focused ? 'calendar-month' : 'calendar-month-outline'} color={color} size={24} />
+          ),  
         }} />                    
-        <Tabs.Screen name="tabSetting" options={{
-          headerShown: false,
+        <Tabs.Screen name="setting" options={{
           title:'Setting',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialDesignIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} />
+          ),            
           }}
         />
       </Tabs>

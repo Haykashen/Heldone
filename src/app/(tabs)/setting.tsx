@@ -1,16 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const settings = () => {
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{flex:1, backgroundColor:'#32312f'}}>
-         <View style={{height:80, width:400, backgroundColor:'#464543'}}>
-          <Text style={{color:'white'}}>Settings</Text>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#32312f' }}>
+      <View style={{ height: 80, width: 400, backgroundColor: '#464543' }}>
+        <Text style={{ color: 'white' }}>Settings</Text>
+      </View>
+    </SafeAreaView>
   )
 }
 
