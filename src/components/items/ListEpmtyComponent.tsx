@@ -1,24 +1,29 @@
-import { Context } from '@/app/context/context';
-import { ITranslate } from "@/app/utils/types";
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-//import Octicons from '@expo/vector-icons/Octicons';
-import React, { useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ITranslate } from "@/utils/types";
+import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const ListEpmtyComponent = () => {
-  const { language, theme } = useContext(Context);
-  const styles = style(theme)
+
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <View style={{alignContent:'center', flex:1, alignItems:'center', justifyContent:'center', paddingVertical:25}}>
-          <FontAwesome6 name="list-check" size={96} color="#4894FE" />
-          {/* <Octicons name="checklist" size={96} color="#4894FE" /> */}
-          <Text style={{color:'white', justifyContent:'center', alignContent:'center'}}>{translate.FirstRow[language]}</Text>           
-          <Text style={{color:'white', justifyContent:'center', alignContent:'center'}}>{translate.SecondRow[language]}</Text>
-          <Text style={{color:'white', justifyContent:'center', alignContent:'center'}}>{translate.ThirdRow[language]}</Text>
-        </View>
+      <SafeAreaView style={{
+        marginTop:40,
+        padding: 20,
+        backgroundColor: 'white',
+        borderBottomWidth: 1,
+        borderBottomColor: 'lightgrey',
+        flexDirection: 'row',
+        gap: 10
+      }}>
+        <Pressable style={{flexDirection:'row', alignContent:'center', flex:1, alignItems:'center', justifyContent:'space-around'}}>
+          <View style={{flexDirection:'column', alignContent:'center',alignItems:'center', justifyContent:'center'}}>
+          <Text style={{color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent:'center', alignContent:'center'}}>{translate.FirstRow['ru']}</Text>           
+          <Text style={{color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent:'center', alignContent:'center'}}>{translate.SecondRow['ru']}</Text>
+          <Text style={{color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent:'center', alignContent:'center'}}>{translate.ThirdRow['ru']}</Text>            
+          </View>
+          <MaterialDesignIcons name="playlist-plus" size={96} color='#007aff' />          
+        </Pressable>
       </SafeAreaView>
     </SafeAreaProvider>
   )
@@ -43,10 +48,10 @@ const translate:ITranslate ={
     en:'You dont have any tasks yet!'
   },
   SecondRow:{
-    ru:'Добавляйте новые задачи,',
+    ru:'Добавьте задачу,',
     en:'Add new tasks'
   },
   ThirdRow:{
-    ru:'чтобы сделать ваши дни продуктивными.',
+    ru:'чтобы сделать ваш день продуктивным.',
     en:'to make your days productive.'
   },}

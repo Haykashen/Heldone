@@ -77,14 +77,14 @@ const taskCard = () => {
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', justifyContent: 'center', alignItems: 'center', maxWidth: 600 }}>
         <View style={{width:'100%', flexDirection: 'row', marginTop: 10, marginHorizontal: 10, justifyContent: 'space-between' }}>
-          <Pressable onPress={handleBack}>
-            <MaterialDesignIcons name={'arrow-u-left-top'} color={"#ffb900"} size={34} />
-            <Text style={{ color: '#ffb900', fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
+          <Pressable onPress={handleBack} style={{flexDirection:'row'}}>
+            <MaterialDesignIcons name={'arrow-left-thin'} color={"#ffb900"} size={34} />
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
           </Pressable>
-          <Text  style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Задача</Text>
-          <Pressable >
+          <Text  style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Задача</Text>
+          <Pressable style={{flexDirection:'row'}}>
             <MaterialDesignIcons name={'check'} color={"#63B4FF"} size={20} />  
-            <Text  style={{ color: '#63B4FF', fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
+            <Text  style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
           </Pressable>
         </View>
         <View style={{flexDirection: 'column', width: '100%', gap: 10, paddingHorizontal: 5 }}>

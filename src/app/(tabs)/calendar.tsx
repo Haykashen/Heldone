@@ -1,12 +1,14 @@
 
 import AgendaItem from '@/components/items/AgendaItem';
+import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
 import { setData } from '@/store/setData';
+import { completeTask, deleteTask } from '@/utils/taskManage';
 import { TTask } from "@/utils/types";
-import { getCalendarTitle, getFormatedDay, getMultiDotsDays, getNewTask, getTaskByDays } from '@/utils/utils';
+import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays, getNewTask } from '@/utils/utils';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RelativePathString, router } from "expo-router";
-import { useCallback, useContext, useRef } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar, LocaleConfig, WeekCalendar } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,18 +27,20 @@ interface Props {
   weekView?: boolean;
 }
 
+const CHEVRON = require('@/assets/images/next.png');
 
 const calendar = (props: Props) => {
   const { task, setTask } = useContext(Context);
-  const {weekView} = props;
-  const CHEVRON = require('@/assets/images/next.png');
-
-  const sortTask = getTaskByDays(task)
-  const taskMultiDots = getMultiDotsDays(task);
+  const {weekView} = props;///????
+  const [date, setDate] = useState(new Date())
+  const [dayTasks, setDayTasks] = useState(getDayTasks(task, getFormatedDay(date)))
+  const [multiDots, setMultiDots] = useState(getMultiDotsDays(task));
   
-  const renderItem = useCallback(({item}: any) => {
-    return <AgendaItem item={item}/>;
-  }, []);
+  useEffect(()=>{
+    setDayTasks(getDayTasks(task, getFormatedDay(date)))
+    setMultiDots(getMultiDotsDays(task))
+  },[date, task])
+
 
   const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
   const rotation = useRef(new Animated.Value(0));
@@ -70,8 +74,15 @@ const calendar = (props: Props) => {
     (isOpen: boolean) => {
       rotation.current.setValue(isOpen ? 1 : 0);
     },
-    [rotation]
-  );
+    [rotation]);
+    
+  const handleComplete = (id: string) => {
+    completeTask(id, task, setTask)
+  }
+
+  const handleDelete = (id: string) => {
+    deleteTask(id, task, setTask)
+  }
 
   const handlePress = (id: string) => {
     /*router.push({pathname: '/components/cards/placeCard',params: { placeID: item.id, otherParam: 'anything you want here' }})*/
@@ -88,6 +99,11 @@ const calendar = (props: Props) => {
     //router.push(('/components/cards/' + newItem.id) as RelativePathString)
   }
 
+  const changeDate = (date:string) =>{
+    setDate(new Date(date))
+  }
+
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
@@ -97,9 +113,9 @@ const calendar = (props: Props) => {
         </Pressable>
       </View>
       <CalendarProvider
-        date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(new Date())}//
+        date={getFormatedDay(date)}//
         // onDateChanged={onDateChanged}
-        onDateChanged={(date, updateSource) => { console.log('onDateChanged', date) }}
+        onDateChanged={(date, updateSource) => changeDate(date)}
         showTodayButton
         // disabledOpacity={0.6}
         theme={{
@@ -110,7 +126,7 @@ const calendar = (props: Props) => {
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >
         {weekView ? (
-          <WeekCalendar firstDay={1} markedDates={taskMultiDots} />
+          <WeekCalendar firstDay={1} markedDates={multiDots} />
         ) : (
           <ExpandableCalendar
             showWeekNumbers
@@ -118,7 +134,7 @@ const calendar = (props: Props) => {
             ref={calendarRef}
             onCalendarToggled={onCalendarToggled}
             markingType="multi-dot"
-            markedDates={taskMultiDots}
+            markedDates={multiDots}
             firstDay={1}
             // horizontal={false}
             // hideArrows
@@ -147,8 +163,21 @@ const calendar = (props: Props) => {
           />
         )}
         <AgendaList
-          sections={sortTask}
-          renderItem={renderItem}
+          sections={dayTasks}
+          ListEmptyComponent={<ListEpmtyComponent/>}
+          renderItem={({ item }: any) => <AgendaItem
+            id={item.id}
+            date={item.date}
+            category={item.category}
+            status={item.status}
+            title={item.title}
+            timeStatus={item.timeStatus}
+            notes={item.notes}
+            onCompletePress={()=>handleComplete(item.id)}
+            onItemPress={()=>handlePress(item.id)}
+            onDeletePress={()=>null}
+          /> }
+          
           // scrollToNextEvent
           sectionStyle={{ backgroundColor: '#031F2B', }}
         // dayFormat={'yyyy-MM-d'}

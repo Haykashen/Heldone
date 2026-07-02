@@ -2,6 +2,7 @@
 import AgendaItem from '@/components/items/AgendaItem';
 import { Context } from '@/context/context';
 import { setData } from '@/store/setData';
+import { completeTask, deleteTask } from '@/utils/taskManage';
 import { TTask } from "@/utils/types";
 import { getFormatedDay, getNewTask, getTaskByDays } from '@/utils/utils';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
@@ -43,6 +44,13 @@ const list = () => {
     setData("todo", JSON.stringify(sortedArray))
     handlePress(newTask.id)
   }
+  const handleComplete = (id: string) => {
+    completeTask(id, task, setTask)
+  }
+
+  const handleDelete = (id: string) => {
+    deleteTask(id, task, setTask)
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
@@ -68,7 +76,18 @@ const list = () => {
       >
         <AgendaList
           sections={sortTask}
-          renderItem={({ item }: any) => <AgendaItem item={item} />}
+          renderItem={({ item }: any) => <AgendaItem
+            id={item.id}
+            date={item.date}
+            category={item.category}
+            status={item.status}
+            title={item.title}
+            timeStatus={item.timeStatus}
+            notes={item.notes}
+            onCompletePress={()=>handleComplete(item.id)}
+            onItemPress={()=>handlePress(item.id)}
+            onDeletePress={()=>null}
+          />}
           // scrollToNextEvent
           sectionStyle={{ backgroundColor: '#031F2B', }}
         // dayFormat={'yyyy-MM-d'}

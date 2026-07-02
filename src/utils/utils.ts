@@ -27,6 +27,24 @@ export function getFormatedDay(date:Date){
 //   })
 //   return res;  
 // }
+export function getDayTasks(task:[], day:string){
+  let res:TTaskByDays = {}
+  task.forEach((item:TTask)=> {
+    let strDate = getFormatedDay(item.date);
+    if(strDate === day)
+    {
+      if(!(res[strDate]))
+        res[strDate] = {data:[]};
+      res[strDate].data.push(item)      
+    }
+  })
+  let resObj = []
+  for(var key in res)
+  {
+    resObj.push({title:key, data:res[key].data})
+  }
+  return resObj;
+}
 
 export function getTaskByDays(task:[]){
   let res:TTaskByDays = {}
