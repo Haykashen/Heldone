@@ -1,6 +1,8 @@
 import { Context } from '@/context/context';
 import Categorys from '@/data/Category';
 import TaskStatus from '@/data/TaskStatus';
+import { setData } from '@/store/setData';
+import { deleteTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
@@ -62,13 +64,14 @@ const taskCard = () => {
   }  
 
   const handleDone = async()=>{
-    //let resArray = task.map((item:TTask)=>{ return (item.id === todoID)? currTask:item})
-   // setTask(resArray.sort((first:TTask, second:TTask)=> {return (first.date.getTime() - second.date.getTime())}))  )
+    let resArray = task.map((item:TTask)=>{ return (item.id === todoID)? currTask:item})
+    setTask(resArray.sort((first:TTask, second:TTask)=> {return (first.date.getTime() - second.date.getTime())}))  
+    setData("todo", JSON.stringify(resArray))
     handleBack()
   }
 
   const handleDelete = async() => {
-    //deleteTask(currTask.id, task, setTask)
+    deleteTask(currTask.id, task, setTask)
     handleBack()
   }
 
@@ -76,13 +79,13 @@ const taskCard = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', justifyContent: 'center', alignItems: 'center', maxWidth: 600 }}>
-        <View style={{width:'100%', flexDirection: 'row', marginTop: 10, marginHorizontal: 10, justifyContent: 'space-between' }}>
-          <Pressable onPress={handleBack} style={{flexDirection:'row'}}>
+        <View style={{width:'100%', flexDirection: 'row', marginTop: 10, paddingHorizontal: 5 , justifyContent: 'space-between' }}>
+          <Pressable onPress={handleBack} style={{flexDirection:'row', alignItems: 'center'}}>
             <MaterialDesignIcons name={'arrow-left-thin'} color={"#ffb900"} size={34} />
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
           </Pressable>
           <Text  style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Задача</Text>
-          <Pressable style={{flexDirection:'row'}}>
+          <Pressable onPress={handleDone} style={{flexDirection:'row', alignItems: 'center'}}>
             <MaterialDesignIcons name={'check'} color={"#63B4FF"} size={20} />  
             <Text  style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
           </Pressable>
@@ -91,6 +94,8 @@ const taskCard = () => {
           {show && (
             <DateTimePicker
               accentColor='red'
+              mode={mode}
+              presentation="dialog"              
               value={currTask.date}
               onValueChange={(event, selectedDate) => {
                 setCurrentTask({ ...currTask, date: selectedDate })
@@ -102,8 +107,6 @@ const taskCard = () => {
               onDismiss={() => {
                 setShow(false);
               }}
-              mode={mode}
-              presentation="dialog"
             />
           )}
 

@@ -55,7 +55,7 @@ const list = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Мои задачи</Text>
+        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Задачи</Text>
         <Pressable onPress={() => router.push('/notice')}>
           <MaterialDesignIcons name={'bell'} color={'white'} size={24} />
         </Pressable>
