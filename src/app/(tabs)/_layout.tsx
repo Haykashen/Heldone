@@ -1,6 +1,7 @@
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+//import { NavigationBar } from 'expo-navigation-bar';
 //import React from "react";
 //import { Image } from "react-native"; (({focused, color, size})=><Image source={require('@expo/snack-static/react-native-logo.png')}/>)
 //import Ionicons from '@expo/vector-icons/Ionicons';
@@ -8,10 +9,10 @@ import { StatusBar } from "expo-status-bar";
 export default function TabsLayout() {
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style='auto' />
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: '#4894FE',
+          tabBarActiveTintColor: '#007aff',
           tabBarInactiveTintColor:'grey',
           tabBarShowLabel: false,
           headerShown:false

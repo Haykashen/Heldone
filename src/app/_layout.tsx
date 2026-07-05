@@ -11,7 +11,7 @@ export default function RootLayout() {
           <Stack.Screen name="(notice)" />
           <Stack.Screen name="[todoID]" 
             options={{
-              presentation: 'formSheet',
+              presentation: 'modal',
               gestureDirection: 'vertical',
               sheetCornerRadius: 20,
               animation: 'slide_from_bottom',

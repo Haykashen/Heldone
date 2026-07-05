@@ -1,9 +1,11 @@
+import CategoryPanel from '@/components/CategoryPanel';
 import { Context } from '@/context/context';
 import Categorys from '@/data/Category';
 import TaskStatus from '@/data/TaskStatus';
 import { setData } from '@/store/setData';
 import { deleteTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
+import { getNewTask } from '@/utils/utils';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
@@ -16,7 +18,7 @@ type DateTimePickerMode = "date"| "time";
 const taskCard = () => {
   const { todoID } = useLocalSearchParams();
   const { task, setTask } = useContext(Context);
-  const [currTask, setCurrentTask] = useState(task.find((item:TTask)=> item.id === todoID))
+  const [currTask, setCurrentTask] = useState(todoID === 'new'? getNewTask(): task.find((item:TTask)=> item.id === todoID))
 
   if (!currTask) {
     return <Redirect href="/list" />;
@@ -64,20 +66,31 @@ const taskCard = () => {
   }  
 
   const handleDone = async()=>{
-    let resArray = task.map((item:TTask)=>{ return (item.id === todoID)? currTask:item})
-    setTask(resArray.sort((first:TTask, second:TTask)=> {return (first.date.getTime() - second.date.getTime())}))  
-    setData("todo", JSON.stringify(resArray))
+
+    let resArray = [];
+    if(todoID === 'new')
+    {
+      resArray = [...task, currTask]  
+    }  
+    else
+    {
+      resArray = task.map((item:TTask)=>{ return (item.id === todoID)? currTask:item})
+    }  
+      
+    const sortedArray = resArray.sort((first:TTask, second:TTask)=> {return (first.date.getTime() - second.date.getTime())})
+    setTask(sortedArray)  
+    setData("todo", JSON.stringify(sortedArray))
     handleBack()
   }
 
   const handleDelete = async() => {
-    deleteTask(currTask.id, task, setTask)
+    if(todoID !== 'new')
+      deleteTask(currTask.id, task, setTask)
     handleBack()
   }
 
-
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider>    
       <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', justifyContent: 'center', alignItems: 'center', maxWidth: 600 }}>
         <View style={{width:'100%', flexDirection: 'row', marginTop: 10, paddingHorizontal: 5 , justifyContent: 'space-between' }}>
           <Pressable onPress={handleBack} style={{flexDirection:'row', alignItems: 'center'}}>
@@ -124,7 +137,7 @@ const taskCard = () => {
               <MaterialDesignIcons name={currTask.status.icon as any} color={(currTask.status.color)} size={24} />
             </Pressable>
           </View>
-          {/* <CategoryPanel category={currTask.category.name.en} onPressCategory={changeCategory} language={language} /> */}
+          <CategoryPanel category={currTask.category.name.en} onPressCategory={changeCategory}/>
           <View style={{ flexDirection: 'column', gap: 5, width: '100%', height: 50 }}>
             <TextInput 
               style={{color:'white', borderColor: focused=='Title'? '#63B4FF' : 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }} 
@@ -133,7 +146,7 @@ const taskCard = () => {
               placeholder={'Title...'} 
               placeholderTextColor={'gray'}
               value={currTask.title} 
-              autoFocus={true} 
+              //autoFocus={true} 
               maxLength={40} 
             />
           </View>
@@ -154,10 +167,10 @@ const taskCard = () => {
               onPress={handleDelete}>
               <MaterialDesignIcons name={'trash-can-outline'} color={"red"} size={34} />
             </Pressable>
-          </View>
+          </View>          
         </View>
       </SafeAreaView>
-    </SafeAreaProvider>
+   </SafeAreaProvider>
   );
 }
 

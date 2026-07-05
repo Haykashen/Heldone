@@ -1,10 +1,10 @@
 
+import Add from '@/components/buttons/Add';
 import AgendaItem from '@/components/items/AgendaItem';
+import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
-import { setData } from '@/store/setData';
-import { completeTask, deleteTask } from '@/utils/taskManage';
-import { TTask } from "@/utils/types";
-import { getFormatedDay, getNewTask, getTaskByDays } from '@/utils/utils';
+import { completeTask } from '@/utils/taskManage';
+import { getFormatedDay, getTaskByDays } from '@/utils/utils';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RelativePathString, router } from "expo-router";
 import { useContext, useEffect } from 'react';
@@ -29,27 +29,13 @@ const list = () => {
   useEffect(()=>{
     sortTask = getTaskByDays(task)
   },[task])
-
-  
-
+ 
   const handlePress = (id: string) => {
     router.push(('/' + id) as RelativePathString)
   }
 
-  const handleAdd = () => {
-    const newTask = getNewTask()
-    task.push(newTask)
-    const sortedArray = task.sort((first: TTask, second: TTask) => { return (first.date.getTime() - second.date.getTime()) })
-    setTask(sortedArray)
-    setData("todo", JSON.stringify(sortedArray))
-    handlePress(newTask.id)
-  }
   const handleComplete = (id: string) => {
     completeTask(id, task, setTask)
-  }
-
-  const handleDelete = (id: string) => {
-    deleteTask(id, task, setTask)
   }
 
   return (
@@ -62,20 +48,17 @@ const list = () => {
       </View>
       <CalendarProvider
         date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(new Date())}
-        // onDateChanged={onDateChanged}
         onDateChanged={(date, updateSource) => { console.log('onDateChanged', date) }}
         showTodayButton
-
-        // disabledOpacity={0.6}
         theme={{
           todayButtonTextColor: '#007aff',
           todayButtonFontWeight:'bold'
         }}
-      // todayBottomMargin={16}
-      // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >
         <AgendaList
           sections={sortTask}
+          sectionStyle={{ backgroundColor: '#031F2B', }}
+          ListEmptyComponent={<ListEpmtyComponent />}          
           renderItem={({ item }: any) => <AgendaItem
             id={item.id}
             date={item.date}
@@ -87,18 +70,10 @@ const list = () => {
             onCompletePress={()=>handleComplete(item.id)}
             onItemPress={()=>handlePress(item.id)}
             onDeletePress={()=>null}
-          />}
-          // scrollToNextEvent
-          sectionStyle={{ backgroundColor: '#031F2B', }}
-        // dayFormat={'yyyy-MM-d'}
+          />}    
         />
       </CalendarProvider>
-
-      <Pressable
-        onPress={handleAdd}
-        style={{ margin: 10, height: 60, width: 60, borderRadius: 45, backgroundColor: '#007aff', position: 'absolute', bottom: 15, right: 15, alignItems: 'center', justifyContent: 'center' }}>
-        <MaterialDesignIcons name={"plus"} size={34} color={"white"} />
-      </Pressable>
+      <Add/>
     </SafeAreaView>
   )
 }

@@ -1,14 +1,13 @@
 
+import Add from '@/components/buttons/Add';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
-import { setData } from '@/store/setData';
-import { completeTask, deleteTask } from '@/utils/taskManage';
-import { TTask } from "@/utils/types";
-import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays, getNewTask } from '@/utils/utils';
+import { completeTask } from '@/utils/taskManage';
+import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RelativePathString, router } from "expo-router";
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar, LocaleConfig, WeekCalendar } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,21 +26,16 @@ interface Props {
   weekView?: boolean;
 }
 
-const CHEVRON = require('@/assets/images/next.png');
+
 
 const calendar = (props: Props) => {
   const { task, setTask } = useContext(Context);
+  const CHEVRON = require('@/assets/images/next.png');  
   const {weekView} = props;///????
   const [date, setDate] = useState(new Date())
-  const [dayTasks, setDayTasks] = useState(getDayTasks(task, getFormatedDay(date)))
-  const [multiDots, setMultiDots] = useState(getMultiDotsDays(task));
+  let dayTasks = getDayTasks(task, getFormatedDay(date))
+  const multiDots = getMultiDotsDays(task)
   
-  useEffect(()=>{
-    setDayTasks(getDayTasks(task, getFormatedDay(date)))
-    setMultiDots(getMultiDotsDays(task))
-  },[date, task])
-
-
   const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
   const rotation = useRef(new Animated.Value(0));
 
@@ -80,27 +74,25 @@ const calendar = (props: Props) => {
     completeTask(id, task, setTask)
   }
 
-  const handleDelete = (id: string) => {
-    deleteTask(id, task, setTask)
-  }
-
   const handlePress = (id: string) => {
     /*router.push({pathname: '/components/cards/placeCard',params: { placeID: item.id, otherParam: 'anything you want here' }})*/
     router.push(('/' + id) as RelativePathString)
   }
 
-  const handleAdd = () => {
-    const newTask = getNewTask()
-    task.push(newTask)
-    const sortedArray = task.sort((first:TTask, second:TTask)=> {return (first.date.getTime() - second.date.getTime())})
-    setTask(sortedArray)
-    setData("todo", JSON.stringify(sortedArray))
-    handlePress(newTask.id)
-    //router.push(('/components/cards/' + newItem.id) as RelativePathString)
-  }
+  // const handleAdd = () => {
+  //   const newTask = getNewTask()
+  //   task.push(newTask)
+  //   const sortedArray = task.sort((first:TTask, second:TTask)=> {return (first.date.getTime() - second.date.getTime())})
+  //   setTask(sortedArray)
+  //   setData("todo", JSON.stringify(sortedArray))
+  //   handlePress(newTask.id)
+  //   //router.push(('/components/cards/' + newItem.id) as RelativePathString)
+  // }
 
   const changeDate = (date:string) =>{
     setDate(new Date(date))
+    dayTasks = getDayTasks(task, getFormatedDay(new Date(date)))
+      
   }
 
 
@@ -122,6 +114,7 @@ const calendar = (props: Props) => {
           todayButtonTextColor: '#007aff',
           todayButtonFontWeight:'bold'
         }}
+        
       // todayBottomMargin={16}
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >
@@ -135,7 +128,8 @@ const calendar = (props: Props) => {
             onCalendarToggled={onCalendarToggled}
             markingType="multi-dot"
             markedDates={multiDots}
-            firstDay={1}
+            firstDay={0}
+            closeOnDayPress
             // horizontal={false}
             // hideArrows
             // disablePan
@@ -144,27 +138,28 @@ const calendar = (props: Props) => {
             // calendarStyle={styles.calendar}
             // headerStyle={styles.header} // for horizontal only
             // disableWeekScroll
-
-            //theme={theme.current}
-            theme={{
-              // arrows
-              arrowColor: 'black',
-              // selected date
-              selectedDayBackgroundColor: '#63B4FF',
-              selectedDayTextColor: 'white',
-              // dot (marked date)
-              dotColor: '#007aff',
-            }}
             // disableAllTouchEventsForDisabledDays                        
           //   leftArrowImageSource={leftArrowIcon}
           //   rightArrowImageSource={rightArrowIcon}
           // animateScroll
           // closeOnDayPress={false}
+            //theme={theme.current}
+            theme={{
+              // arrows
+              arrowColor: 'black',
+              // selected date
+              selectedDayBackgroundColor: '#007aff',
+              selectedDayTextColor: 'white',
+              // dot (marked date)
+              dotColor: '#007aff',
+            }}
+
           />
         )}
         <AgendaList
           sections={dayTasks}
-          ListEmptyComponent={<ListEpmtyComponent/>}
+          ListEmptyComponent={<ListEpmtyComponent />}
+          sectionStyle={{ backgroundColor: '#031F2B', }}
           renderItem={({ item }: any) => <AgendaItem
             id={item.id}
             date={item.date}
@@ -177,17 +172,9 @@ const calendar = (props: Props) => {
             onItemPress={()=>handlePress(item.id)}
             onDeletePress={()=>null}
           /> }
-          
-          // scrollToNextEvent
-          sectionStyle={{ backgroundColor: '#031F2B', }}
-        // dayFormat={'yyyy-MM-d'}
         />
       </CalendarProvider>
-      <Pressable
-        onPress={handleAdd}
-        style={{ margin: 10, height: 60, width: 60, borderRadius: 45, backgroundColor: '#007aff', position: 'absolute', bottom: 15, right: 15, alignItems: 'center', justifyContent: 'center' }}>
-        <MaterialDesignIcons name={"plus"} size={34} color={"white"} />
-      </Pressable>
+      <Add/>
     </SafeAreaView>
   );
 };

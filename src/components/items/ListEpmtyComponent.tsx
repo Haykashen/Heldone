@@ -1,12 +1,17 @@
 import { ITranslate } from "@/utils/types";
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
+import { router } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ListEpmtyComponent = () => {
+  
+  const hanlePress =()=>{
+    router.push('/new')
+  }
 
   return (
-    <SafeAreaProvider>
+    //<SafeAreaProvider>    </SafeAreaProvider>
       <SafeAreaView style={{
         marginTop:40,
         padding: 20,
@@ -14,18 +19,17 @@ const ListEpmtyComponent = () => {
         borderBottomWidth: 1,
         borderBottomColor: 'lightgrey',
         flexDirection: 'row',
-        gap: 10
       }}>
-        <Pressable style={{flexDirection:'row', alignContent:'center', flex:1, alignItems:'center', justifyContent:'space-around'}}>
+        <Pressable onPress={hanlePress} style={{flexDirection:'row', alignContent:'center', flex:1, alignItems:'center', justifyContent:'space-around'}}>
           <View style={{flexDirection:'column', alignContent:'center',alignItems:'center', justifyContent:'center'}}>
           <Text style={{color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent:'center', alignContent:'center'}}>{translate.FirstRow['ru']}</Text>           
-          <Text style={{color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent:'center', alignContent:'center'}}>{translate.SecondRow['ru']}</Text>
-          <Text style={{color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent:'center', alignContent:'center'}}>{translate.ThirdRow['ru']}</Text>            
+          <Text style={{color: 'black', fontSize: 14, justifyContent:'center', alignContent:'center'}}>{translate.SecondRow['ru']}</Text>
+          <Text style={{color: 'black', fontSize: 14, justifyContent:'center', alignContent:'center'}}>{translate.ThirdRow['ru']}</Text>            
           </View>
-          <MaterialDesignIcons name="playlist-plus" size={96} color='#007aff' />          
+          <MaterialDesignIcons name="playlist-plus" size={44} color='#007aff' />          
         </Pressable>
       </SafeAreaView>
-    </SafeAreaProvider>
+
   )
 }
 

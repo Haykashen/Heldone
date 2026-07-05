@@ -24,7 +24,7 @@ export interface ITranslate {
         [lang: string] : string
     }
 }
-export type TCategoryPanel = { onPressCategory :(arg:string)=>void, category:string, language:string}
+export type TCategoryPanel = { onPressCategory :(arg:string)=>void, category:string}
 export type TNavPanel = { onPressStatus:(arg:string)=>void, onPressAdd:()=>void, theme:any, status:string}
 // type TCategory = {
 //     [id:string]:{

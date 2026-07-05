@@ -10,7 +10,7 @@ const notice = () => {
   const sheetRef = useRef<BottomSheet>(null);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <View style={{ flex: 1 }}>
         <Button title="Open" onPress={() => sheetRef.current?.snapToIndex(0)} />
         <BottomSheet ref={sheetRef} snapPoints={['50%', '90%']} index={-1} enablePanDownToClose>
