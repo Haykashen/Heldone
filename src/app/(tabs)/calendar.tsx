@@ -100,7 +100,7 @@ const calendar = (props: Props) => {
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
         <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Календарь</Text>
         <Pressable onPress={() => router.push('/notice')}>
-          <MaterialDesignIcons name={'bell'} color={'white'} size={24} />
+          <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
         </Pressable>
       </View>
       <CalendarProvider
@@ -113,7 +113,7 @@ const calendar = (props: Props) => {
           todayButtonTextColor: '#007aff',
           todayButtonFontWeight:'bold'
         }}
-        
+        style={{ gap: dayTasks[0] ? 0 : 40}}
       // todayBottomMargin={16}
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >

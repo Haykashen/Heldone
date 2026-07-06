@@ -13,7 +13,7 @@ const ListEpmtyComponent = () => {
   return (
     //<SafeAreaProvider>    </SafeAreaProvider>
       <SafeAreaView style={{
-        marginTop:40,
+        //marginTop:40,
         padding: 20,
         backgroundColor: 'white',
         borderBottomWidth: 1,

@@ -126,13 +126,13 @@ const taskCard = () => {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
             <Pressable 
               onPress={showDatepicker} 
-              style={{ flexDirection: 'row', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
+              style={{ flexDirection: 'row', alignItems:'center', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
               <Text style={{ color: 'white' }}>{datetime}</Text>
               <MaterialDesignIcons name='calendar-month-outline' color={'white'} size={24} />
             </Pressable>
             <Pressable 
               onPress={changeStatus} 
-              style={{ flexDirection: 'row', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
+              style={{ flexDirection: 'row', alignItems:'center', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
               <Text style={{ color: 'white' }}>{currTask.status.name.ru} </Text>
               <MaterialDesignIcons name={currTask.status.icon as any} color={(currTask.status.color)} size={24} />
             </Pressable>

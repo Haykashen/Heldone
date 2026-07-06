@@ -23,7 +23,7 @@ LocaleConfig.locales['rus'] = {
 LocaleConfig.defaultLocale = 'rus';
 
 const list = () => {
-  const { task, setTask } = useContext(Context);
+  const { task, setTask } = useContext(Context);  
   let sortTask = getTaskByDays(task)
 
   useEffect(()=>{
@@ -43,22 +43,22 @@ const list = () => {
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
         <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Задачи</Text>
         <Pressable onPress={() => router.push('/notice')}>
-          <MaterialDesignIcons name={'bell'} color={'white'} size={24} />
+          <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
         </Pressable>
-      </View>
+      </View>      
       <CalendarProvider
         date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(new Date())}
         onDateChanged={(date, updateSource) => { console.log('onDateChanged', date) }}
         showTodayButton
         theme={{
           todayButtonTextColor: '#007aff',
-          todayButtonFontWeight:'bold'
+          todayButtonFontWeight: 'bold'
         }}
       >
         <AgendaList
           sections={sortTask}
           sectionStyle={{ backgroundColor: '#031F2B', }}
-          ListEmptyComponent={<ListEpmtyComponent />}          
+          ListEmptyComponent={<ListEpmtyComponent />}
           renderItem={({ item }: any) => <AgendaItem
             id={item.id}
             date={item.date}
@@ -67,13 +67,13 @@ const list = () => {
             title={item.title}
             timeStatus={item.timeStatus}
             notes={item.notes}
-            onCompletePress={()=>handleComplete(item.id)}
-            onItemPress={()=>handlePress(item.id)}
-            onDeletePress={()=>null}
-          />}    
+            onCompletePress={() => handleComplete(item.id)}
+            onItemPress={() => handlePress(item.id)}
+            onDeletePress={() => null}
+          />}
         />
       </CalendarProvider>
-      <Add/>
+      <Add />
     </SafeAreaView>
   )
 }
