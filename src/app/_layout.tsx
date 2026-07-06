@@ -8,18 +8,31 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="(notice)" />
+          {/* <Stack.Screen name="(notice)" /> */}
           <Stack.Screen name="[todoID]"
             options={{
-              presentation: 'modal',
-              gestureDirection: 'vertical',
-              sheetCornerRadius: 20,
-              animation: 'slide_from_bottom',
-              sheetGrabberVisible: true,
-              sheetInitialDetentIndex: 0,
-              sheetAllowedDetents: [0.7, 1.0]
+              presentation: 'transparentModal',
+              animation: 'fade',
+              sheetAllowedDetents: 'fitToContents',
+              contentStyle: { backgroundColor: "#40404040" },
             }}
           />
+          <Stack.Screen
+            name="notice"
+            options={{
+              headerShown: false,
+              presentation: 'transparentModal',
+              animation: 'flip',
+              sheetAllowedDetents: 'fitToContents',
+              // presentation: 'formSheet',
+              // gestureDirection: 'vertical',
+              // sheetCornerRadius: 20,
+              // animation: 'slide_from_bottom',
+              // sheetGrabberVisible: true,
+              // sheetInitialDetentIndex: 0,
+              // sheetAllowedDetents: [0.5, 0.7, 1.0]
+            }}
+          />          
         </Stack>
       </SafeAreaProvider>
     </ContextProvider>

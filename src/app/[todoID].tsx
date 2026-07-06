@@ -90,9 +90,9 @@ const taskCard = () => {
   }
 
   return (
-    <SafeAreaProvider>    
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', justifyContent: 'center', alignItems: 'center', maxWidth: 600 }}>
-        <View style={{width:'100%', flexDirection: 'row', marginTop: 10, paddingHorizontal: 5 , justifyContent: 'space-between' }}>
+    <SafeAreaProvider style={{justifyContent:'flex-end'}}>    
+      <SafeAreaView style={{ width:'100%', paddingHorizontal: 5, backgroundColor: '#031F2B', justifyContent: 'center', alignItems: 'center', maxWidth: 600, borderTopStartRadius:15,borderTopEndRadius:15, paddingVertical:15 }}>
+        <View style={{width:'100%', flexDirection: 'row' , justifyContent: 'space-between' }}>
           <Pressable onPress={handleBack} style={{flexDirection:'row', alignItems: 'center'}}>
             <MaterialDesignIcons name={'arrow-left-thin'} color={"#ffb900"} size={34} />
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
@@ -103,7 +103,7 @@ const taskCard = () => {
             <Text  style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
           </Pressable>
         </View>
-        <View style={{flexDirection: 'column', width: '100%', gap: 10, paddingHorizontal: 5 }}>
+        <View style={{flexDirection: 'column', width: '100%', gap: 10 }}>
           {show && (
             <DateTimePicker
               accentColor='red'
@@ -126,13 +126,13 @@ const taskCard = () => {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
             <Pressable 
               onPress={showDatepicker} 
-              style={{ flexDirection: 'row', alignItems:'center', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
+              style={{ flexDirection: 'row', alignItems:'center', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 10 }}>
               <Text style={{ color: 'white' }}>{datetime}</Text>
               <MaterialDesignIcons name='calendar-month-outline' color={'white'} size={24} />
             </Pressable>
             <Pressable 
               onPress={changeStatus} 
-              style={{ flexDirection: 'row', alignItems:'center', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
+              style={{ flexDirection: 'row', alignItems:'center', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 10 }}>
               <Text style={{ color: 'white' }}>{currTask.status.name.ru} </Text>
               <MaterialDesignIcons name={currTask.status.icon as any} color={(currTask.status.color)} size={24} />
             </Pressable>
@@ -150,9 +150,9 @@ const taskCard = () => {
               maxLength={40} 
             />
           </View>
-          <View style={{ flexDirection: 'column', gap: 5, width: '100%', height: 300 }}>
+          <View style={{ flexDirection: 'column', gap: 5, width: '100%', height: 200 }}>
             <TextInput 
-              style={{color:'white', borderColor: focused=='Notes'? '#63B4FF' : 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }} 
+              style={{flex:1, color:'white', borderColor: focused=='Notes'? '#63B4FF' : 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }} 
               onFocus={()=>setFocused('Notes')}
               onChangeText={(text) => changeNotes(text)} 
               placeholder={'Notes...'} 
@@ -161,7 +161,7 @@ const taskCard = () => {
               multiline={true} 
               textAlignVertical='top' />
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 20}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%'}}>
             <Pressable 
               style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, width:'60%', justifyContent: 'center', alignItems:'center'  }} 
               onPress={handleDelete}>

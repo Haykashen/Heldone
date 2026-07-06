@@ -38,7 +38,7 @@ export default function Index() {
           <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
         </Pressable>
       </View>     
-      <View style={{ width: '80%', backgroundColor: '#545759', height: 100, margin: 'auto', borderRadius: 10, flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
+      <View style={{marginVertical:15, borderColor:'silver', borderRadius: 10, borderWidth:2, height: 100, marginHorizontal: 10 , flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Прогресс выполнения - {completed.length} из {filtered.length}</Text>
         <View style={{ width: '80%', backgroundColor: 'white', height: 6, borderRadius: 10 }}>
           <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 6, borderRadius: 10 }}></View>

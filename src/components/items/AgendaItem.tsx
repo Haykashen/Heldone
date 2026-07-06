@@ -23,9 +23,12 @@ const AgendaItem = (props:TItem) => {
     <Pressable onPress={handleOpen} style={styles.item}>
       <View style={{ width: '20%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 5 }}>
         {/* <Text style={styles.itemHourText}>{date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</Text> */}
-        <MaterialDesignIcons name={category.icon as any} color={category.color} size={38} />
+        <View style={{ height: 50, width: 50, backgroundColor: category.backColor, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
+          <MaterialDesignIcons name={category.icon as any} color={category.color} size={38} />
+        </View>
+        
       </View>
-      <View style={{ width: '60%', flexDirection:'column' }}>
+      <View style={{ width: '60%', flexDirection:'column', gap:3 }}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitleText}>{title}</Text>
         <View style={{ width: '100%', flexDirection:'row', alignItems:'center', gap:3 }}>
           <MaterialDesignIcons name={timeStatus.icon as any} color={timeStatus.color} size={18} />
