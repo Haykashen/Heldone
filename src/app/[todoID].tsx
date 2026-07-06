@@ -5,7 +5,7 @@ import TaskStatus from '@/data/TaskStatus';
 import { setData } from '@/store/setData';
 import { deleteTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
-import { getNewTask } from '@/utils/utils';
+import { getNewTask, setTimeStatus } from '@/utils/utils';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
@@ -111,7 +111,7 @@ const taskCard = () => {
               presentation="dialog"              
               value={currTask.date}
               onValueChange={(event, selectedDate) => {
-                setCurrentTask({ ...currTask, date: selectedDate })
+                setCurrentTask(setTimeStatus({ ...currTask, date: selectedDate }))
                 if (mode === 'time')
                   setShow(false);
                 else if (mode === 'date')

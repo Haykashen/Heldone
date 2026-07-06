@@ -32,7 +32,7 @@ export default function Index() {
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
         <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
           <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Сегодня</Text>
-          <Text style={{ color: 'silver', fontSize: 16 }}>{new Date().toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })}</Text>
+          <Text style={{ color: '#7a92a5', fontSize: 16 }}>{new Date().toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })}</Text>
         </View>
         <Pressable onPress={() => router.push('/notice')}>
           <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
@@ -44,7 +44,7 @@ export default function Index() {
           <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 6, borderRadius: 10 }}></View>
         </View>
       </View>
-      <Text style={{ color: 'silver', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
+      <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
       <FlatList
         data={filtered}
         keyExtractor={(item, index) => item.id}
