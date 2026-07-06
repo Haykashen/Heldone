@@ -9,7 +9,7 @@ export default function RootLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="(notice)" />
-          <Stack.Screen name="[todoID]" 
+          <Stack.Screen name="[todoID]"
             options={{
               presentation: 'modal',
               gestureDirection: 'vertical',
@@ -18,7 +18,7 @@ export default function RootLayout() {
               sheetGrabberVisible: true,
               sheetInitialDetentIndex: 0,
               sheetAllowedDetents: [0.7, 1.0]
-            }}          
+            }}
           />
         </Stack>
       </SafeAreaProvider>
