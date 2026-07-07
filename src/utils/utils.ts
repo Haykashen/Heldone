@@ -46,9 +46,11 @@ export function getDayTasks(task:[], day:string){
   return resObj;
 }
 
-export function getTaskByDays(task:[]){
+export function getTaskByDays(task:[], status?:string){
   let res:TTaskByDays = {}
   task.forEach((item:TTask)=> {
+    if(status && status !== item.status.id)
+      return;
     let strDate = getFormatedDay(new Date(item.date));
     if(!(res[strDate]))
       res[strDate] = {data:[]};

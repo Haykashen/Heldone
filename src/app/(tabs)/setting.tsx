@@ -1,13 +1,64 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
+import { router } from "expo-router";
+import { useRef } from 'react';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 const settings = () => {
+  const pkg = require('@/../package.json')
+  const appVersion = pkg.version;
+
+  const scale = useRef(new Animated.Value(1)).current;
+
+  // Функция для анимации нажатия
+  const handlePressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.95, // уменьшение размера
+      useNativeDriver: true
+    }).start();
+  };
+
+  // Возврат к обычному размеру
+  const handlePressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 3,
+      useNativeDriver: true
+    }).start();
+  };
+
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#32312f' }}>
-      <View style={{ height: 80, width: 400, backgroundColor: '#464543' }}>
-        <Text style={{ color: 'white' }}>Settings</Text>
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
+      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
+        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Профиль</Text>
+        <Pressable onPress={() => router.push('/notice')}>
+          <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
+        </Pressable>
+      </View> 
+      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
+        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Аналитика</Text>
+      </View>      
+      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
+        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Настройки</Text>
+        <View style={{ flexDirection: 'column', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Text style={{ color: 'white' }}>Версия {appVersion}</Text>
+        <Pressable 
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}        
+        >
+          <Animated.View style={{
+            backgroundColor: '#388e3c',
+            padding: 16,
+            borderRadius: 8,
+            alignItems: 'center',
+            marginVertical: 8, transform: [{ scale }]
+          }}>
+            <Text style={{ color: '#fff', fontSize: 18 }}>Test</Text>
+          </Animated.View>
+        </Pressable>           
+        </View>
+         
+      </View>                   
     </SafeAreaView>
   )
 }
