@@ -1,8 +1,7 @@
-import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
-import { router } from "expo-router";
 import { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 const settings = () => {
   const pkg = require('@/../package.json')
   const appVersion = pkg.version;
@@ -29,11 +28,8 @@ const settings = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
-      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Профиль</Text>
-        <Pressable onPress={() => router.push('/notice')}>
-          <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
-        </Pressable>
+      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10 }}>
+          <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Профиль</Text>
       </View> 
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
         <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Аналитика</Text>

@@ -1,12 +1,12 @@
 
 import Add from '@/components/buttons/Add';
+import Notice from '@/components/buttons/Notice';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
 import TaskStatus from '@/data/TaskStatus';
 import { completeTask } from '@/utils/taskManage';
 import { getFormatedDay, getTaskByDays } from '@/utils/utils';
-import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RelativePathString, router } from "expo-router";
 import { useContext, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -48,37 +48,42 @@ const list = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Задачи</Text>
-        <Pressable onPress={() => router.push('/notice')}>
-          <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
-        </Pressable>
+        <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
+          <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Мои задачи</Text>
+          <Text style={{ color: '#7a92a5', fontSize: 16 }}>по дням и статусам</Text>
+        </View>
+        <Notice/>
       </View> 
-      <View style={{ backgroundColor: '#545759', padding: 5, gap: 5, flexDirection: 'row', marginHorizontal: 10, marginTop:15, borderRadius: 10 }}>
-        <Pressable
-          onPress={() => changeStatus(TaskStatus.Upcoming.id)}
-          style={{ flex: 1, backgroundColor: status === 'Upcoming' ? '#4894FE' : '#263238', paddingVertical: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 10 }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Предстоящие</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => changeStatus(TaskStatus.Completed.id)}
-          style={{ flex: 1, backgroundColor: status === 'Completed' ? '#4894FE' : '#263238',paddingVertical: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 10 }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Выполненно</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => changeStatus('')}
-          style={{ flex: 1, backgroundColor: status === '' ? '#4894FE' : '#263238', paddingVertical: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 10 }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Все</Text>
-        </Pressable>
-      </View>     
+   
       <CalendarProvider
         date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(new Date())}
-        onDateChanged={(date, updateSource) => { console.log('onDateChanged', date) }}
         showTodayButton
         theme={{
           todayButtonTextColor: '#007aff',
           todayButtonFontWeight: 'bold'
         }}
+        
       >
+      <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 10, marginTop: 15, borderRadius: 10 }}>
+        <Pressable
+          onPress={() => changeStatus(TaskStatus.Upcoming.id)}
+          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10 }}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Предстоит</Text>
+          <View style={{ height: 3, backgroundColor: status === 'Upcoming' ? '#007aff' : 'gray' }}></View>
+        </Pressable>
+        <Pressable
+          onPress={() => changeStatus(TaskStatus.Completed.id)}
+          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10 }}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Выполненно</Text>
+          <View style={{ height: 3, backgroundColor: status === 'Completed' ? '#007aff' : 'gray'  }}></View>
+        </Pressable>
+        <Pressable
+          onPress={() => changeStatus('')}
+          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10 }}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Все</Text>
+          <View style={{ height: 3, backgroundColor: status === '' ? '#007aff' : 'gray'  }}></View>
+        </Pressable>
+      </View>          
         <AgendaList
           sections={sortTask}
           sectionStyle={{ backgroundColor: '#031F2B', }}

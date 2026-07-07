@@ -1,10 +1,10 @@
 import Add from '@/components/buttons/Add';
+import Notice from '@/components/buttons/Notice';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
 import { completeTask } from '@/utils/taskManage';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
-import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RelativePathString, router } from "expo-router";
 import { useCallback, useContext, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -97,11 +97,12 @@ const calendar = (props: Props) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Календарь</Text>
-        <Pressable onPress={() => router.push('/notice')}>
-          <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
-        </Pressable>
-      </View>
+        <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
+          <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Календарь</Text>
+          <Text style={{ color: '#7a92a5', fontSize: 16 }}>в месячном и недельном виде</Text>
+        </View>
+        <Notice/>
+      </View> 
       <CalendarProvider
         date={getFormatedDay(date)}//
         // onDateChanged={onDateChanged}

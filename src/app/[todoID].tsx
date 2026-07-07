@@ -91,16 +91,16 @@ const taskCard = () => {
 
   return (
     <SafeAreaProvider style={{justifyContent:'flex-end'}}>    
-      <SafeAreaView style={{ width:'100%', paddingHorizontal: 5, backgroundColor: '#031F2B', justifyContent: 'center', alignItems: 'center', maxWidth: 600, borderTopStartRadius:15,borderTopEndRadius:15, paddingVertical:15 }}>
-        <View style={{width:'100%', flexDirection: 'row' , justifyContent: 'space-between' }}>
-          <Pressable onPress={handleBack} style={{flexDirection:'row', alignItems: 'center'}}>
-            <MaterialDesignIcons name={'arrow-left-thin'} color={"#ffb900"} size={34} />
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
+      <SafeAreaView style={{ width:'100%', paddingHorizontal: 10, backgroundColor: '#031F2B', justifyContent: 'center', alignItems: 'center', maxWidth: 600, borderTopStartRadius:15,borderTopEndRadius:15, paddingBottom:15, paddingTop:5 }}>
+        <View style={{width:'100%', flexDirection: 'row' , justifyContent: 'space-between', paddingHorizontal:5 }}>
+          <Pressable onPress={handleBack} style={{flexDirection:'row', alignItems: 'center', gap:3}}>
+            {/* <MaterialDesignIcons name={'arrow-left-thin'} color={"#ffb900"} size={34} /> */}
+            <Text style={{ color: "#ffb900", fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
           </Pressable>
-          <Text  style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Задача</Text>
-          <Pressable onPress={handleDone} style={{flexDirection:'row', alignItems: 'center'}}>
-            <MaterialDesignIcons name={'check'} color={"#63B4FF"} size={20} />  
-            <Text  style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
+          <Text  style={{ color: 'white', fontSize: 26, fontWeight: 'bold' }}>Задача</Text>
+          <Pressable onPress={handleDone} style={{flexDirection:'row', alignItems: 'center', gap:3}}>
+            <Text  style={{ color: '#007aff', fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
+            {/* <MaterialDesignIcons name={'check'} color={"#63B4FF"} size={20} />              */}
           </Pressable>
         </View>
         <View style={{flexDirection: 'column', width: '100%', gap: 10 }}>
@@ -143,7 +143,7 @@ const taskCard = () => {
               style={{color:'white', borderColor: focused=='Title'? '#63B4FF' : 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }} 
               onFocus={()=>setFocused('Title')}
               onChangeText={(text) => changeTitle(text)} 
-              placeholder={'Title...'} 
+              placeholder={'Заголовок...'} 
               placeholderTextColor={'gray'}
               value={currTask.title} 
               //autoFocus={true} 
@@ -155,7 +155,7 @@ const taskCard = () => {
               style={{flex:1, color:'white', borderColor: focused=='Notes'? '#63B4FF' : 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }} 
               onFocus={()=>setFocused('Notes')}
               onChangeText={(text) => changeNotes(text)} 
-              placeholder={'Notes...'} 
+              placeholder={'Примечание...'} 
               placeholderTextColor={'gray'}
               value={currTask.notes} 
               multiline={true} 

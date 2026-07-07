@@ -1,13 +1,13 @@
 import Add from '@/components/buttons/Add';
+import Notice from '@/components/buttons/Notice';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
 import { completeTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
-import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RelativePathString, router } from "expo-router";
 import { useContext, useState } from 'react';
-import { DimensionValue, FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { DimensionValue, FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Index() {
@@ -34,9 +34,7 @@ export default function Index() {
           <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Сегодня</Text>
           <Text style={{ color: '#7a92a5', fontSize: 16 }}>{new Date().toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })}</Text>
         </View>
-        <Pressable onPress={() => router.push('/notice')}>
-          <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
-        </Pressable>
+        <Notice/>
       </View>     
       <View style={{marginVertical:15, borderColor:'silver', borderRadius: 10, borderWidth:2, height: 100, marginHorizontal: 10 , flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Прогресс выполнения - {completed.length} из {filtered.length}</Text>
