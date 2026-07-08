@@ -1,23 +1,32 @@
 import TaskStatus from "@/data/TaskStatus";
+import { scaleEnd, scaleStart } from '@/utils/animation';
 import { TItem } from "@/utils/types";
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
-import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useRef } from 'react';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const AgendaItem = (props:TItem) => {
   const {id, date, title, category, status, timeStatus, onItemPress, onCompletePress, onDeletePress} = props;
   const statusName  = status.id === TaskStatus.Completed.id ? status.name.ru : timeStatus.name.ru;
   const statusColor = status.id === TaskStatus.Completed.id ? status.color : timeStatus.color;
+  const scale = useRef(new Animated.Value(1)).current;
 
   const handleComplete = ()=>{
-    console.log('Complete AgendaItem')
     onCompletePress()
   }
 
   const handleOpen=()=>{
     onItemPress()
   }
+  // Функция для анимации нажатия
+  const handlePressIn = () => {
+    scaleStart(scale, 0.7)
+  };
 
+  // Возврат к обычному размеру
+  const handlePressOut = () => {
+    scaleEnd(scale, 1)
+  };
 
   return (
     <Pressable onPress={handleOpen} style={styles.item}>
@@ -26,20 +35,25 @@ const AgendaItem = (props:TItem) => {
         <View style={{ height: 50, width: 50, backgroundColor: category.backColor, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
           <MaterialDesignIcons name={category.icon as any} color={category.color} size={38} />
         </View>
-        
       </View>
-      <View style={{ width: '60%', flexDirection:'column', gap:3 }}>
+      <View style={{ width: '60%', flexDirection: 'column', gap: 3 }}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitleText}>{title}</Text>
-        <View style={{ width: '100%', flexDirection:'row', alignItems:'center', gap:3 }}>
+        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: 3 }}>
           <MaterialDesignIcons name={timeStatus.icon as any} color={timeStatus.color} size={18} />
           <Text style={styles.itemHourText}>
-            {date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} - 
-            <Text  style={[styles.itemHourText, {color:statusColor}]}> {statusName}</Text>
+            {date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} -
+            <Text style={[styles.itemHourText, { color: statusColor }]}> {statusName}</Text>
           </Text>
-        </View>       
+        </View>
       </View>
-      <Pressable onPress={handleComplete} style={{ width: '20%', alignItems: 'center', justifyContent: 'center' }}>
-        <MaterialDesignIcons name={status.icon as any} color={status.color} size={32} />
+      <Pressable
+        onPress={handleComplete}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={{ width: '20%', alignItems: 'center', justifyContent: 'center' }}>
+        <Animated.View style={{ transform: [{ scale }] }}>
+          <MaterialDesignIcons name={status.icon as any} color={status.color} size={32} />
+        </Animated.View>
       </Pressable>
     </Pressable>
   );

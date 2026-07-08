@@ -37,6 +37,7 @@ const settings = () => {
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
         <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Настройки</Text>
         <View style={{ flexDirection: 'column', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Text style={{ color: 'white' }}>Стиль Классический</Text>
           <Text style={{ color: 'white' }}>Версия {appVersion}</Text>
         <Pressable 
           onPressIn={handlePressIn}

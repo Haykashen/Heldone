@@ -1,5 +1,5 @@
 import Add from '@/components/buttons/Add';
-import Notice from '@/components/buttons/Notice';
+import Header from '@/components/Header';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
@@ -29,13 +29,7 @@ export default function Index() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
-      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-        <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
-          <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Сегодня</Text>
-          <Text style={{ color: '#7a92a5', fontSize: 16 }}>{new Date().toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })}</Text>
-        </View>
-        <Notice/>
-      </View>     
+      <Header title='Сегодня' text={new Date().toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })}/>    
       <View style={{marginVertical:15, borderColor:'silver', borderRadius: 10, borderWidth:2, height: 100, marginHorizontal: 10 , flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Прогресс выполнения - {completed.length} из {filtered.length}</Text>
         <View style={{ width: '80%', backgroundColor: 'white', height: 6, borderRadius: 10 }}>

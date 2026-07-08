@@ -1,6 +1,6 @@
 
 import Add from '@/components/buttons/Add';
-import Notice from '@/components/buttons/Notice';
+import Header from '@/components/Header';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
@@ -47,14 +47,7 @@ const list = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
-      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-        <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
-          <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Мои задачи</Text>
-          <Text style={{ color: '#7a92a5', fontSize: 16 }}>по дням и статусам</Text>
-        </View>
-        <Notice/>
-      </View> 
-   
+      <Header title='Мои задачи' text='по дням и статусам'/>
       <CalendarProvider
         date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(new Date())}
         showTodayButton

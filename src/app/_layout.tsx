@@ -20,7 +20,6 @@ export default function RootLayout() {
           <Stack.Screen
             name="notice"
             options={{
-              headerShown: false,
               presentation: 'transparentModal',
               animation: 'flip',
               sheetAllowedDetents: 'fitToContents',

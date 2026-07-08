@@ -1,4 +1,5 @@
-import CategoryPanel from '@/components/CategoryPanel';
+//import CategoryPanel from '@/components/CategoryPanel';
+import CategoryItem from '@/components/items/CategoryItem';
 import { Context } from '@/context/context';
 import Categorys from '@/data/Category';
 import TaskStatus from '@/data/TaskStatus';
@@ -10,7 +11,7 @@ import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
 import { useContext, useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"; //AppState, 
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native"; //AppState, 
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 type DateTimePickerMode = "date"| "time"; 
@@ -137,7 +138,16 @@ const taskCard = () => {
               <MaterialDesignIcons name={currTask.status.icon as any} color={(currTask.status.color)} size={24} />
             </Pressable>
           </View>
-          <CategoryPanel category={currTask.category.name.en} onPressCategory={changeCategory}/>
+          {/* <CategoryPanel category={currTask.category.name.en} onPressCategory={changeCategory}/> */}
+          <FlatList
+            nestedScrollEnabled
+            horizontal
+            //style={{ width: '100%', gap:30}}
+            contentContainerStyle={{gap:10}}
+            data={Object.values(Categorys)}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={currTask.category.id} onPressCategory={changeCategory}/>}
+          />
           <View style={{ flexDirection: 'column', gap: 5, width: '100%', height: 50 }}>
             <TextInput 
               style={{color:'white', borderColor: focused=='Title'? '#63B4FF' : 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }} 

@@ -1,3 +1,4 @@
+import { scaleEnd, scaleStart } from '@/utils/animation';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -9,19 +10,12 @@ export default function TabsLayout() {
 
   // Функция для анимации нажатия
   const handlePressIn = () => {
-    Animated.spring(scale, {
-      toValue: 1.5, // уменьшение размера
-      useNativeDriver: true
-    }).start();
+    scaleStart(scale, 1.7)
   };
 
   // Возврат к обычному размеру
   const handlePressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1,
-      friction: 3,
-      useNativeDriver: true
-    }).start();
+    scaleEnd(scale, 1)
   };
 
   return (
@@ -63,7 +57,7 @@ export default function TabsLayout() {
           title:'Setting',
           tabBarIcon: ({ color, focused }) => (
             <Animated.View style={{transform: [{ scale }]}} onTouchStart={handlePressIn} onTouchEnd={handlePressOut}>
-              <MaterialDesignIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} />
+              <MaterialDesignIcons name={focused ? 'cog' : 'cog-outline'} color={color} size={24} />
             </Animated.View>     
           ),            
           }}

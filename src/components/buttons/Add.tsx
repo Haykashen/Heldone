@@ -1,3 +1,4 @@
+import { scaleEnd, scaleStart } from '@/utils/animation';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { router } from "expo-router";
 import { useRef } from 'react';
@@ -13,23 +14,15 @@ const Add = () => {
 
   // Функция для анимации нажатия
   const handlePressIn = () => {
-    Animated.spring(scale, {
-      toValue: 1.7, // уменьшение размера
-      useNativeDriver: true
-    }).start();
+    scaleStart(scale, 1.7)
   };
 
   // Возврат к обычному размеру
   const handlePressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1,
-      friction: 3,
-      useNativeDriver: true
-    }).start();
+    scaleEnd(scale, 1)
   };
 
   return (
-    
     <Pressable
       onPress={hanlePress}
       onPressIn={handlePressIn}
