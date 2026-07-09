@@ -8,10 +8,20 @@ const Categorys:TDataDir = {
             ru: 'Дом',
             en: 'Home'
         },
-        icon: 'home-outline',
-        color: '#00D600',
-        backColor:'#CCF7CC'
-    },
+        icon: 'home',
+        color: 'white',
+        backColor:'#D97706'
+    },  
+    Family: {
+        id:'Family',
+        name: {
+            ru: 'Семья',
+            en: 'Family'
+        },
+        icon: 'account-group',
+        color: 'white',
+        backColor:'#EA580C'
+    },       
     Target: {
         id:'Target',
         name: {
@@ -28,9 +38,19 @@ const Categorys:TDataDir = {
             ru: 'Здоровье',
             en: 'Health'
         },
-        icon:'cards-heart-outline',
-        color:'red',
-        backColor:'#ff1a1a2e'
+        icon:'heart-pulse',
+        color:"white",
+        backColor:'#E11D48'
+    },
+    Investment:{
+        id:'Investment',
+        name:{
+            ru: 'Инвестиции',
+            en: 'Investment'
+        },
+        icon:'gold',
+        color:"white",
+        backColor:"#ffb900"
     },
     Finance:{
         id:'Finance',
@@ -38,62 +58,143 @@ const Categorys:TDataDir = {
             ru: 'Финансы',
             en: 'Finance'
         },
-        icon:'gold',
-        color:"#ffb900",
-        backColor:'#f7bd203a'
-    },
+        icon:'wallet',
+        color:"white",
+        backColor:'#059669'
+    },    
     Education:{
         id:'Education',
         name:{
             ru: 'Учёба',
             en: 'Education'
         },
-        icon:'book-education-outline',
-        color:"#9276f9",
-        backColor:"#b8a8f068"      
+        icon:'school',
+        color:"white",
+        backColor:"#7C3AED"      
     },
     Sport:{
         id:'Sport',
         name:{
-            ru: 'Спорт',
+            ru: 'Фитнес',
             en: 'Sport'
         },
-        icon:'arm-flex',
-        color:"#bd2bfc",
-        backColor:"#d372fd5f"     
+        icon:'dumbbell',
+        color:"white",
+        backColor:"#DC2626"     
     },
-    // Sport4:{
-    //     id:'Sport',
-    //     name:{
-    //         ru: 'Учёба4',
-    //         en: 'Sport4'
-    //     },
-    //     icon:'arm-flex-outline',
-    //     color:"#f84f0c",
-    //     backColor:"#FEDCCE"     
-    // },
-    // Sport5:{
-    //     id:'Sport',
-    //     name:{
-    //         ru: 'Учёба5',
-    //         en: 'Sport5'
-    //     },
-    //     icon:'football',
-    //     color:"#f84f0c",
-    //     backColor:"#FEDCCE"     
-    // },
-    // Sport6:{
-    //     id:'Sport',
-    //     name:{
-    //         ru: 'Учёба6',
-    //         en: 'Sport6'
-    //     },
-    //     icon:'football',
-    //     color:"#0c9ef8",
-    //     backColor:"#ceecfe"     
-    // },
-
-
+    Job:{
+        id:'Job',
+        name:{
+            ru:'Работа',
+            en:'Job'
+        },
+        icon:'briefcase',
+        color:'white',
+        backColor:'#2563EB'
+    },
+    Shopping:{
+        id:'Shopping',
+        name:{
+            ru:'Покупки',
+            en:'Shopping'
+        },
+        icon:'cart',
+        color:'white',
+        backColor:'#0D9488'
+    },
+    Travel:{
+        id:'Travel',
+        name:{
+            ru:'Путешествия',
+            en:'Travel'
+        },
+        icon:'airplane',
+        color:'white',
+        backColor:'#0891B2'
+    },
+    Hobby:{
+        id:'Hobby',
+        name:{
+            ru:'Путешествия',
+            en:'Hobby'
+        },
+        icon:'palette',
+        color:'white',
+        backColor:'#DB2777'
+    },
+    Pets:{
+        id:'Pets',
+        name:{
+            ru:'Питомцы',
+            en:'Pets'
+        },
+        icon:'paw',
+        color:'white',
+        backColor:'#B45309'
+    },
+    SelfDevelopment:{
+        id:'SelfDevelopment',
+        name:{
+            ru:'Саморазвитие',
+            en:'Self-development'
+        },
+        icon:'sprout',
+        color:'white',
+        backColor:'#65A30D'
+    },
+    Ideas:{
+        id:'Ideas',
+        name:{
+            ru:'Идеи',
+            en:'Ideas'
+        },
+        icon:'lightbulb-on-outline',
+        color:'white',
+        backColor:'#CA8A04'
+    },
+    Meetings:{
+        id:'Meetings',
+        name:{
+            ru:'Встречи',
+            en:'Meetings'
+        },
+        icon:'calendar-clock',
+        color:'white',
+        backColor:'#4F46E5'
+    },
+    Rest:{
+        id:'Rest',
+        name:{
+            ru:'Отдых',
+            en:'Rest'
+        },
+        icon:'sofa',
+        color:'white',
+        backColor:'#C026D3'
+    },
+    Life:{
+        id:'Life',
+        name:{
+            ru:'Быт',
+            en:'Life'
+        },
+        icon:'clipboard-check-outline',
+        color:'white',
+        backColor:'#57534E'
+    },
+    Projects:{
+        id:'Projects',
+        name:{
+            ru:'Проекты',
+            en:'Projects'
+        },
+        icon:'folder-outline',
+        color:'white',
+        backColor:'#0284C7'
+    },
+// Авто
+// #475569
+// ti-car
 }
 
 export default Categorys
