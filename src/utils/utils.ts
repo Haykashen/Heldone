@@ -2,7 +2,6 @@ import { Alert, Platform, ToastAndroid } from 'react-native';
 import uuid from 'react-native-uuid';
 import Categorys from '../data/Category';
 import TaskStatus from '../data/TaskStatus';
-import TimeStatus from '../data/TimeStatus';
 import { TTask, TTaskByDays } from "./types";
 
 
@@ -18,15 +17,6 @@ export function getFormatedDay(date:Date){
   return strDate;
 } 
 
-// export function getMarkedDays(tasks:[]){
-//   let res:TMarkedDays = {}
-//   tasks.forEach((item:TTask)=> {
-//     let strDate = getFormatedDay(new Date(item.date));
-//     if(!(res[strDate]))
-//       res[strDate] = {marked:true};
-//   })
-//   return res;  
-// }
 export function getDayTasks(task:[], day:string){
   let res:TTaskByDays = {}
   task.forEach((item:TTask)=> {
@@ -85,17 +75,17 @@ export function notifyMessage(msg: string) {
 }
 
 
-export function setTimeStatus(item: TTask) {
-  const currentTime = new Date();
+// export function setTimeStatus(item: TTask) {
+//   const currentTime = new Date();
 
-  if ((item.status.id === 'Completed'))
-    item.timeStatus = TimeStatus.Default;
-  else if (item.date.getTime() > currentTime.getTime()) {
-    item.timeStatus = TimeStatus.Soon;
-  }
-  else
-    item.timeStatus = TimeStatus.Overdue;
-}
+//   if ((item.status.id === 'Completed'))
+//     item.timeStatus = TimeStatus.Default;
+//   else if (item.date.getTime() > currentTime.getTime()) {
+//     item.timeStatus = TimeStatus.Soon;
+//   }
+//   else
+//     item.timeStatus = TimeStatus.Overdue;
+// }
 
 export const getNewTask = ()=>({ 
   id: uuid.v4(), 
@@ -104,6 +94,6 @@ export const getNewTask = ()=>({
   category: 
   Categorys.Target, 
   status: TaskStatus.Upcoming, 
-  timeStatus: TimeStatus.Overdue, 
+  timeStatus: '',
   notes: '' 
 });

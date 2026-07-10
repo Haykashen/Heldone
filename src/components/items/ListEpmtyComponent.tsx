@@ -38,16 +38,17 @@ const ListEpmtyComponent = () => {
         onPress={hanlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        style={{ flexDirection: 'row', alignContent: 'center', flex: 1, alignItems: 'center', justifyContent: 'space-around' }}
+        style={{ flexDirection: 'column', alignContent: 'center', flex: 1, alignItems: 'center', justifyContent: 'space-around' }}
       >
+        <Animated.View style={{ transform: [{ scale }] }}>
+          <MaterialDesignIcons name="playlist-plus" size={44} color='#007aff' />
+        </Animated.View>        
         <View style={{ flexDirection: 'column', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent: 'center', alignContent: 'center' }}>{translate.FirstRow['ru']}</Text>
           <Text style={{ color: 'black', fontSize: 14, justifyContent: 'center', alignContent: 'center' }}>{translate.SecondRow['ru']}</Text>
           <Text style={{ color: 'black', fontSize: 14, justifyContent: 'center', alignContent: 'center' }}>{translate.ThirdRow['ru']}</Text>
         </View>
-        <Animated.View style={{ transform: [{ scale }] }}>
-          <MaterialDesignIcons name="playlist-plus" size={44} color='#007aff' />
-        </Animated.View>
+
       </Pressable>
     </SafeAreaView>
   )

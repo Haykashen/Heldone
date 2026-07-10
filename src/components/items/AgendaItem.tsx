@@ -1,4 +1,3 @@
-import TaskStatus from "@/data/TaskStatus";
 import { scaleEnd, scaleStart } from '@/utils/animation';
 import { TItem } from "@/utils/types";
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
@@ -7,8 +6,8 @@ import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const AgendaItem = (props:TItem) => {
   const {id, date, title, category, status, timeStatus, onItemPress, onCompletePress, onDeletePress} = props;
-  const statusName  = status.id === TaskStatus.Completed.id ? status.name.ru : timeStatus.name.ru;
-  const statusColor = status.id === TaskStatus.Completed.id ? status.color : timeStatus.color;
+  const statusName  = status.name.ru;
+  const statusColor = status.color;
   const scale = useRef(new Animated.Value(1)).current;
 
   const handleComplete = ()=>{
@@ -41,7 +40,7 @@ const AgendaItem = (props:TItem) => {
         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: 3 }}>
           <MaterialDesignIcons name={timeStatus.icon as any} color={timeStatus.color} size={18} />
           <Text style={styles.itemHourText}>
-            {date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} -
+            {date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})} -
             <Text style={[styles.itemHourText, { color: statusColor }]}> {statusName}</Text>
           </Text>
         </View>

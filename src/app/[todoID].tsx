@@ -6,7 +6,7 @@ import TaskStatus from '@/data/TaskStatus';
 import { setData } from '@/store/setData';
 import { deleteTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
-import { getNewTask, setTimeStatus } from '@/utils/utils';
+import { getNewTask } from '@/utils/utils';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
@@ -40,6 +40,8 @@ const taskCard = () => {
   };
 
   let datetime = currTask? currTask.date.toLocaleDateString()+' '+currTask.date.toLocaleTimeString():new Date().toLocaleTimeString();
+  let date = currTask.date.toLocaleDateString();
+  let time = currTask.date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
 
   const changeTitle = (newTitle:string)=>{
     setCurrentTask({...currTask, title: newTitle})
@@ -96,11 +98,11 @@ const taskCard = () => {
         <View style={{width:'100%', flexDirection: 'row' , justifyContent: 'space-between', paddingHorizontal:5 }}>
           <Pressable onPress={handleBack} style={{flexDirection:'row', alignItems: 'center', gap:3}}>
             {/* <MaterialDesignIcons name={'arrow-left-thin'} color={"#ffb900"} size={34} /> */}
-            <Text style={{ color: "#ffb900", fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
+            <Text style={{ color: "silver", fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
           </Pressable>
-          <Text  style={{ color: 'white', fontSize: 26, fontWeight: 'bold' }}>Задача</Text>
+          <Text  style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Задача</Text>
           <Pressable onPress={handleDone} style={{flexDirection:'row', alignItems: 'center', gap:3}}>
-            <Text  style={{ color: '#007aff', fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
+            <Text  style={{ color: "#63B4FF", fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
             {/* <MaterialDesignIcons name={'check'} color={"#63B4FF"} size={20} />              */}
           </Pressable>
         </View>
@@ -112,7 +114,7 @@ const taskCard = () => {
               presentation="dialog"              
               value={currTask.date}
               onValueChange={(event, selectedDate) => {
-                setCurrentTask(setTimeStatus({ ...currTask, date: selectedDate }))
+                setCurrentTask({ ...currTask, date: selectedDate })
                 if (mode === 'time')
                   setShow(false);
                 else if (mode === 'date')
@@ -128,9 +130,15 @@ const taskCard = () => {
             <Pressable 
               onPress={showDatepicker} 
               style={{ flexDirection: 'row', alignItems:'center', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 10 }}>
-              <Text style={{ color: 'white' }}>{datetime}</Text>
+              <Text style={{ color: 'white' }}>{date}</Text>
               <MaterialDesignIcons name='calendar-month-outline' color={'white'} size={24} />
             </Pressable>
+            <Pressable 
+              onPress={showDatepicker} 
+              style={{ flexDirection: 'row', alignItems:'center', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 10 }}>
+              <Text style={{ color: 'white' }}>{time}</Text>
+              <MaterialDesignIcons name='clock' color={'white'} size={24} />
+            </Pressable>            
             <Pressable 
               onPress={changeStatus} 
               style={{ flexDirection: 'row', alignItems:'center', borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 10 }}>

@@ -60,21 +60,21 @@ const list = () => {
       <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 10, marginTop: 15, borderRadius: 10 }}>
         <Pressable
           onPress={() => changeStatus(TaskStatus.Upcoming.id)}
-          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10 }}>
+          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10, backgroundColor: status === 'Upcoming' ? '#007aff' : '#042f41', padding:10 }}>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Предстоит</Text>
-          <View style={{ height: 3, backgroundColor: status === 'Upcoming' ? '#007aff' : 'gray' }}></View>
+          {/* <View style={{ height: 3, backgroundColor: status === 'Upcoming' ? '#007aff' : 'gray' }}></View> */}
         </Pressable>
         <Pressable
           onPress={() => changeStatus(TaskStatus.Completed.id)}
-          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10 }}>
+          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10, backgroundColor: status === 'Completed' ? '#007aff' : '#042f41', padding:10  }}>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Выполненно</Text>
-          <View style={{ height: 3, backgroundColor: status === 'Completed' ? '#007aff' : 'gray'  }}></View>
+          {/* <View style={{ height: 3, backgroundColor: status === 'Completed' ? '#007aff' : 'gray'  }}></View> */}
         </Pressable>
         <Pressable
           onPress={() => changeStatus('')}
-          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10 }}>
+          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10, backgroundColor: status === '' ? '#007aff' : '#042f41', padding:10  }}>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Все</Text>
-          <View style={{ height: 3, backgroundColor: status === '' ? '#007aff' : 'gray'  }}></View>
+          {/* <View style={{ height: 3, backgroundColor: status === '' ? '#007aff' : 'gray'  }}></View> */}
         </Pressable>
       </View>          
         <AgendaList

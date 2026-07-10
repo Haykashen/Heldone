@@ -1,7 +1,7 @@
 import Statuses from '../data/TaskStatus';
 import { setData } from '../store/setData';
 import { TItem } from "../utils/types";
-import { setTimeStatus } from '../utils/utils';
+//import { setTimeStatus } from '../utils/utils';
 
 
 export const completeTask = (id: string, task:[],setTask:([])=>void) => {
@@ -9,7 +9,7 @@ export const completeTask = (id: string, task:[],setTask:([])=>void) => {
     const newTask = task.filter((item:TItem) => {
       if (item.id === id) {
         item.status = (item.status.name.en === 'Upcoming') ? Statuses.Completed : Statuses.Upcoming;
-        setTimeStatus(item) 
+        //setTimeStatus(item) 
       }    
       return { ...item}
     })

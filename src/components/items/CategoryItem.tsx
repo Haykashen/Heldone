@@ -33,7 +33,7 @@ const CategoryItem = ({ onPressCategory, categoryID, currentID }: TCategoryItem)
             onPress={() => handlePressCategory(categoryID)}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
-            style={{ flexDirection: 'row', gap: 3, padding: 5, borderWidth: 2, borderRadius: 10, borderColor: color }}>
+            style={{ flexDirection: 'row', gap: 3, padding: 5, borderWidth: 2, borderRadius: 10, borderColor: color, backgroundColor:Categorys[categoryID].backColor }}>
             <Animated.View style={{ transform: [{ scale }] }}>
                 <MaterialDesignIcons name={Categorys[categoryID].icon as any} color={Categorys[categoryID].color} size={32} />
             </Animated.View>

@@ -29,8 +29,8 @@ const Categorys:TDataDir = {
             en: 'Target'
         },
         icon: 'apple-safari',
-        color: '#4894FE',
-        backColor:"#ceecfe"
+        color: 'white',
+        backColor:'#4894FE'
     },
     Health:{
         id:'Health',

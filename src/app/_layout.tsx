@@ -20,9 +20,18 @@ export default function RootLayout() {
           <Stack.Screen
             name="notice"
             options={{
-              presentation: 'transparentModal',
-              animation: 'flip',
-              sheetAllowedDetents: 'fitToContents',
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              contentStyle: {
+                height: '100%',
+              },
+
+              // presentation: 'transparentModal',
+              // animation: 'flip',
+              // sheetAllowedDetents: 'fitToContents',
+
+
               // presentation: 'formSheet',
               // gestureDirection: 'vertical',
               // sheetCornerRadius: 20,
