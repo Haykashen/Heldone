@@ -89,7 +89,7 @@ export function notifyMessage(msg: string) {
 
 export const getNewTask = ()=>({ 
   id: uuid.v4(), 
-  date:new Date(), 
+  date:null, 
   title: '', 
   category: 
   Categorys.Target, 

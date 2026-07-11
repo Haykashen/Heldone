@@ -55,7 +55,7 @@ const list = () => {
           todayButtonTextColor: '#007aff',
           todayButtonFontWeight: 'bold'
         }}
-        
+        style={{ gap: sortTask[0] ? 0 : 40}}
       >
       <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 10, marginTop: 15, borderRadius: 10 }}>
         <Pressable

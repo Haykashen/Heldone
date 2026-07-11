@@ -32,8 +32,8 @@ export default function Index() {
       <Header title='Сегодня' text={new Date().toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })}/>    
       <View style={{marginVertical:15, borderColor:'silver', borderRadius: 10, borderWidth:2, height: 100, marginHorizontal: 10 , flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Прогресс выполнения - {completed.length} из {filtered.length}</Text>
-        <View style={{ width: '80%', backgroundColor: 'white', height: 6, borderRadius: 10 }}>
-          <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 6, borderRadius: 10 }}></View>
+        <View style={{ width: '80%', backgroundColor: 'white', height: 8, borderRadius: 10 }}>
+          <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 8, borderRadius: 10 }}></View>
         </View>
       </View>
       <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>

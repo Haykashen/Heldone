@@ -15,7 +15,7 @@ const TaskStatus: TDataDir = {
     Upcoming: {
         id:'Upcoming',
         name: {
-            ru: 'Предстоит',
+            ru: ' Предстоит',
             en: 'Upcoming'
         },
         icon: 'checkbox-blank-outline',

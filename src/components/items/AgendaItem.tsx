@@ -2,7 +2,7 @@ import { scaleEnd, scaleStart } from '@/utils/animation';
 import { TItem } from "@/utils/types";
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import React, { useRef } from 'react';
-import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, Vibration, View } from 'react-native';
 
 const AgendaItem = (props:TItem) => {
   const {id, date, title, category, status, timeStatus, onItemPress, onCompletePress, onDeletePress} = props;
@@ -20,6 +20,7 @@ const AgendaItem = (props:TItem) => {
   // Функция для анимации нажатия
   const handlePressIn = () => {
     scaleStart(scale, 0.7)
+    Vibration.vibrate(30)
   };
 
   // Возврат к обычному размеру
@@ -38,7 +39,7 @@ const AgendaItem = (props:TItem) => {
       <View style={{ width: '60%', flexDirection: 'column', gap: 3 }}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitleText}>{title}</Text>
         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-          <MaterialDesignIcons name={timeStatus.icon as any} color={timeStatus.color} size={18} />
+          <MaterialDesignIcons name={'clock-outline'} color={statusColor} size={18} />
           <Text style={styles.itemHourText}>
             {date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})} -
             <Text style={[styles.itemHourText, { color: statusColor }]}> {statusName}</Text>

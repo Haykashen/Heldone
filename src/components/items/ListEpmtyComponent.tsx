@@ -41,7 +41,7 @@ const ListEpmtyComponent = () => {
         style={{ flexDirection: 'column', alignContent: 'center', flex: 1, alignItems: 'center', justifyContent: 'space-around' }}
       >
         <Animated.View style={{ transform: [{ scale }] }}>
-          <MaterialDesignIcons name="playlist-plus" size={44} color='#007aff' />
+          <MaterialDesignIcons name="playlist-plus" size={64} color='#007aff' />
         </Animated.View>        
         <View style={{ flexDirection: 'column', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent: 'center', alignContent: 'center' }}>{translate.FirstRow['ru']}</Text>

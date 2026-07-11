@@ -13,7 +13,7 @@ export default function RootLayout() {
             options={{
               presentation: 'transparentModal',
               animation: 'fade',
-              sheetAllowedDetents: 'fitToContents',
+              //sheetAllowedDetents: 'fitToContents',
               contentStyle: { backgroundColor: "#40404040" },
             }}
           />
