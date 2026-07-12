@@ -102,17 +102,15 @@ const taskCard = () => {
   return (
     <SafeAreaProvider style={{ justifyContent: 'flex-end' }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={{ width: '100%', height: '75%', paddingHorizontal: 10, backgroundColor: '#031F2B', justifyContent: 'center', alignItems: 'center', maxWidth: 600, borderTopStartRadius: 10, borderTopEndRadius: 10, paddingBottom: 15, paddingTop: 5 }}>
+        <SafeAreaView style={{ width: '100%', height: 'auto', paddingHorizontal: 10, backgroundColor: '#031F2B', justifyContent: 'flex-start', alignItems: 'flex-start', borderTopStartRadius: 10, borderTopEndRadius: 10,}}>
           <ScrollView>
             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5 }}>
               <Pressable onPress={handleBack} style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-                {/* <MaterialDesignIcons name={'arrow-left-thin'} color={"#ffb900"} size={34} /> */}
                 <Text style={{ color: "silver", fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
               </Pressable>
               <Text style={{ color: 'white', fontSize: 26, fontWeight: 'bold' }}>Задача</Text>
               <Pressable onPress={handleDone} style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
                 <Text style={{ color: "#63B4FF", fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
-                {/* <MaterialDesignIcons name={'check'} color={"#63B4FF"} size={20} />              */}
               </Pressable>
             </View>
             <View style={{ flexDirection: 'column', width: '100%', gap: 10 }}>
