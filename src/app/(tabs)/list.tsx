@@ -6,6 +6,7 @@ import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
 import TaskStatus from '@/data/TaskStatus';
 import { completeTask } from '@/utils/taskManage';
+import { TTask } from '@/utils/types';
 import { getFormatedDay, getTaskByDays } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
 import { useContext, useEffect, useState } from 'react';
@@ -26,7 +27,7 @@ LocaleConfig.defaultLocale = 'rus';
 const list = () => {
   const { task, setTask } = useContext(Context);
   const [status, setStatus]  = useState(TaskStatus.Upcoming.id)
-
+  let comletedCount = task.filter((item:TTask)=> item.status.id == TaskStatus.Completed.id)
   let sortTask = getTaskByDays(task, status)
 
   useEffect(()=>{
@@ -61,19 +62,19 @@ const list = () => {
         <Pressable
           onPress={() => changeStatus(TaskStatus.Upcoming.id)}
           style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10, backgroundColor: status === 'Upcoming' ? '#007aff' : '#042f41', padding:10 }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Предстоит</Text>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Предстоит - {task.length - comletedCount.length}</Text>
           {/* <View style={{ height: 3, backgroundColor: status === 'Upcoming' ? '#007aff' : 'gray' }}></View> */}
         </Pressable>
         <Pressable
           onPress={() => changeStatus(TaskStatus.Completed.id)}
           style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10, backgroundColor: status === 'Completed' ? '#007aff' : '#042f41', padding:10  }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Выполненно</Text>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Выполненно - {comletedCount.length}</Text>
           {/* <View style={{ height: 3, backgroundColor: status === 'Completed' ? '#007aff' : 'gray'  }}></View> */}
         </Pressable>
         <Pressable
           onPress={() => changeStatus('')}
           style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10, backgroundColor: status === '' ? '#007aff' : '#042f41', padding:10  }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Все</Text>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Все - {task.length}</Text>
           {/* <View style={{ height: 3, backgroundColor: status === '' ? '#007aff' : 'gray'  }}></View> */}
         </Pressable>
       </View>          

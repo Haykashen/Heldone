@@ -95,5 +95,6 @@ export const getNewTask = ()=>({
   Categorys.Target, 
   status: TaskStatus.Upcoming, 
   timeStatus: '',
-  notes: '' 
+  notes: '',
+  priority: 'Низкий'
 });

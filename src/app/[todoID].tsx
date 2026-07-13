@@ -53,6 +53,10 @@ const taskCard = () => {
     setCurrentTask({...currTask, status: newStatus})
   }
 
+  const changePriority = (priority:string)=>{
+    setCurrentTask({...currTask, priority: priority})
+  }
+
   const changeCategory= (key:string)=>{
     setCurrentTask({...currTask, category: Categorys[key]})
   }
@@ -102,7 +106,7 @@ const taskCard = () => {
   return (
     <SafeAreaProvider style={{ justifyContent: 'flex-end' }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={{ width: '100%', height: 'auto', paddingHorizontal: 10, backgroundColor: '#031F2B', justifyContent: 'flex-start', alignItems: 'flex-start', borderTopStartRadius: 10, borderTopEndRadius: 10,}}>
+        <SafeAreaView style={{ width: '100%', height: 'auto', paddingHorizontal: 10, backgroundColor: '#031F2B', justifyContent: 'flex-start', alignItems: 'flex-start', borderTopStartRadius: 10, borderTopEndRadius: 10, }}>
           <ScrollView>
             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5 }}>
               <Pressable onPress={handleBack} style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
@@ -163,6 +167,26 @@ const taskCard = () => {
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={currTask.category.id} onPressCategory={changeCategory} />}
               />
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+                <Pressable 
+                  onPress={()=>changePriority('Высокий')}
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: currTask.priority ==='Высокий' ? 'silver':'#263238', borderWidth: 2, borderRadius: 10, padding: 10 }}>
+                  <Text style={{ color: 'white' }}>Высокий</Text>
+                  <MaterialDesignIcons name={'flag'} color={'red'} size={32} />
+                </Pressable>
+                <Pressable 
+                  onPress={()=>changePriority('Средний')}
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: '#263238', borderWidth: 2, borderRadius: 10, padding: 10 }}>
+                  <Text style={{ color: 'white' }}>Средний</Text>
+                  <MaterialDesignIcons name={'flag'} color={'orange'} size={32} />
+                </Pressable>
+                <Pressable 
+                  onPress={()=>changePriority('Низкий')}
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: '#263238', borderWidth: 2, borderRadius: 10, padding: 10 }}>
+                  <Text style={{ color: 'white' }}>Низкий</Text>
+                  <MaterialDesignIcons name={'flag'} color={'grey'} size={32} />
+                </Pressable>
+              </View>
               <View style={{ flexDirection: 'column', gap: 5, width: '100%', height: 50 }}>
                 <TextInput
                   style={{ color: 'white', borderColor: focused == 'Title' ? '#63B4FF' : currTask.title ? 'silver' : '#E11D48', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}
@@ -194,7 +218,6 @@ const taskCard = () => {
                 </Pressable>
               </View>
             </View>
-
           </ScrollView>
         </SafeAreaView>
       </TouchableWithoutFeedback>

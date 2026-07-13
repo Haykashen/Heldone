@@ -6,13 +6,13 @@ import { Context } from '@/context/context';
 import { completeTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
 import { RelativePathString, router } from "expo-router";
-import { useContext, useState } from 'react';
-import { DimensionValue, FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { useContext } from 'react';
+import { DimensionValue, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Index() {
   const { task, setTask } = useContext(Context);
-  const [refresh, setRefresh] = useState(false);
+  //const [refresh, setRefresh] = useState(false);
   const filtered = task.filter((item:TTask) => item.date.toLocaleDateString()=== new Date().toLocaleDateString());
   const completed:[] = filtered.filter((item:TTask) => item.status.id === 'Completed')
 
@@ -58,9 +58,9 @@ export default function Index() {
           <ListEpmtyComponent />
         )
         }
-        refreshControl={
-          <RefreshControl refreshing={refresh} onRefresh={() => setRefresh(!refresh)} />
-        }
+        // refreshControl={
+        //   <RefreshControl refreshing={refresh} onRefresh={() => setRefresh(!refresh)} />
+        // }
       />
       <Add />
     </SafeAreaView>
