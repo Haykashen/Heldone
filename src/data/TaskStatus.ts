@@ -10,7 +10,8 @@ const TaskStatus: TDataDir = {
         },
         icon: 'checkbox-outline',
         color: "green",
-        backColor:''
+        clockIcon:'clock-check-outline',
+
     },
     Upcoming: {
         id:'Upcoming',
@@ -19,9 +20,9 @@ const TaskStatus: TDataDir = {
             en: 'Upcoming'
         },
         icon: 'checkbox-blank-outline',
-        color: 'silver',
-        backColor:''
+        color: '#ff9500',
+        clockIcon:'clock-alert-outline',        
     },
 }
-
+//'#ea820b'
 export default TaskStatus

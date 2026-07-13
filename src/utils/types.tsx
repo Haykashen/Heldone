@@ -7,7 +7,8 @@ export type TDataItem = {
     name: TName,
     color: string,
     icon: string,
-    backColor: string
+    backColor?: string,
+    clockIcon?: string,
 }
 
 export type TDataDir = {
@@ -24,7 +25,7 @@ export interface ITranslate {
         [lang: string] : string
     }
 }
-export type TCategoryPanel = { onPressCategory :(arg:string)=>void, category:string}
+//export type TCategoryPanel = { onPressCategory :(arg:string)=>void, category:string}
 export type TNavPanel = { onPressStatus:(arg:string)=>void, onPressAdd:()=>void, theme:any, status:string}
 // type TCategory = {
 //     [id:string]:{

@@ -1,4 +1,5 @@
 //import CategoryPanel from '@/components/CategoryPanel';
+import Priority from '@/components/buttons/Priority';
 import CategoryItem from '@/components/items/CategoryItem';
 import { Context } from '@/context/context';
 import Categorys from '@/data/Category';
@@ -102,7 +103,7 @@ const taskCard = () => {
     Vibration.vibrate(70)
     handleBack()
   }
-
+  //'#63B4FF'
   return (
     <SafeAreaProvider style={{ justifyContent: 'flex-end' }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -140,19 +141,19 @@ const taskCard = () => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                 <Pressable
                   onPress={() => showDatepicker('date')}
-                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: currTask.date ? 'silver' : '#E11D48', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: currTask.date ? '#263238' : '#E11D48', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
                   <Text style={{ color: 'white' }}>{date}</Text>
                   <MaterialDesignIcons name='calendar-month-outline' color={'white'} size={24} />
                 </Pressable>
                 <Pressable
                   onPress={() => showDatepicker('time')}
-                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: '#263238', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
                   <Text style={{ color: 'white' }}>{time}</Text>
                   <MaterialDesignIcons name='clock' color={'white'} size={24} />
                 </Pressable>
                 <Pressable
                   onPress={changeStatus}
-                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: '#263238', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}>
                   <Text style={{ color: 'white' }}>{currTask.status.name.ru} </Text>
                   <MaterialDesignIcons name={currTask.status.icon as any} color={(currTask.status.color)} size={24} />
                 </Pressable>
@@ -168,29 +169,15 @@ const taskCard = () => {
                 renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={currTask.category.id} onPressCategory={changeCategory} />}
               />
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
-                <Pressable 
-                  onPress={()=>changePriority('Высокий')}
-                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: currTask.priority ==='Высокий' ? 'silver':'#263238', borderWidth: 2, borderRadius: 10, padding: 10 }}>
-                  <Text style={{ color: 'white' }}>Высокий</Text>
-                  <MaterialDesignIcons name={'flag'} color={'red'} size={32} />
-                </Pressable>
-                <Pressable 
-                  onPress={()=>changePriority('Средний')}
-                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: '#263238', borderWidth: 2, borderRadius: 10, padding: 10 }}>
-                  <Text style={{ color: 'white' }}>Средний</Text>
-                  <MaterialDesignIcons name={'flag'} color={'orange'} size={32} />
-                </Pressable>
-                <Pressable 
-                  onPress={()=>changePriority('Низкий')}
-                  style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: '#263238', borderWidth: 2, borderRadius: 10, padding: 10 }}>
-                  <Text style={{ color: 'white' }}>Низкий</Text>
-                  <MaterialDesignIcons name={'flag'} color={'grey'} size={32} />
-                </Pressable>
+                <Priority value='Высокий' currValue={currTask.priority} color={'red'} changePriority={changePriority}/>
+                <Priority value='Средний' currValue={currTask.priority} color={'orange'} changePriority={changePriority}/>
+                <Priority value='Низкий' currValue={currTask.priority} color={'grey'} changePriority={changePriority}/>
               </View>
-              <View style={{ flexDirection: 'column', gap: 5, width: '100%', height: 50 }}>
+              <View style={{ flexDirection: 'column', width: '100%', height: 50 }}>
                 <TextInput
-                  style={{ color: 'white', borderColor: focused == 'Title' ? '#63B4FF' : currTask.title ? 'silver' : '#E11D48', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}
+                  style={{ color: 'white', borderColor: focused == 'Title' ? 'silver' : currTask.title ? '#263238' : '#E11D48', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}
                   onFocus={() => setFocused('Title')}
+                  onBlur={() => setFocused('')}
                   onChangeText={(text) => changeTitle(text)}
                   placeholder={'Заголовок...'}
                   placeholderTextColor={'gray'}
@@ -199,10 +186,11 @@ const taskCard = () => {
                   maxLength={40}
                 />
               </View>
-              <View style={{ flexDirection: 'column', gap: 5, width: '100%', height: 200 }}>
+              <View style={{ flexDirection: 'column',  width: '100%', height: 200 }}>
                 <TextInput
-                  style={{ flex: 1, color: 'white', borderColor: focused == 'Notes' ? '#63B4FF' : 'silver', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}
+                  style={{ flex: 1, color: 'white', borderColor: focused == 'Notes' ? 'silver' : '#263238', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}
                   onFocus={() => setFocused('Notes')}
+                  onBlur={() => setFocused('')}
                   onChangeText={(text) => changeNotes(text)}
                   placeholder={'Примечание...'}
                   placeholderTextColor={'gray'}

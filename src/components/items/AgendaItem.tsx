@@ -39,11 +39,13 @@ const AgendaItem = (props:TItem) => {
       <View style={{ width: '60%', flexDirection: 'column', gap: 3 }}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitleText}>{title}</Text>
         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-          <MaterialDesignIcons name={'clock-outline'} color={statusColor} size={18} />
+          <MaterialDesignIcons name={status.clockIcon as any} color={statusColor} size={18} />
           <Text style={styles.itemHourText}>
             {date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})} -
-            <Text style={[styles.itemHourText, { color: statusColor }]}> {statusName}</Text>
+            <Text style={[styles.itemHourText, { color: statusColor }]}> {statusName} </Text> 
+            - 
           </Text>
+          <MaterialDesignIcons name={'flag'} color={'red'} size={18} />
         </View>
       </View>
       <Pressable

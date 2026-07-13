@@ -1,5 +1,6 @@
 
 import Add from '@/components/buttons/Add';
+import StatusFilter from '@/components/buttons/StatusFilter';
 import Header from '@/components/Header';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
@@ -10,7 +11,7 @@ import { TTask } from '@/utils/types';
 import { getFormatedDay, getTaskByDays } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
 import { useContext, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { AgendaList, CalendarProvider, LocaleConfig } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -59,24 +60,24 @@ const list = () => {
         style={{ gap: sortTask[0] ? 0 : 40}}
       >
       <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 10, marginTop: 15, borderRadius: 10 }}>
-        <Pressable
-          onPress={() => changeStatus(TaskStatus.Upcoming.id)}
-          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10, backgroundColor: status === 'Upcoming' ? '#007aff' : '#042f41', padding:10 }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Предстоит - {task.length - comletedCount.length}</Text>
-          {/* <View style={{ height: 3, backgroundColor: status === 'Upcoming' ? '#007aff' : 'gray' }}></View> */}
-        </Pressable>
-        <Pressable
-          onPress={() => changeStatus(TaskStatus.Completed.id)}
-          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10, backgroundColor: status === 'Completed' ? '#007aff' : '#042f41', padding:10  }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Выполненно - {comletedCount.length}</Text>
-          {/* <View style={{ height: 3, backgroundColor: status === 'Completed' ? '#007aff' : 'gray'  }}></View> */}
-        </Pressable>
-        <Pressable
-          onPress={() => changeStatus('')}
-          style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 10, backgroundColor: status === '' ? '#007aff' : '#042f41', padding:10  }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Все - {task.length}</Text>
-          {/* <View style={{ height: 3, backgroundColor: status === '' ? '#007aff' : 'gray'  }}></View> */}
-        </Pressable>
+        <StatusFilter 
+          status={TaskStatus.Upcoming.id} 
+          currStatus={status} 
+          title={'Предстоит - '+(task.length - comletedCount.length)} 
+          changeStatus={changeStatus}
+        />
+        <StatusFilter 
+          status={TaskStatus.Completed.id} 
+          currStatus={status} 
+          title={'Выполненно - '+(comletedCount.length)} 
+          changeStatus={changeStatus}
+        />
+        <StatusFilter 
+          status={''} 
+          currStatus={status} 
+          title={'Все - '+ task.length} 
+          changeStatus={changeStatus}
+        />                
       </View>          
         <AgendaList
           sections={sortTask}
