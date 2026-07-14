@@ -29,7 +29,7 @@ const Priority = ({priority, currValue, changePriority}:TPriority) => {
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             onPress={handlePress}
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: priority.id === currValue ? 'silver' : '#263238', borderWidth: 2, borderRadius: 10, padding: 10 }}>
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: priority.id === currValue ? 'silver' : '#263238', borderWidth: 2, borderRadius: 10, padding: 5 }}>
             <Text style={{ color: 'white' }}>{priority.name.ru}</Text>
             <Animated.View style={{ transform: [{ scale }] }}>
                 <MaterialDesignIcons name={priority.icon as any} color={priority.color} size={32} />

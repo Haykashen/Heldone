@@ -11,10 +11,14 @@ export default function RootLayout() {
           {/* <Stack.Screen name="(notice)" /> */}
           <Stack.Screen name="[todoID]"
             options={{
-              presentation: 'transparentModal',
-              animation: 'fade',
-              //sheetAllowedDetents: 'fitToContents',
-              contentStyle: { backgroundColor: "#40404040" },
+               presentation: 'transparentModal',
+               animation: 'fade_from_bottom',
+               contentStyle: { backgroundColor: "#40404040" },
+
+              // presentation: 'transparentModal',
+              // animation: 'fade',
+              // //sheetAllowedDetents: 'fitToContents',
+              // contentStyle: { backgroundColor: "#40404040" },
             }}
           />
           <Stack.Screen
