@@ -3,6 +3,7 @@ import Priority from '@/components/buttons/Priority';
 import CategoryItem from '@/components/items/CategoryItem';
 import { Context } from '@/context/context';
 import Categorys from '@/data/Category';
+import PriorityData from '@/data/Priority';
 import TaskStatus from '@/data/TaskStatus';
 import { setData } from '@/store/setData';
 import { deleteTask } from '@/utils/taskManage';
@@ -14,6 +15,7 @@ import { Redirect, router, useLocalSearchParams } from "expo-router";
 import { useContext, useState } from "react";
 import { FlatList, Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native"; //AppState, 
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
 
 type DateTimePickerMode = "date"| "time"; 
 
@@ -54,8 +56,8 @@ const taskCard = () => {
     setCurrentTask({...currTask, status: newStatus})
   }
 
-  const changePriority = (priority:string)=>{
-    setCurrentTask({...currTask, priority: priority})
+  const changePriority = (key:string)=>{
+    setCurrentTask({...currTask, priority: PriorityData[key]})
   }
 
   const changeCategory= (key:string)=>{
@@ -169,9 +171,9 @@ const taskCard = () => {
                 renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={currTask.category.id} onPressCategory={changeCategory} />}
               />
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
-                <Priority value='Высокий' currValue={currTask.priority} color={'red'} changePriority={changePriority}/>
-                <Priority value='Средний' currValue={currTask.priority} color={'orange'} changePriority={changePriority}/>
-                <Priority value='Низкий' currValue={currTask.priority} color={'grey'} changePriority={changePriority}/>
+                <Priority currValue={currTask.priority.id} changePriority={changePriority} priority={PriorityData.High}/>
+                <Priority currValue={currTask.priority.id} changePriority={changePriority} priority={PriorityData.Medium}/>
+                <Priority currValue={currTask.priority.id} changePriority={changePriority} priority={PriorityData.Low}/>
               </View>
               <View style={{ flexDirection: 'column', width: '100%', height: 50 }}>
                 <TextInput

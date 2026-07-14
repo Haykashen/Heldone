@@ -1,11 +1,12 @@
 import { scaleEnd, scaleStart } from '@/utils/animation';
+import { TDataItem } from '@/utils/types';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { useRef } from 'react';
 import { Animated, Pressable, Text } from 'react-native';
 
-type TPriority = {value: string, currValue: string, color: string, changePriority: (arg: string) => void}
+type TPriority = {priority:TDataItem,currValue: string, changePriority: (arg: string) => void}
 
-const Priority = ({value, currValue, color, changePriority}:TPriority) => {
+const Priority = ({priority, currValue, changePriority}:TPriority) => {
 
     const scale = useRef(new Animated.Value(1)).current;
 
@@ -20,7 +21,7 @@ const Priority = ({value, currValue, color, changePriority}:TPriority) => {
     };
 
     const handlePress = () => {
-        changePriority(value)
+        changePriority(priority.id)
     };
 
     return (
@@ -28,10 +29,10 @@ const Priority = ({value, currValue, color, changePriority}:TPriority) => {
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             onPress={handlePress}
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: value === currValue ? 'silver' : '#263238', borderWidth: 2, borderRadius: 10, padding: 10 }}>
-            <Text style={{ color: 'white' }}>{value}</Text>
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 3, borderColor: priority.id === currValue ? 'silver' : '#263238', borderWidth: 2, borderRadius: 10, padding: 10 }}>
+            <Text style={{ color: 'white' }}>{priority.name.ru}</Text>
             <Animated.View style={{ transform: [{ scale }] }}>
-                <MaterialDesignIcons name={'flag'} color={color} size={32} />
+                <MaterialDesignIcons name={priority.icon as any} color={priority.color} size={32} />
             </Animated.View>
         </Pressable>
     )

@@ -157,7 +157,7 @@ const calendar = (props: Props) => {
             category={item.category}
             status={item.status}
             title={item.title}
-            timeStatus={item.timeStatus}
+            priority={item.priority}
             notes={item.notes}
             onCompletePress={()=>handleComplete(item.id)}
             onItemPress={()=>handlePress(item.id)}

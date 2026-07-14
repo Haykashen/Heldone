@@ -1,9 +1,9 @@
+import PriorityData from '@/data/Priority';
 import { Alert, Platform, ToastAndroid } from 'react-native';
 import uuid from 'react-native-uuid';
 import Categorys from '../data/Category';
 import TaskStatus from '../data/TaskStatus';
 import { TTask, TTaskByDays } from "./types";
-
 
 export function getCalendarTitle(date: Date) {
   let title = new Date(date).toLocaleDateString("ru-RU", { year: "numeric", month: "long" }).split('')
@@ -91,10 +91,8 @@ export const getNewTask = ()=>({
   id: uuid.v4(), 
   date:null, 
   title: '', 
-  category: 
-  Categorys.Target, 
+  category: Categorys.Target, 
   status: TaskStatus.Upcoming, 
-  timeStatus: '',
   notes: '',
-  priority: 'Низкий'
+  priority: PriorityData.Low
 });

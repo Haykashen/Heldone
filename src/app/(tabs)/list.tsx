@@ -7,7 +7,6 @@ import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import { Context } from '@/context/context';
 import TaskStatus from '@/data/TaskStatus';
 import { completeTask } from '@/utils/taskManage';
-import { TTask } from '@/utils/types';
 import { getFormatedDay, getTaskByDays } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
 import { useContext, useEffect, useState } from 'react';
@@ -28,7 +27,7 @@ LocaleConfig.defaultLocale = 'rus';
 const list = () => {
   const { task, setTask } = useContext(Context);
   const [status, setStatus]  = useState(TaskStatus.Upcoming.id)
-  let comletedCount = task.filter((item:TTask)=> item.status.id == TaskStatus.Completed.id)
+  //let comletedCount = task.filter((item:TTask)=> item.status.id == TaskStatus.Completed.id)
   let sortTask = getTaskByDays(task, status)
 
   useEffect(()=>{
@@ -63,19 +62,19 @@ const list = () => {
         <StatusFilter 
           status={TaskStatus.Upcoming.id} 
           currStatus={status} 
-          title={'Предстоит - '+(task.length - comletedCount.length)} 
+          title={'Предстоит'} 
           changeStatus={changeStatus}
         />
         <StatusFilter 
           status={TaskStatus.Completed.id} 
           currStatus={status} 
-          title={'Выполненно - '+(comletedCount.length)} 
+          title={'Выполненно'} 
           changeStatus={changeStatus}
         />
         <StatusFilter 
           status={''} 
           currStatus={status} 
-          title={'Все - '+ task.length} 
+          title={'Все'} 
           changeStatus={changeStatus}
         />                
       </View>          
@@ -89,8 +88,8 @@ const list = () => {
             category={item.category}
             status={item.status}
             title={item.title}
-            timeStatus={item.timeStatus}
             notes={item.notes}
+            priority={item.priority}
             onCompletePress={() => handleComplete(item.id)}
             onItemPress={() => handlePress(item.id)}
             onDeletePress={() => null}

@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, Vibration, View } from 'react-native';
 
 const AgendaItem = (props:TItem) => {
-  const {id, date, title, category, status, timeStatus, onItemPress, onCompletePress, onDeletePress} = props;
+  const {id, date, title, category, status, priority, onItemPress, onCompletePress,} = props;
   const statusName  = status.name.ru;
   const statusColor = status.color;
   const scale = useRef(new Animated.Value(1)).current;
@@ -39,13 +39,14 @@ const AgendaItem = (props:TItem) => {
       <View style={{ width: '60%', flexDirection: 'column', gap: 3 }}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitleText}>{title}</Text>
         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-          <MaterialDesignIcons name={status.clockIcon as any} color={statusColor} size={18} />
+          <MaterialDesignIcons name={status.clockIcon as any} color={'black'} size={18} />
           <Text style={styles.itemHourText}>
             {date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})} -
-            <Text style={[styles.itemHourText, { color: statusColor }]}> {statusName} </Text> 
-            - 
+            {/* <Text style={[styles.itemHourText, { color: statusColor }]}> {statusName} </Text> 
+            -  */}
           </Text>
-          <MaterialDesignIcons name={'flag'} color={'red'} size={18} />
+          {priority&&(<MaterialDesignIcons name={priority.icon as any} color={priority.color} size={18} />)}
+          {priority&&(<Text style={styles.itemHourText}>{priority.name.ru}</Text>)}
         </View>
       </View>
       <Pressable

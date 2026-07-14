@@ -20,7 +20,7 @@ const TaskStatus: TDataDir = {
             en: 'Upcoming'
         },
         icon: 'checkbox-blank-outline',
-        color: '#ff9500',
+        color: 'silver',
         clockIcon:'clock-alert-outline',        
     },
 }

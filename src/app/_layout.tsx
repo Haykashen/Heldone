@@ -21,8 +21,8 @@ export default function RootLayout() {
             name="notice"
             options={{
                presentation: 'transparentModal',
-               animation: 'flip',
-               sheetAllowedDetents: 'fitToContents',
+               animation: 'fade_from_bottom',
+               contentStyle: { backgroundColor: "#40404040" },
 
 
               // presentation: 'formSheet',
