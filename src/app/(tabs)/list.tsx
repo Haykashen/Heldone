@@ -1,11 +1,11 @@
 
 import Add from '@/components/buttons/Add';
 import StatusFilter from '@/components/buttons/StatusFilter';
-import Header from '@/components/Header';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
+import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
-import TaskStatus from '@/data/TaskStatus';
+import TaskStatus from '@/data/StatusData';
 import { completeTask } from '@/utils/taskManage';
 import { getFormatedDay, getTaskByDays } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";

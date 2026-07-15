@@ -2,9 +2,9 @@
 import Priority from '@/components/buttons/Priority';
 import CategoryItem from '@/components/items/CategoryItem';
 import { Context } from '@/context/context';
-import Categorys from '@/data/Category';
-import PriorityData from '@/data/Priority';
-import TaskStatus from '@/data/TaskStatus';
+import Categorys from '@/data/CategoryData';
+import PriorityData from '@/data/PriorityData';
+import TaskStatus from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { deleteTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
@@ -70,10 +70,11 @@ const taskCard = () => {
   }
 
   const handleBack = async()=>{
-    if(router.canGoBack())
-      router.back()
-    else
-      router.push('/index')
+    sheetRef.current?.snapToIndex(-1)
+    // if(router.canGoBack())
+    //   router.back()
+    // else
+    //   router.push('/index')
   }  
 
   const handleDone = async()=>{
@@ -106,6 +107,14 @@ const taskCard = () => {
     Vibration.vibrate(70)
     handleBack()
   }
+
+  const handleClose = ()=>{
+     if(router.canGoBack())
+       router.back()
+     else
+       router.push('/index')
+  }
+
   //'#63B4FF'
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -114,7 +123,7 @@ const taskCard = () => {
           ref={sheetRef}
           index={0}
           //snapPoints={['90%', '70%']}
-          onClose={() => router.back()}
+          onClose={handleClose}
           enablePanDownToClose
         >
           <BottomSheetView style={{ flex: 1, backgroundColor: '#031F2B', paddingHorizontal: 10 }}>

@@ -2,6 +2,7 @@ import { scaleEnd, scaleStart } from '@/utils/animation';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+
 import { useRef } from 'react';
 import { Animated } from 'react-native';
 

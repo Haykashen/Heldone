@@ -1,7 +1,7 @@
 // MaterialCommunityIcons
 import { TDataDir } from "../utils/types"
 
-const TaskStatus: TDataDir = {
+const StatusData: TDataDir = {
     Completed: {
         id:'Completed',
         name: {
@@ -25,4 +25,4 @@ const TaskStatus: TDataDir = {
     },
 }
 //'#ea820b'
-export default TaskStatus
+export default StatusData

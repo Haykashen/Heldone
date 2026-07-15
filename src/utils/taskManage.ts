@@ -1,4 +1,4 @@
-import Statuses from '../data/TaskStatus';
+import Statuses from '../data/StatusData';
 import { setData } from '../store/setData';
 import { TItem } from "../utils/types";
 //import { setTimeStatus } from '../utils/utils';

@@ -1,5 +1,5 @@
 
-import Categorys from '@/data/Category';
+import Categorys from '@/data/CategoryData';
 //import BottomSheet from '@expo/ui/community/bottom-sheet';
 import BottomSheet, { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';

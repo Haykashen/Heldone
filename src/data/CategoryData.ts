@@ -1,7 +1,7 @@
 // MaterialCommunityIcons
 import { TDataDir } from "../utils/types"
 
-const Categorys:TDataDir = {
+const CategoryData:TDataDir = {
     Home: {
         id:'Home',
         name: {
@@ -197,4 +197,4 @@ const Categorys:TDataDir = {
 // ti-car
 }
 
-export default Categorys
+export default CategoryData

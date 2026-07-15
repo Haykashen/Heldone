@@ -1,4 +1,4 @@
-import Categorys from '@/data/Category';
+import Categorys from '@/data/CategoryData';
 import { scaleEnd, scaleStart } from '@/utils/animation';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { useRef } from 'react';

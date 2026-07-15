@@ -1,7 +1,7 @@
 import Add from '@/components/buttons/Add';
-import Header from '@/components/Header';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
+import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
 import { completeTask } from '@/utils/taskManage';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';

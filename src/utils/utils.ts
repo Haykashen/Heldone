@@ -1,8 +1,8 @@
-import PriorityData from '@/data/Priority';
+import PriorityData from '@/data/PriorityData';
 import { Alert, Platform, ToastAndroid } from 'react-native';
 import uuid from 'react-native-uuid';
-import Categorys from '../data/Category';
-import TaskStatus from '../data/TaskStatus';
+import Categorys from '../data/CategoryData';
+import TaskStatus from '../data/StatusData';
 import { TTask, TTaskByDays } from "./types";
 
 export function getCalendarTitle(date: Date) {
