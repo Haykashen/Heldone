@@ -1,6 +1,5 @@
 
 import Categorys from '@/data/CategoryData';
-//import BottomSheet from '@expo/ui/community/bottom-sheet';
 import BottomSheet, { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { router } from 'expo-router';
@@ -8,8 +7,6 @@ import { router } from 'expo-router';
 import { useRef } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-const DATA = Array.from({ length: 50 }, (_, i) => `Item ${i + 1}`);
 
 const notice = () => {
    const sheetRef = useRef<BottomSheet>(null);

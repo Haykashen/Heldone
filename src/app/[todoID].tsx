@@ -20,9 +20,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 type DateTimePickerMode = "date"| "time"; 
 
 const taskCard = () => {
-  const { todoID } = useLocalSearchParams();
+  const { todoID, day } = useLocalSearchParams();
   const { task, setTask, defaultCategory, defaultPriority } = useContext(Context);
-  const [currTask, setCurrentTask] = useState(todoID === 'new'? getNewTask(defaultCategory as string, defaultPriority as string): task.find((item:TTask)=> item.id === todoID))
+  const [currTask, setCurrentTask] = useState(todoID === 'new'? getNewTask(day as string, defaultCategory as string, defaultPriority as string): task.find((item:TTask)=> item.id === todoID))
   const sheetRef = useRef<BottomSheet>(null);
    
   if (!currTask) {

@@ -62,7 +62,7 @@ export default function Index() {
         //   <RefreshControl refreshing={refresh} onRefresh={() => setRefresh(!refresh)} />
         // }
       />
-      <Add />
+      <Add date={'today'} />
     </SafeAreaView>
   )
 }

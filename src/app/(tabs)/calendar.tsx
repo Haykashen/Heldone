@@ -76,16 +76,6 @@ const calendar = (props: Props) => {
     router.push(('/' + id) as RelativePathString)
   }
 
-  // const handleAdd = () => {
-  //   const newTask = getNewTask()
-  //   task.push(newTask)
-  //   const sortedArray = task.sort((first:TTask, second:TTask)=> {return (first.date.getTime() - second.date.getTime())})
-  //   setTask(sortedArray)
-  //   setData("todo", JSON.stringify(sortedArray))
-  //   handlePress(newTask.id)
-  //   //router.push(('/components/cards/' + newItem.id) as RelativePathString)
-  // }
-
   const changeDate = (date:string) =>{
     setDate(new Date(date))
     dayTasks = getDayTasks(task, getFormatedDay(new Date(date)))
@@ -109,6 +99,7 @@ const calendar = (props: Props) => {
       // todayBottomMargin={16}
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >
+        <Text style={{color:'white'}}>{getFormatedDay(date)} ? 2026-05-11</Text>
         {weekView ? (
           <WeekCalendar firstDay={1} markedDates={multiDots} />
         ) : (
@@ -165,7 +156,7 @@ const calendar = (props: Props) => {
           /> }
         />
       </CalendarProvider>
-      <Add/>
+      <Add date={date.toLocaleDateString()} />
     </SafeAreaView>
   );
 };

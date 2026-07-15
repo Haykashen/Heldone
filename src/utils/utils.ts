@@ -12,8 +12,10 @@ export function getCalendarTitle(date: Date) {
 }
 
 export function getFormatedDay(date:Date){
-  let dateArray = (date).toLocaleDateString().split('.');
-  let strDate = dateArray[2]+'-'+dateArray[1]+'-'+dateArray[0];
+  //console.log('(date).toLocaleDateString() = ', (date).toLocaleDateString())
+  var str = ((date).toLocaleDateString().indexOf('.') === -1) ? '/' : '.';
+  let dateArray = (date).toLocaleDateString().split(str);
+  let strDate = dateArray[1]+'-'+dateArray[2]+'-'+dateArray[0];
   return strDate;
 } 
 
@@ -87,9 +89,9 @@ export function notifyMessage(msg: string) {
 //     item.timeStatus = TimeStatus.Overdue;
 // }
 
-export const getNewTask = (defaultCategory: string, defaultPriority: string) => {
-  console.log('Categorys[defaultCategory]', Categorys[defaultCategory], defaultCategory)
-  console.log('PriorityData[defaultPriority]', PriorityData[defaultPriority], defaultPriority)
+export const getNewTask = (createDate: string, defaultCategory: string, defaultPriority: string) => {
+  console.log('createDate',createDate)
+
   return (
     {
       id: uuid.v4(),

@@ -1,15 +1,16 @@
 import { scaleEnd, scaleStart } from '@/utils/animation';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
-import { router } from "expo-router";
+import { RelativePathString, router } from "expo-router";
 import { useRef } from 'react';
 import { Animated, Pressable } from 'react-native';
 
-const Add = () => {
+const Add = ({ date }:{date?:string}) => {
 
   const scale = useRef(new Animated.Value(1)).current;
 
   const hanlePress = () => {
-    router.push('/new')
+    let createDate = date ? date : 'null';
+    router.push(('/new?day='+createDate) as RelativePathString)
   }
 
   // Функция для анимации нажатия
