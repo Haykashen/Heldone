@@ -187,9 +187,9 @@ const taskCard = () => {
                   renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={currTask.category.id} onPressCategory={changeCategory} />}
                 />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
-                  <Priority currValue={currTask.priority.id} changePriority={changePriority} priority={PriorityData.High} />
-                  <Priority currValue={currTask.priority.id} changePriority={changePriority} priority={PriorityData.Medium} />
-                  <Priority currValue={currTask.priority.id} changePriority={changePriority} priority={PriorityData.Low} />
+                  <Priority currValue={currTask.priority.id} changePriority={changePriority} priority={PriorityData.High.id} />
+                  <Priority currValue={currTask.priority.id} changePriority={changePriority} priority={PriorityData.Medium.id} />
+                  <Priority currValue={currTask.priority.id} changePriority={changePriority} priority={PriorityData.Low.id} />
                 </View>
                 <View style={{ flexDirection: 'column', width: '100%', height: 50 }}>
                   <TextInput

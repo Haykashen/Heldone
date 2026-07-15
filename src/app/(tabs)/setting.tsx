@@ -1,78 +1,69 @@
-import Categorys from '@/data/CategoryData';
-import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
-import { useRef } from 'react';
-import { Animated, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import Priority from '@/components/buttons/Priority';
+import CategoryItem from '@/components/items/CategoryItem';
+import CategoryData from '@/data/CategoryData';
+import PriorityData from '@/data/PriorityData';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 const settings = () => {
   const pkg = require('@/../package.json')
   const appVersion = pkg.version;
 
-  const scale = useRef(new Animated.Value(1)).current;
+  const defaultCategory = 'Target';
+  const defaultPriority = 'Low';
+  const changeDefaultCategory =()=>{
+    alert('категория')
+  }
 
-  // Функция для анимации нажатия
-  const handlePressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.95, // уменьшение размера
-      useNativeDriver: true
-    }).start();
-  };
-
-  // Возврат к обычному размеру
-  const handlePressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1,
-      friction: 3,
-      useNativeDriver: true
-    }).start();
-  };
-
+  const changeDefaultPriority =()=>{
+    alert('Приоритет')
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10 }}>
-        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Профиль</Text>
-      </View>
-      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-        <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Аналитика</Text>
-      </View>
-      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
         <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Настройки</Text>
-        <View style={{ flexDirection: 'column', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Text style={{ color: 'white' }}>Стиль Классический</Text>
-          <Text style={{ color: 'white' }}>Версия {appVersion}</Text>
-          <Pressable
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
-          >
-            <Animated.View style={{
-              backgroundColor: '#388e3c',
-              padding: 16,
-              borderRadius: 8,
-              alignItems: 'center',
-              marginVertical: 8, transform: [{ scale }]
-            }}>
-              <Text style={{ color: '#fff', fontSize: 18 }}>Test</Text>
-            </Animated.View>
+      </View>
+      <View style={{ width: '100%', paddingHorizontal: 10, gap: 10 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ color: 'white', fontSize: 16 }}>Язык</Text>
+          <Text style={{ color: 'white', fontSize: 16 }}>Русский</Text>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ color: 'white', fontSize: 16 }}>Стиль</Text>
+          <Pressable>
+            <Text style={{ color: 'white', fontSize: 16 }}>Классический</Text>
           </Pressable>
         </View>
-
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ color: 'white', fontSize: 16 }}>Категория по умолчанию</Text>
+          <Pressable>
+            <Text style={{ color: 'white', fontSize: 16 }}>{CategoryData[defaultCategory].name.ru}</Text>
+          </Pressable>
+        </View>
+        <FlatList
+          nestedScrollEnabled
+          horizontal
+          //style={{ width: '100%', gap:30}}
+          contentContainerStyle={{ gap: 10 }}
+          data={Object.values(CategoryData)}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={defaultCategory} onPressCategory={changeDefaultCategory} />}
+        />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ color: 'white', fontSize: 16 }}>Приоритет по умолчанию</Text>
+          <Text style={{ color: 'white', fontSize: 16 }}>{PriorityData[defaultPriority].name.ru}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+          <Priority currValue={defaultPriority} changePriority={changeDefaultPriority} priority={PriorityData.High.id} />
+          <Priority currValue={defaultPriority} changePriority={changeDefaultPriority} priority={PriorityData.Medium.id} />
+          <Priority currValue={defaultPriority} changePriority={changeDefaultPriority} priority={PriorityData.Low.id} />
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ color: 'white', fontSize: 16 }}>Версия</Text>
+          <Text style={{ color: 'white', fontSize: 16 }}>{appVersion}</Text>
+        </View>
       </View>
-      {/* <Text>{JSON.stringify(Object.values(Categorys))}</Text> */}
-      <FlatList
-        //nestedScrollEnabled
-        ListEmptyComponent={<Text style={{ color: 'white' }}>Empty</Text>}
-        data={Object.values(Categorys)}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{ padding: 24, backgroundColor: '#1f1f1d' }}
-        renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row', gap: 10, backgroundColor: '#2c2c2a', borderRadius: 15, alignItems: 'center' }}>
-            <View style={{ height: 50, width: 50, backgroundColor: item.backColor, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
-              <MaterialDesignIcons name={item.icon as any} color={item.color} size={38} />
-            </View>
-            <Text style={{ paddingVertical: 16, color: 'white' }}>{item.name.ru}</Text>
-          </View>)}
-        ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
-      />
     </SafeAreaView>
   )
 }
