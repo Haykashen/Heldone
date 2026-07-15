@@ -58,7 +58,7 @@ const list = () => {
         }}
         style={{ gap: sortTask[0] ? 0 : 40}}
       >
-      <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 10, marginTop: 15, borderRadius: 10 }}>
+      <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 5, marginTop: 15, borderRadius: 10 }}>
         <StatusFilter 
           status={TaskStatus.Upcoming.id} 
           currStatus={status} 

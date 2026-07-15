@@ -13,9 +13,9 @@ export function getCalendarTitle(date: Date) {
 
 export function getFormatedDay(date:Date){
   //console.log('(date).toLocaleDateString() = ', (date).toLocaleDateString())
-  var str = ((date).toLocaleDateString().indexOf('.') === -1) ? '/' : '.';
+  var str = ((date).toLocaleDateString("ru-RU").indexOf('.') === -1) ? '/' : '.';
   let dateArray = (date).toLocaleDateString().split(str);
-  let strDate = dateArray[1]+'-'+dateArray[2]+'-'+dateArray[0];
+  let strDate = dateArray[2]+'-'+dateArray[1]+'-'+dateArray[0];
   return strDate;
 } 
 
@@ -57,13 +57,15 @@ export function getTaskByDays(task:[], status?:string){
 }
 
 export function getMultiDotsDays(task:[]){
-  const code = { key: 'code', color: 'green' };
+
+  //const code = { key: 'code', color: 'green' };
   let res:{[key:string]:{dots:any}} = {}
+
   task.forEach((item:TTask)=> {
     let strDate = getFormatedDay(new Date(item.date));
     if(!(res[strDate]))
       res[strDate] = {dots:[]};
-    res[strDate].dots.push({key: res[strDate].dots.length, color: item.category.color})  
+    res[strDate].dots.push({key: res[strDate].dots.length, color: item.category.backColor})  
   })
   return res;
 }

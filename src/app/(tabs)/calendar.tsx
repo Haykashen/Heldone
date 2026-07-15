@@ -104,7 +104,7 @@ const calendar = (props: Props) => {
           <WeekCalendar firstDay={1} markedDates={multiDots} />
         ) : (
           <ExpandableCalendar
-            showWeekNumbers
+            //showWeekNumbers
             renderHeader={renderHeader}
             ref={calendarRef}
             onCalendarToggled={onCalendarToggled}
@@ -130,7 +130,7 @@ const calendar = (props: Props) => {
               // arrows
               arrowColor: 'black',
               // selected date
-              selectedDayBackgroundColor: '#007aff',
+              selectedDayBackgroundColor: "#b1d6f9",
               selectedDayTextColor: 'white',
               // dot (marked date)
               dotColor: '#007aff',
