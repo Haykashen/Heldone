@@ -1,22 +1,32 @@
 import Priority from '@/components/buttons/Priority';
 import CategoryItem from '@/components/items/CategoryItem';
+import { Context } from '@/context/context';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
+import { setData } from '@/store/setData';
+import { useContext } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const settings = () => {
+  const { defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority} = useContext(Context);  
   const pkg = require('@/../package.json')
   const appVersion = pkg.version;
 
-  const defaultCategory = 'Target';
-  const defaultPriority = 'Low';
-  const changeDefaultCategory =()=>{
-    alert('категория')
+  // const defaultCategory = 'Target';
+  // const defaultPriority = 'Low';
+  console.log('defaultCategory', defaultCategory)
+  console.log('defaultPriority', defaultPriority)
+  const changeDefaultCategory =(id:string)=>{
+    //alert('категория')
+    setDefaultCategory(id);
+    setData('defaultCategory', JSON.stringify(id))    
   }
 
-  const changeDefaultPriority =()=>{
-    alert('Приоритет')
+  const changeDefaultPriority =(id:string)=>{
+    //alert('Приоритет')
+    setDefaultPriority(id);
+    setData('defaultPriority', JSON.stringify(id))    
   }
 
   return (

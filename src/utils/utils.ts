@@ -87,12 +87,17 @@ export function notifyMessage(msg: string) {
 //     item.timeStatus = TimeStatus.Overdue;
 // }
 
-export const getNewTask = ()=>({ 
-  id: uuid.v4(), 
-  date:null, 
-  title: '', 
-  category: Categorys.Target, 
-  status: TaskStatus.Upcoming, 
-  notes: '',
-  priority: PriorityData.Low
-});
+export const getNewTask = (defaultCategory: string, defaultPriority: string) => {
+  console.log('Categorys[defaultCategory]', Categorys[defaultCategory], defaultCategory)
+  console.log('PriorityData[defaultPriority]', PriorityData[defaultPriority], defaultPriority)
+  return (
+    {
+      id: uuid.v4(),
+      date: null,
+      title: '',
+      category: Categorys[defaultCategory],
+      status: TaskStatus.Upcoming,
+      notes: '',
+      priority: PriorityData[defaultPriority]
+    })
+};
