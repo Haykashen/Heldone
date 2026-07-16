@@ -14,8 +14,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 LocaleConfig.locales['rus'] = {
   monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
   monthNamesShort: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
-  dayNames: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
-  dayNamesShort: ['Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.', 'Вос.'],
+  dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+  dayNamesShort: ['Вос.', 'Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.'],
   today: "Сегодня"
 };
 
@@ -29,8 +29,8 @@ const calendar = (props: Props) => {
   const { task, setTask } = useContext(Context);
   const CHEVRON = require('@/assets/images/next.png');  
   const {weekView} = props;///????
-  const [date, setDate] = useState(new Date())
-  let dayTasks = getDayTasks(task, getFormatedDay(date))
+  const [date, setDate] = useState(getFormatedDay(new Date()))
+  let dayTasks = getDayTasks(task, date)
   const multiDots = getMultiDotsDays(task)
   
   const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
@@ -77,7 +77,7 @@ const calendar = (props: Props) => {
   }
 
   const changeDate = (date:string) =>{
-    setDate(new Date(date))
+    setDate(date)
     dayTasks = getDayTasks(task, getFormatedDay(new Date(date)))
       
   }
@@ -86,9 +86,9 @@ const calendar = (props: Props) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <Header title='Календарь' text='в месячном и недельном виде'/> 
       <CalendarProvider
-        date={getFormatedDay(date)}//
+        date={date}//
         // onDateChanged={onDateChanged}
-        onDateChanged={(date, updateSource) => changeDate(date)}
+        //onDateChanged={(date, updateSource) => changeDate(date)}
         showTodayButton
         // disabledOpacity={0.6}
         theme={{
@@ -99,7 +99,7 @@ const calendar = (props: Props) => {
       // todayBottomMargin={16}
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >
-        <Text style={{color:'white'}}>{getFormatedDay(date)} ? 2026-05-11</Text>
+        <Text style={{color:'white'}}>{date} ? 2026-05-11</Text>
         {weekView ? (
           <WeekCalendar firstDay={1} markedDates={multiDots} />
         ) : (
@@ -110,8 +110,9 @@ const calendar = (props: Props) => {
             onCalendarToggled={onCalendarToggled}
             markingType="multi-dot"
             markedDates={multiDots}
-            firstDay={0}
-            closeOnDayPress
+            firstDay={1}
+            onDayPress={(date)=> {console.log( 'onDayPress', date.dateString); changeDate(date.dateString)}}
+            //closeOnDayPress
             // horizontal={false}
             // hideArrows
             // disablePan
@@ -156,7 +157,7 @@ const calendar = (props: Props) => {
           /> }
         />
       </CalendarProvider>
-      <Add date={date.toLocaleDateString()} />
+      <Add date={date} />
     </SafeAreaView>
   );
 };

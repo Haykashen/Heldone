@@ -16,7 +16,13 @@ export function getFormatedDay(date:Date){
   var str = ((date).toLocaleDateString("ru-RU").indexOf('.') === -1) ? '/' : '.';
   let dateArray = (date).toLocaleDateString().split(str);
   let strDate = dateArray[2]+'-'+dateArray[1]+'-'+dateArray[0];
-  return strDate;
+
+  var year = date.getFullYear()
+  var month = (date.getMonth()+'').length > 1 ? date.getMonth() : '0'+date.getMonth();
+  var day = (date.getDay()+'').length > 1 ? date.getDay() : '0'+date.getDay();
+  var res = ''+year+'-'+ month+'-'+day;
+  return res;  
+  //return strDate;
 } 
 
 export function getDayTasks(task:[], day:string){
@@ -43,7 +49,8 @@ export function getTaskByDays(task:[], status?:string){
   task.forEach((item:TTask)=> {
     if(status && status !== item.status.id)
       return;
-    let strDate = getFormatedDay(new Date(item.date));
+    let strDate = getFormatedDay(item.date);
+    //console.log('getTaskByDays =', strDate)
     if(!(res[strDate]))
       res[strDate] = {data:[]};
     res[strDate].data.push(item)  
@@ -92,12 +99,18 @@ export function notifyMessage(msg: string) {
 // }
 
 export const getNewTask = (createDate: string, defaultCategory: string, defaultPriority: string) => {
-  console.log('createDate',createDate)
-
+  console.log('getNewTask createDate',createDate)
+  let date = null;
+  if(createDate)
+  {
+    date = (createDate === 'today') ? new Date() : new Date(createDate);
+    console.log('getNewTask date ',date )   
+  }
+    
   return (
     {
       id: uuid.v4(),
-      date: null,
+      date: date,
       title: '',
       category: Categorys[defaultCategory],
       status: TaskStatus.Upcoming,
