@@ -12,17 +12,9 @@ export function getCalendarTitle(date: Date) {
 }
 
 export function getFormatedDay(date:Date){
-  //console.log('(date).toLocaleDateString() = ', (date).toLocaleDateString())
-  var str = ((date).toLocaleDateString("ru-RU").indexOf('.') === -1) ? '/' : '.';
-  let dateArray = (date).toLocaleDateString().split(str);
-  let strDate = dateArray[2]+'-'+dateArray[1]+'-'+dateArray[0];
-
-  var year = date.getFullYear()
-  var month = (date.getMonth()+'').length > 1 ? date.getMonth() : '0'+date.getMonth();
-  var day = (date.getDay()+'').length > 1 ? date.getDay() : '0'+date.getDay();
-  var res = ''+year+'-'+ month+'-'+day;
-  return res;  
-  //return strDate;
+  let res =  date.toISOString().split('T')
+  //date.toLocaleDateString("ru-RU", {year:"numeric", month: "2-digit", day:"2-digit"});  
+  return res[0];
 } 
 
 export function getDayTasks(task:[], day:string){
@@ -85,28 +77,10 @@ export function notifyMessage(msg: string) {
   }
 }
 
-
-// export function setTimeStatus(item: TTask) {
-//   const currentTime = new Date();
-
-//   if ((item.status.id === 'Completed'))
-//     item.timeStatus = TimeStatus.Default;
-//   else if (item.date.getTime() > currentTime.getTime()) {
-//     item.timeStatus = TimeStatus.Soon;
-//   }
-//   else
-//     item.timeStatus = TimeStatus.Overdue;
-// }
-
 export const getNewTask = (createDate: string, defaultCategory: string, defaultPriority: string) => {
-  console.log('getNewTask createDate',createDate)
-  let date = null;
-  if(createDate)
-  {
-    date = (createDate === 'today') ? new Date() : new Date(createDate);
-    console.log('getNewTask date ',date )   
-  }
-    
+
+  let date = (createDate) ? new Date(createDate) : null;
+
   return (
     {
       id: uuid.v4(),

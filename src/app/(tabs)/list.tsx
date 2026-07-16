@@ -96,7 +96,7 @@ const list = () => {
           />}
         />
       </CalendarProvider>
-      <Add />
+      <Add date=''/>
     </SafeAreaView>
   )
 }

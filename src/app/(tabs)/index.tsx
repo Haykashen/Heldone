@@ -5,6 +5,7 @@ import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
 import { completeTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
+import { getFormatedDay } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
 import { useContext } from 'react';
 import { DimensionValue, FlatList, StyleSheet, Text, View } from 'react-native';
@@ -62,7 +63,7 @@ export default function Index() {
         //   <RefreshControl refreshing={refresh} onRefresh={() => setRefresh(!refresh)} />
         // }
       />
-      <Add date={'today'} />
+      <Add date={getFormatedDay(new Date())} />
     </SafeAreaView>
   )
 }

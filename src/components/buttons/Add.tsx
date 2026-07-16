@@ -9,8 +9,7 @@ const Add = ({ date }:{date?:string}) => {
   const scale = useRef(new Animated.Value(1)).current;
 
   const hanlePress = () => {
-    let createDate = date ? date : 'null';
-    router.push(('/new?day='+createDate) as RelativePathString)
+    router.push(('/new?day='+date) as RelativePathString)
   }
 
   // Функция для анимации нажатия

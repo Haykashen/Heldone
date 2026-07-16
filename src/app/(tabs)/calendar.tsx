@@ -8,7 +8,7 @@ import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from 
 import { RelativePathString, router } from "expo-router";
 import { useCallback, useContext, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, StyleSheet, Text } from 'react-native';
-import { AgendaList, CalendarProvider, ExpandableCalendar, LocaleConfig, WeekCalendar } from 'react-native-calendars';
+import { AgendaList, CalendarProvider, ExpandableCalendar, LocaleConfig } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 LocaleConfig.locales['rus'] = {
@@ -21,14 +21,14 @@ LocaleConfig.locales['rus'] = {
 
 LocaleConfig.defaultLocale = 'rus';
 
-interface Props {
-  weekView?: boolean;
-}
+// interface Props {
+//   weekView?: boolean;
+// }props: Props
 
-const calendar = (props: Props) => {
+const calendar = () => {
   const { task, setTask } = useContext(Context);
   const CHEVRON = require('@/assets/images/next.png');  
-  const {weekView} = props;///????
+  //const {weekView} = props;///????
   const [date, setDate] = useState(getFormatedDay(new Date()))
   let dayTasks = getDayTasks(task, date)
   const multiDots = getMultiDotsDays(task)
@@ -78,7 +78,7 @@ const calendar = (props: Props) => {
 
   const changeDate = (date:string) =>{
     setDate(date)
-    dayTasks = getDayTasks(task, getFormatedDay(new Date(date)))
+    dayTasks = getDayTasks(task, date)//getFormatedDay(new Date(date))
       
   }
 
@@ -86,23 +86,25 @@ const calendar = (props: Props) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <Header title='Календарь' text='в месячном и недельном виде'/> 
       <CalendarProvider
-        date={date}//
-        // onDateChanged={onDateChanged}
-        //onDateChanged={(date, updateSource) => changeDate(date)}
-        showTodayButton
-        // disabledOpacity={0.6}
+        date={date}
+        onDateChanged={(date, updateSource) => changeDate(date)}//
+        showTodayButton       
+        style={{ gap: dayTasks[0] ? 0 : 40}}
         theme={{
           todayButtonTextColor: '#007aff',
           todayButtonFontWeight:'bold'
         }}
-        style={{ gap: dayTasks[0] ? 0 : 40}}
+        
+      // disabledOpacity={0.6}  
       // todayBottomMargin={16}
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >
-        <Text style={{color:'white'}}>{date} ? 2026-05-11</Text>
-        {weekView ? (
-          <WeekCalendar firstDay={0} markedDates={multiDots} />
-        ) : (
+        {/* {weekView ? (
+          <WeekCalendar 
+            //firstDay={0} 
+            //markedDates={multiDots} 
+          />
+        ) : ( )}*/}
           <ExpandableCalendar
             //showWeekNumbers
             renderHeader={renderHeader}
@@ -111,7 +113,7 @@ const calendar = (props: Props) => {
             markingType="multi-dot"
             markedDates={multiDots}
             firstDay={0}
-            onDayPress={(date)=> {console.log( 'onDayPress', date.dateString); changeDate(date.dateString)}}
+            //onDayPress={(date)=> {console.log( 'onDayPress', date.dateString); changeDate(date.dateString)}}
             //closeOnDayPress
             // horizontal={false}
             // hideArrows
@@ -138,7 +140,8 @@ const calendar = (props: Props) => {
             }}
 
           />
-        )}
+        
+        
         <AgendaList
           sections={dayTasks}
           ListEmptyComponent={<ListEpmtyComponent />}
