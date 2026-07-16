@@ -14,8 +14,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 LocaleConfig.locales['rus'] = {
   monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
   monthNamesShort: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
-  dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-  dayNamesShort: ['Вос.', 'Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.'],
+  dayNames: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
+  dayNamesShort: ['Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.', 'Вос.'],
   today: "Сегодня"
 };
 
@@ -101,7 +101,7 @@ const calendar = (props: Props) => {
       >
         <Text style={{color:'white'}}>{date} ? 2026-05-11</Text>
         {weekView ? (
-          <WeekCalendar firstDay={1} markedDates={multiDots} />
+          <WeekCalendar firstDay={0} markedDates={multiDots} />
         ) : (
           <ExpandableCalendar
             //showWeekNumbers
@@ -110,7 +110,7 @@ const calendar = (props: Props) => {
             onCalendarToggled={onCalendarToggled}
             markingType="multi-dot"
             markedDates={multiDots}
-            firstDay={1}
+            firstDay={0}
             onDayPress={(date)=> {console.log( 'onDayPress', date.dateString); changeDate(date.dateString)}}
             //closeOnDayPress
             // horizontal={false}
