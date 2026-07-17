@@ -144,7 +144,13 @@ const calendar = () => {
         
         <AgendaList
           sections={dayTasks}
-          ListEmptyComponent={<ListEpmtyComponent />}
+          ListEmptyComponent={
+            <ListEpmtyComponent  
+              date={date} 
+              title ='У вас пока нет никаких заданий!'
+              text  = 'Добавьте задачу, чтобы сделать ваш день продуктивным.'
+            />
+          }
           sectionStyle={{ backgroundColor: '#031F2B', }}
           renderItem={({ item }: any) => <AgendaItem
             id={item.id}

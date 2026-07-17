@@ -81,7 +81,13 @@ const list = () => {
         <AgendaList
           sections={sortTask}
           sectionStyle={{ backgroundColor: '#031F2B', }}
-          ListEmptyComponent={<ListEpmtyComponent />}
+          ListEmptyComponent={
+            <ListEpmtyComponent 
+              date=''
+              title ='У вас пока нет никаких заданий!'
+              text  = 'Добавьте задачу, чтобы сделать ваш день продуктивным.'  
+            />
+          }
           renderItem={({ item }: any) => <AgendaItem
             id={item.id}
             date={item.date}

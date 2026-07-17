@@ -1,17 +1,17 @@
 import { scaleEnd, scaleStart } from '@/utils/animation';
 import { ITranslate } from "@/utils/types";
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
-import { router } from "expo-router";
+import { RelativePathString, router } from "expo-router";
 import { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const ListEpmtyComponent = () => {
+const ListEpmtyComponent = ({ date, title, text }:{date?:string, title:string, text:string }) => {
 
   const scale = useRef(new Animated.Value(1)).current; 
 
   const hanlePress =()=>{
-    router.push('/new')
+    router.push(('/new?day='+date) as RelativePathString)
   }
 
   // Функция для анимации нажатия
@@ -42,13 +42,16 @@ const ListEpmtyComponent = () => {
       >
         <Animated.View style={{ transform: [{ scale }] }}>
           <MaterialDesignIcons name="playlist-plus" size={64} color='#007aff' />
-        </Animated.View>        
+        </Animated.View>
         <View style={{ flexDirection: 'column', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent: 'center', alignContent: 'center' }}>{title}</Text>
+          <Text numberOfLines={2} style={{ color: 'black', fontSize: 14, justifyContent: 'center', alignContent: 'center' }}>{text}</Text>
+        </View>
+        {/* <View style={{ flexDirection: 'column', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent: 'center', alignContent: 'center' }}>{translate.FirstRow['ru']}</Text>
           <Text style={{ color: 'black', fontSize: 14, justifyContent: 'center', alignContent: 'center' }}>{translate.SecondRow['ru']}</Text>
           <Text style={{ color: 'black', fontSize: 14, justifyContent: 'center', alignContent: 'center' }}>{translate.ThirdRow['ru']}</Text>
-        </View>
-
+        </View> */}
       </Pressable>
     </SafeAreaView>
   )

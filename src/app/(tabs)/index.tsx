@@ -56,7 +56,11 @@ export default function Index() {
           />
         )}
         ListEmptyComponent={() => (
-          <ListEpmtyComponent />
+          <ListEpmtyComponent 
+            title ='У вас пока нет никаких заданий!'
+            text  = 'Добавьте задачу, чтобы сделать ваш день продуктивным.'
+            date={getFormatedDay(new Date())} 
+          />
         )
         }
         // refreshControl={
