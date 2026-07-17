@@ -3,16 +3,19 @@ import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
+import { scaleEnd, scaleStart } from '@/utils/animation';
 import { completeTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
 import { getFormatedDay } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
-import { useContext } from 'react';
-import { DimensionValue, FlatList, StyleSheet, Text, View } from 'react-native';
+import { useContext, useRef } from 'react';
+import { Animated, DimensionValue, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 export default function Index() {
   const { task, setTask } = useContext(Context);
+  const scale = useRef(new Animated.Value(1)).current;
   //const [refresh, setRefresh] = useState(false);
   const filtered = task.filter((item:TTask) => item.date.toLocaleDateString()=== new Date().toLocaleDateString());
   const completed:[] = filtered.filter((item:TTask) => item.status.id === 'Completed')
@@ -22,7 +25,10 @@ export default function Index() {
   }
 
   const handleComplete = (id: string) => {
+    scaleStart(scale, 1.5)
     completeTask(id, task, setTask)
+    setTimeout(()=>scaleEnd(scale, 1), 100)
+    //
   }
 
   let progressPercent = Math.round(completed.length/filtered.length*100);
@@ -30,14 +36,16 @@ export default function Index() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
-      <Header title='Сегодня' text={new Date().toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })}/>    
-      <View style={{marginVertical:15, borderColor:'silver', borderRadius: 10, borderWidth:2, height: 100, marginHorizontal: 10 , flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
+      <Header title='Сегодня' text={new Date().toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })} />
+      <View style={{ marginVertical: 15, borderColor: 'silver', borderRadius: 10, borderWidth: 2, height: 100, marginHorizontal: 10, flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Прогресс выполнения - {completed.length} из {filtered.length}</Text>
         <View style={{ width: '80%', backgroundColor: 'white', height: 8, borderRadius: 10 }}>
           <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 8, borderRadius: 10 }}></View>
         </View>
       </View>
-      <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
+      <Animated.View style={{ transform: [{ scale }] }}>
+        <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
+      </Animated.View>
       <FlatList
         data={filtered}
         keyExtractor={(item, index) => item.id}
@@ -48,7 +56,7 @@ export default function Index() {
             category={item.category}
             status={item.status}
             title={item.title}
-            priority={item.priority}   
+            priority={item.priority}
             notes={item.notes}
             onCompletePress={() => handleComplete(item.id)}
             onItemPress={() => handlePress(item.id)}
@@ -56,16 +64,16 @@ export default function Index() {
           />
         )}
         ListEmptyComponent={() => (
-          <ListEpmtyComponent 
-            title ='У вас пока нет никаких заданий!'
-            text  = 'Добавьте задачу, чтобы сделать ваш день продуктивным.'
-            date={getFormatedDay(new Date())} 
+          <ListEpmtyComponent
+            title='У вас пока нет никаких заданий!'
+            text='Добавьте задачу, чтобы сделать ваш день продуктивным.'
+            date={getFormatedDay(new Date())}
           />
         )
         }
-        // refreshControl={
-        //   <RefreshControl refreshing={refresh} onRefresh={() => setRefresh(!refresh)} />
-        // }
+      // refreshControl={
+      //   <RefreshControl refreshing={refresh} onRefresh={() => setRefresh(!refresh)} />
+      // }
       />
       <Add date={getFormatedDay(new Date())} />
     </SafeAreaView>
