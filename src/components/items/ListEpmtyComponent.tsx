@@ -27,7 +27,6 @@ const ListEpmtyComponent = ({ date, title, text }:{date?:string, title:string, t
   return (
     //<SafeAreaProvider>    </SafeAreaProvider>
     <SafeAreaView style={{
-      //marginTop:40,
       padding: 20,
       backgroundColor: 'white',
       borderBottomWidth: 1,
@@ -38,20 +37,15 @@ const ListEpmtyComponent = ({ date, title, text }:{date?:string, title:string, t
         onPress={hanlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        style={{ flexDirection: 'column', alignContent: 'center', flex: 1, alignItems: 'center', justifyContent: 'space-around' }}
+        style={{ flexDirection: 'column', flex: 1, alignItems: 'center',justifyContent:'center'}}
       >
         <Animated.View style={{ transform: [{ scale }] }}>
           <MaterialDesignIcons name="playlist-plus" size={64} color='#007aff' />
         </Animated.View>
         <View style={{ flexDirection: 'column', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent: 'center', alignContent: 'center' }}>{title}</Text>
-          <Text numberOfLines={2} style={{ color: 'black', fontSize: 14, justifyContent: 'center', alignContent: 'center' }}>{text}</Text>
+          <Text numberOfLines={2} style={{ color: 'black', fontSize: 14, justifyContent: 'center', alignContent: 'center', textAlign: 'center' }}>{text}</Text>
         </View>
-        {/* <View style={{ flexDirection: 'column', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, justifyContent: 'center', alignContent: 'center' }}>{translate.FirstRow['ru']}</Text>
-          <Text style={{ color: 'black', fontSize: 14, justifyContent: 'center', alignContent: 'center' }}>{translate.SecondRow['ru']}</Text>
-          <Text style={{ color: 'black', fontSize: 14, justifyContent: 'center', alignContent: 'center' }}>{translate.ThirdRow['ru']}</Text>
-        </View> */}
       </Pressable>
     </SafeAreaView>
   )

@@ -16,36 +16,42 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Index() {
   const { task, setTask } = useContext(Context);
   const scale = useRef(new Animated.Value(1)).current;
+  const today = new Date();
   //const [refresh, setRefresh] = useState(false);
-  const filtered = task.filter((item:TTask) => item.date.toLocaleDateString()=== new Date().toLocaleDateString());
-  const completed:[] = filtered.filter((item:TTask) => item.status.id === 'Completed')
+  const filtered = task.filter((item: TTask) => item.date.toLocaleDateString() === today.toLocaleDateString());
+  const completed: [] = filtered.filter((item: TTask) => item.status.id === 'Completed')
 
   const handlePress = (id: string) => {
     router.push(('/' + id) as RelativePathString)
   }
 
   const handleComplete = (id: string) => {
-    scaleStart(scale, 1.5)
+    scaleStart(scale, 1.3)
     completeTask(id, task, setTask)
-    setTimeout(()=>scaleEnd(scale, 1), 100)
+    setTimeout(() => scaleEnd(scale, 1), 100)
     //
   }
 
-  let progressPercent = Math.round(completed.length/filtered.length*100);
-  let widthProgress = (progressPercent ? progressPercent : 0)+'%';
+  let progressPercent = Math.round(completed.length / filtered.length * 100);
+  let widthProgress = (progressPercent ? progressPercent : 0) + '%';
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
-      <Header title='Сегодня' text={new Date().toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })} />
+      <Header title='Сегодня' text={today.toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })} />
       <View style={{ marginVertical: 15, borderColor: 'silver', borderRadius: 10, borderWidth: 2, height: 100, marginHorizontal: 10, flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>Прогресс выполнения - {completed.length} из {filtered.length}</Text>
+        <View style={{flexDirection:'row'}}>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>Прогресс выполнения -</Text>
+        <Animated.View style={{ transform: [{ scale }] }}>
+          <Text style={{ color: 'white', fontWeight: 'bold', alignItems: 'center' }}> {completed.length} </Text>
+        </Animated.View>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>из {filtered.length}</Text>          
+        </View>
+
         <View style={{ width: '80%', backgroundColor: 'white', height: 8, borderRadius: 10 }}>
           <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 8, borderRadius: 10 }}></View>
         </View>
       </View>
-      <Animated.View style={{ transform: [{ scale }] }}>
-        <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
-      </Animated.View>
+      <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
       <FlatList
         data={filtered}
         keyExtractor={(item, index) => item.id}
@@ -65,9 +71,9 @@ export default function Index() {
         )}
         ListEmptyComponent={() => (
           <ListEpmtyComponent
-            title='У вас пока нет никаких заданий!'
-            text='Добавьте задачу, чтобы сделать ваш день продуктивным.'
-            date={getFormatedDay(new Date())}
+            title = 'У вас пока нет никаких заданий!'
+            text = 'Добавьте задачу, чтобы сделать ваш день продуктивным.'
+            date = {getFormatedDay(today)}
           />
         )
         }
@@ -75,32 +81,32 @@ export default function Index() {
       //   <RefreshControl refreshing={refresh} onRefresh={() => setRefresh(!refresh)} />
       // }
       />
-      <Add date={getFormatedDay(new Date())} />
+      <Add date={getFormatedDay(today)} />
     </SafeAreaView>
   )
 }
 //"#4894FE"
 
 
-const style = (Theme:any)=> StyleSheet.create({
+const style = (Theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.bg_Primary,
-    alignItems:'center',
-    gap:5,
-    padding:5
+    alignItems: 'center',
+    gap: 5,
+    padding: 5
   },
- textHeader:{
-    color: Theme.colors.text_Primary, 
-    fontSize:22,
-    fontWeight:'bold'
+  textHeader: {
+    color: Theme.colors.text_Primary,
+    fontSize: 22,
+    fontWeight: 'bold'
   },
-  button:{
-    flex:1,  
-    alignItems:'center', 
-    justifyContent:'center',
-    color:'white',
-    fontWeight: 'bold', 
-    fontSize: 16 
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16
   }
 });

@@ -29,7 +29,8 @@ const calendar = () => {
   const { task, setTask } = useContext(Context);
   const CHEVRON = require('@/assets/images/next.png');  
   //const {weekView} = props;///????
-  const [date, setDate] = useState(getFormatedDay(new Date()))
+  const today = getFormatedDay(new Date());
+  const [date, setDate] = useState(today)
   let dayTasks = getDayTasks(task, date)
   const multiDots = getMultiDotsDays(task)
   
@@ -88,7 +89,7 @@ const calendar = () => {
       <CalendarProvider
         date={date}
         onDateChanged={(date, updateSource) => changeDate(date)}//
-        showTodayButton       
+        showTodayButton = {today !== date ? true: false}       
         style={{ gap: dayTasks[0] ? 0 : 40}}
         theme={{
           todayButtonTextColor: '#007aff',

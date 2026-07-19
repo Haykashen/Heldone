@@ -51,7 +51,7 @@ const list = () => {
       <Header title='Мои задачи' text='по дням и статусам'/>
       <CalendarProvider
         date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(new Date())}
-        showTodayButton
+        showTodayButton = {sortTask[0] ? true: false}
         theme={{
           todayButtonTextColor: '#007aff',
           todayButtonFontWeight: 'bold'
@@ -84,8 +84,8 @@ const list = () => {
           ListEmptyComponent={
             <ListEpmtyComponent 
               date=''
-              title ='У вас пока нет никаких заданий!'
-              text  = 'Добавьте задачу, чтобы сделать ваш день продуктивным.'  
+              title = {status === TaskStatus.Completed.id? 'У вас пока нет выполненных заданий!' :'У вас пока нет никаких заданий!'}
+              text  = {status === TaskStatus.Completed.id? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' :'Добавьте задачу, чтобы быть продуктивным.'}   
             />
           }
           renderItem={({ item }: any) => <AgendaItem
