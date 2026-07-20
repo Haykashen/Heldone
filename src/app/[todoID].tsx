@@ -1,5 +1,6 @@
 //import CategoryPanel from '@/components/CategoryPanel';
 import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
+import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
 import { Context } from '@/context/context';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
@@ -8,11 +9,11 @@ import { setData } from '@/store/setData';
 import { deleteTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
 import { getNewTask } from '@/utils/utils';
-import BottomSheet, { BottomSheetView } from '@expo/ui/community/bottom-sheet';
+import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
-import { useContext, useRef, useState } from "react";
+import { RefObject, useContext, useRef, useState } from "react";
 import { Keyboard, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native"; //AppState, 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -23,7 +24,9 @@ const taskCard = () => {
   const { task, setTask, defaultCategory, defaultPriority } = useContext(Context);
   const [currTask, setCurrentTask] = useState(todoID === 'new'? getNewTask(day as string, defaultCategory as string, defaultPriority as string): task.find((item:TTask)=> item.id === todoID))
   const sheetRef = useRef<BottomSheet>(null);
-  const [categoryBottomSheetIndex, setCategoryBottomSheetIndex] = useState(-1)   
+  const sheetCategoryRef = useRef<BottomSheet>(null);
+  const sheetPriorityRef = useRef<BottomSheet>(null);
+
   if (!currTask) {
     return <Redirect href="/list" />;
   }
@@ -58,7 +61,7 @@ const taskCard = () => {
     setCurrentTask({...currTask, priority: PriorityData[key]})
   }
 
-  const changeCategory= (key:string)=>{
+  const changeCategory = (key:string)=>{
     setCurrentTask({...currTask, category: CategoryData[key]})
   }
 
@@ -112,6 +115,13 @@ const taskCard = () => {
        router.push('/index')
   }
 
+  const setRefCategoryBottomSheet =(ref:RefObject<BottomSheetMethods | null>, index: number)=>{
+    ref.current?.snapToIndex(index)
+  }
+
+  const setRefPriorityBottomSheet =(ref:RefObject<BottomSheetMethods | null>, index: number)=>{
+    ref.current?.snapToIndex(index)
+  }  
   //'#63B4FF'
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -187,6 +197,7 @@ const taskCard = () => {
                 <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, }}>Приоритет</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, }}>
                   <Pressable
+                    onPress = {()=> setRefPriorityBottomSheet(sheetPriorityRef, 0) }
                     style={{ flexDirection: 'row', alignItems: 'center', gap: 3, }}>
                     <Text style={{ color: 'white', fontSize: 16, }}>{currTask.priority.name.ru}</Text>
                     <MaterialDesignIcons name={currTask.priority.icon as any} color={currTask.priority.color} size={24} />
@@ -197,7 +208,7 @@ const taskCard = () => {
                 <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, }}>Категория</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, }}>
                   <Pressable
-                    onPress = {()=> setCategoryBottomSheetIndex((prevVal)=> prevVal === -1 ? 0:-1)}
+                    onPress = {()=> setRefCategoryBottomSheet(sheetCategoryRef, 0) }
                     style={{ flexDirection: 'row', alignItems: 'center', gap: 3, }}>
                     <Text style={{ color: 'white', fontSize: 16, }}>{currTask.category.name.ru}</Text>
                     <View style={{backgroundColor:currTask.category.backColor, borderRadius:5, padding:2}}>
@@ -238,9 +249,11 @@ const taskCard = () => {
                 </Pressable>
               </View>
             </View>
+            <CategoryBottomSheet setCategory={changeCategory} setRef={setRefCategoryBottomSheet} sheetRef = {sheetCategoryRef}/> 
+            <PriorityBottomSheet setPriority={changePriority} setRef={setRefPriorityBottomSheet} sheetRef = {sheetPriorityRef}/>
           </BottomSheetView>
         </BottomSheet>
-        <CategoryBottomSheet index={categoryBottomSheetIndex} setCategory={setCategoryBottomSheetIndex}/>
+                 
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

@@ -1,17 +1,18 @@
-import Categorys from '@/data/CategoryData';
 import BottomSheet, { BottomSheetFlatList, BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 //import { router } from 'expo-router';
+import PriorityData from '@/data/PriorityData';
 import { RefObject } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const CategoryBottomSheet = ({setCategory, setRef, sheetRef }: { setCategory:(id:string)=>void, setRef: ((arg: RefObject<BottomSheetMethods | null>, index: number) => void), sheetRef: RefObject<BottomSheetMethods | null> }) => {
 
-    const array = Object.values(Categorys);
+const PriorityBottomSheet = ({setPriority, setRef, sheetRef }: { setPriority:(id:string)=>void, setRef: ((arg: RefObject<BottomSheetMethods | null>, index: number) => void), sheetRef: RefObject<BottomSheetMethods | null> }) => {
+
+    const array = Object.values(PriorityData);
 
     const itemPress = (id:string) => {
-        setCategory(id)
+        setPriority(id)
         setRef(sheetRef, -1)
     }
 
@@ -52,4 +53,4 @@ const CategoryBottomSheet = ({setCategory, setRef, sheetRef }: { setCategory:(id
     );
 }
 
-export default CategoryBottomSheet
+export default PriorityBottomSheet
