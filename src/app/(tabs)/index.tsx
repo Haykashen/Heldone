@@ -39,14 +39,13 @@ export default function Index() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <Header title='Сегодня' text={today.toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })} />
       <View style={{ marginVertical: 15, borderColor: 'silver', borderRadius: 10, borderWidth: 2, height: 100, marginHorizontal: 10, flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
-        <View style={{flexDirection:'row'}}>
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>Прогресс выполнения -</Text>
-        <Animated.View style={{ transform: [{ scale }] }}>
-          <Text style={{ color: 'white', fontWeight: 'bold', alignItems: 'center' }}> {completed.length} </Text>
-        </Animated.View>
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>из {filtered.length}</Text>          
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>Прогресс выполнения -</Text>
+          <Animated.View style={{ transform: [{ scale }] }}>
+            <Text style={{ color: 'white', fontWeight: 'bold', alignItems: 'center' }}> {completed.length} </Text>
+          </Animated.View>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>из {filtered.length}</Text>
         </View>
-
         <View style={{ width: '80%', backgroundColor: 'white', height: 8, borderRadius: 10 }}>
           <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 8, borderRadius: 10 }}></View>
         </View>
