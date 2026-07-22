@@ -4,17 +4,15 @@ import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-
 import React, { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, Vibration, View } from 'react-native';
 
-const AgendaItem = (props:TItem) => {
-  const {id, date, title, category, status, priority, onItemPress, onCompletePress,} = props;
-  const statusName  = status.name.ru;
-  const statusColor = status.color;
+const AgendaItem = (props: TItem) => {
+  const { id, date, title, category, status, priority, onItemPress, onCompletePress, } = props;
   const scale = useRef(new Animated.Value(1)).current;
 
-  const handleComplete = ()=>{
+  const handleComplete = () => {
     onCompletePress()
   }
 
-  const handleOpen=()=>{
+  const handleOpen = () => {
     onItemPress()
   }
   // Функция для анимации нажатия
@@ -31,7 +29,6 @@ const AgendaItem = (props:TItem) => {
   return (
     <Pressable onPress={handleOpen} style={styles.item}>
       <View style={{ width: '20%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 5 }}>
-        {/* <Text style={styles.itemHourText}>{date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</Text> */}
         <View style={{ height: 50, width: 50, backgroundColor: category.backColor, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
           <MaterialDesignIcons name={category.icon as any} color={category.color} size={38} />
         </View>
@@ -41,12 +38,12 @@ const AgendaItem = (props:TItem) => {
         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: 3 }}>
           <MaterialDesignIcons name={status.clockIcon as any} color={'black'} size={18} />
           <Text style={styles.itemHourText}>
-            {date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})} -
+            {date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })} -
             {/* <Text style={[styles.itemHourText, { color: statusColor }]}> {statusName} </Text> 
             -  */}
           </Text>
-          {priority&&(<MaterialDesignIcons name={priority.icon as any} color={priority.color} size={18} />)}
-          {priority&&(<Text style={styles.itemHourText}>{priority.name.ru}</Text>)}
+          <MaterialDesignIcons name={priority.icon as any} color={priority.color} size={18} />
+          <Text style={styles.itemHourText}>{priority.name.ru}</Text>
         </View>
       </View>
       <Pressable
@@ -71,7 +68,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'lightgrey',
     flexDirection: 'row',
-    gap:10
+    gap: 10
   },
   itemHourText: {
     color: 'black'
@@ -100,11 +97,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 2,
     height: 70,
-  },   
+  },
   button: {
     borderRadius: 15,
     marginVertical: 5,
-    marginHorizontal:2,  
+    marginHorizontal: 2,
     width: 70,
     height: '100%',
     justifyContent: 'center',
@@ -116,7 +113,7 @@ const styles = StyleSheet.create({
   delete: {
     backgroundColor: '#ff1744',
   },
-  complete:{
-    backgroundColor: 'green',    
-  } 
+  complete: {
+    backgroundColor: 'green',
+  }
 });

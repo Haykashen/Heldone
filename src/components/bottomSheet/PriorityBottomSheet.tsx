@@ -21,7 +21,7 @@ const PriorityBottomSheet = ({setPriority, setRef, sheetRef }: { setPriority:(id
             <BottomSheet
                 ref={sheetRef}
                 index={-1}
-                snapPoints={['70%', '90%']}
+                //snapPoints={['70%', '90%']}
                 //onClose={() => setRef(sheetRef, -1)}
                 enablePanDownToClose
                 backgroundStyle ={{backgroundColor:'#031F2B', }}
@@ -32,7 +32,7 @@ const PriorityBottomSheet = ({setPriority, setRef, sheetRef }: { setPriority:(id
                         style={{ flex: 1 }}
                         data={array}
                         keyExtractor={item => item.id}
-                        contentContainerStyle={{ padding: 24, backgroundColor: '#031F2B', paddingBottom: 100 }}
+                        contentContainerStyle={{paddingHorizontal: 24,  backgroundColor: '#031F2B', paddingBottom: 30 }}
                         ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
                         renderItem={({ item }) => (
                             <Pressable

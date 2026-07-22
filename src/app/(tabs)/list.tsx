@@ -10,7 +10,7 @@ import { completeTask } from '@/utils/taskManage';
 import { getFormatedDay, getTaskByDays } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
 import { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { AgendaList, CalendarProvider, LocaleConfig } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -27,6 +27,7 @@ LocaleConfig.defaultLocale = 'rus';
 const list = () => {
   const { task, setTask } = useContext(Context);
   const [status, setStatus]  = useState(TaskStatus.Upcoming.id)
+  const today = new Date();
   //let comletedCount = task.filter((item:TTask)=> item.status.id == TaskStatus.Completed.id)
   let sortTask = getTaskByDays(task, status)
 
@@ -50,7 +51,7 @@ const list = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <Header title='Мои задачи' text='по дням и статусам'/>
       <CalendarProvider
-        date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(new Date())}
+        date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(today)}
         showTodayButton = {sortTask[0] ? true: false}
         theme={{
           todayButtonTextColor: '#007aff',
@@ -102,32 +103,9 @@ const list = () => {
           />}
         />
       </CalendarProvider>
-      <Add date=''/>
+      <Add date={getFormatedDay(today)}/>
     </SafeAreaView>
   )
 }
 //"#4894FE"
 export default list
-
-const style = (Theme:any)=> StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.colors.bg_Primary,
-    alignItems:'center',
-    gap:5,
-    padding:5
-  },
- textHeader:{
-    color: Theme.colors.text_Primary, 
-    fontSize:22,
-    fontWeight:'bold'
-  },
-  button:{
-    flex:1,  
-    alignItems:'center', 
-    justifyContent:'center',
-    color:'white',
-    fontWeight: 'bold', 
-    fontSize: 16 
-  }
-});
