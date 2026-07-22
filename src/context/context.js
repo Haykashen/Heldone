@@ -9,11 +9,14 @@ const ContextProvider = ({ children }) => {
   //const [platform, setPlatform] = useState(Platform.OS);//
   //const [language, setLanguage] = useState('ru');//storeLanguage? storeLanguage :
   const [task, setTask] = useState([])
-  const [defaultCategory, setDefaultCategory] = useState([])
-  const [defaultPriority, setDefaultPriority] = useState([]) 
+  const [defaultTime, setDefaultTime] = useState('')
+  const [defaultCategory, setDefaultCategory] = useState('')
+  const [defaultPriority, setDefaultPriority] = useState('') 
 
   useEffect(() => {
     async function getStoredData() {
+      const defTime = await getData('defaultTime')
+      setDefaultTime(defTime ? defTime : '14:00')
 
       const defCategory = await getData('defaultCategory')
       setDefaultCategory(defCategory ? defCategory : 'Target')
@@ -35,7 +38,7 @@ const ContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <Context.Provider value={{ task, setTask, defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority }}>
+    <Context.Provider value={{ task, setTask, defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority, defaultTime, setDefaultTime }}>
       {children}
     </Context.Provider>
   )

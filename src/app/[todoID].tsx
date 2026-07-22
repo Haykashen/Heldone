@@ -1,6 +1,7 @@
 //import CategoryPanel from '@/components/CategoryPanel';
 import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
+import CardRow from '@/components/CardRow';
 import { Context } from '@/context/context';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
@@ -132,19 +133,19 @@ const taskCard = () => {
           //snapPoints={['90%', '70%']}
           onClose={handleClose}
           enablePanDownToClose
-          backgroundStyle ={{backgroundColor:'#031F2B', }}
+          backgroundStyle={{ backgroundColor: '#031F2B', }}
         >
           <BottomSheetView style={{ flex: 1, backgroundColor: '#031F2B', paddingHorizontal: 10 }}>
-            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5,}}>
+            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5, }}>
               <Pressable onPress={handleBack} style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
                 <Text style={{ color: "silver", fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
               </Pressable>
-              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Задача</Text>
+              <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Задача</Text>
               <Pressable onPress={handleDone} style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
                 <Text style={{ color: "#63B4FF", fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
               </Pressable>
             </View>
-            <View style={{ flexDirection: 'column', width: '100%', gap: 10, marginTop:15 }}>
+            <View style={{ flexDirection: 'column', width: '100%', gap: 10, marginTop: 15 }}>
               {show && (
                 <DateTimePicker
                   //style={{backgroundColor:'#031F2B', borderColor:'red', width:70}}
@@ -163,7 +164,7 @@ const taskCard = () => {
                   }}
                 />
               )}
-              <View style={{ flexDirection: 'column', width: '100%', height: 50}}>
+              <View style={{ flexDirection: 'column', width: '100%', height: 50 }}>
                 <TextInput
                   style={{ fontSize: 16, color: 'white', borderColor: focused == 'Title' ? 'silver' : currTask.title ? '#263238' : '#E11D48', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}
                   onFocus={() => setFocused('Title')}
@@ -175,60 +176,12 @@ const taskCard = () => {
                   //autoFocus={true} 
                   maxLength={40}
                 />
-              </View>            
-              <View style={{ flexDirection:'row', justifyContent:'space-between',alignItems:'center'}}>
-                <Text  style={{ color: 'white', fontWeight:'bold', fontSize: 16, }}>Когда</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent:'center',  gap: 5,}}>
-                <Pressable
-                  onPress={() => showDatepicker('date')}
-                  style={{flexDirection: 'row', alignItems: 'center', justifyContent:'center',  gap: 3,}}>
-                  <Text style={{ color: 'white', fontSize: 16, }}>{date}</Text>
-                  <MaterialDesignIcons name='calendar-month-outline' color={currTask.date ? 'white' : '#E11D48'} size={24} />
-                </Pressable>  
-                <Pressable
-                  onPress={() => showDatepicker('time')}
-                  style={{flexDirection: 'row', alignItems: 'center', justifyContent:'center',  gap: 3,}}>
-                  <Text style={{ color: 'white', fontSize: 16, }}>{time}</Text>
-                  <MaterialDesignIcons name='clock' color={'white'} size={24} />
-                </Pressable>                   
-                </View>               
               </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between',alignItems:'center' }}>
-                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, }}>Приоритет</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, }}>
-                  <Pressable
-                    onPress = {()=> setRefPriorityBottomSheet(sheetPriorityRef, 0) }
-                    style={{ flexDirection: 'row', alignItems: 'center', gap: 3, }}>
-                    <Text style={{ color: 'white', fontSize: 16, }}>{currTask.priority.name.ru}</Text>
-                    <MaterialDesignIcons name={currTask.priority.icon as any} color={currTask.priority.color} size={24} />
-                  </Pressable>
-                </View>
-              </View>  
-               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, }}>Категория</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, }}>
-                  <Pressable
-                    onPress = {()=> setRefCategoryBottomSheet(sheetCategoryRef, 0) }
-                    style={{ flexDirection: 'row', alignItems: 'center', gap: 3, }}>
-                    <Text style={{ color: 'white', fontSize: 16, }}>{currTask.category.name.ru}</Text>
-                    <View style={{backgroundColor:currTask.category.backColor, borderRadius:5, padding:2}}>
-                      <MaterialDesignIcons name={currTask.category.icon as any} color={currTask.category.color} size={22} />
-                    </View>
-                    
-                  </Pressable>
-                </View>
-              </View> 
-               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, }}>Статус</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, }}>
-                  <Pressable
-                    onPress={changeStatus}
-                    style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-                    <Text style={{ color: 'white', fontSize: 16, }}>{currTask.status.name.ru} </Text>
-                    <MaterialDesignIcons name={currTask.status.icon as any} color={(currTask.status.color)} size={24} />
-                  </Pressable>
-                </View>
-              </View>                                          
+              <CardRow title='День Row' text={date} icon={'calendar-month-outline'} iconColor={currTask.date ? 'white' : '#E11D48'} onPress={() => showDatepicker('date')}/>
+              <CardRow title='Время Row' text={time} icon={'clock'} iconColor={'white'} onPress={() => showDatepicker('time')}/>
+              <CardRow title='Приоритет Row' text={currTask.priority.name.ru} icon={currTask.priority.icon} iconColor={currTask.priority.color} onPress={() => setRefPriorityBottomSheet(sheetPriorityRef, 0)}/>
+              <CardRow title='Категория Row' text={currTask.category.name.ru} icon={currTask.category.icon} iconBackColor={currTask.category.backColor} iconColor={currTask.category.color} onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)}/>
+              <CardRow title='Статус Row' text={currTask.status.name.ru} icon={currTask.status.icon} iconColor={currTask.status.color} onPress={changeStatus}/>            
               <View style={{ flexDirection: 'column', width: '100%', height: 100 }}>
                 <TextInput
                   style={{ fontSize: 16, flex: 1, color: 'white', borderColor: focused == 'Notes' ? 'silver' : '#263238', borderWidth: 2, borderRadius: 10, paddingHorizontal: 5, paddingVertical: 10 }}
@@ -249,11 +202,10 @@ const taskCard = () => {
                 </Pressable>
               </View>
             </View>
-            <CategoryBottomSheet setCategory={changeCategory} setRef={setRefCategoryBottomSheet} sheetRef = {sheetCategoryRef}/> 
-            <PriorityBottomSheet setPriority={changePriority} setRef={setRefPriorityBottomSheet} sheetRef = {sheetPriorityRef}/>
+            <CategoryBottomSheet setCategory={changeCategory} setRef={setRefCategoryBottomSheet} sheetRef={sheetCategoryRef} />
+            <PriorityBottomSheet setPriority={changePriority} setRef={setRefPriorityBottomSheet} sheetRef={sheetPriorityRef} />
           </BottomSheetView>
         </BottomSheet>
-                 
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -262,27 +214,22 @@ const taskCard = () => {
 export default taskCard
 
 
-const style = (Theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.colors.bg_Primary,
-    alignItems: 'center',
-    gap: 5,
-    padding: 5
-  },
-  textHeader: {
-    color: Theme.colors.text_Primary,
-    fontSize: 22,
-    fontWeight: 'bold'
-  },
-  text: {
-    fontSize: 16,
-    color: Theme.colors.text_Secondary
-  },
-  row:{ 
+const styles = StyleSheet.create({
+  card_row: { 
     flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    width: '100%' 
+    justifyContent: 'space-between',
+    alignItems:'center' 
+  },
+  card_row_text: {
+    color: 'white', 
+    fontWeight: 'bold', 
+    fontSize: 16,
+  },
+  card_row_pressable: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
   }
 });
 
