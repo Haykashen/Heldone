@@ -1,17 +1,16 @@
 import Categorys from '@/data/CategoryData';
-import BottomSheet, { BottomSheetFlatList, BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
+import { TBottomSheet } from '@/utils/types';
+import BottomSheet, { BottomSheetFlatList, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
-//import { router } from 'expo-router';
-import { RefObject } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const CategoryBottomSheet = ({setCategory, setRef, sheetRef }: { setCategory:(id:string)=>void, setRef: ((arg: RefObject<BottomSheetMethods | null>, index: number) => void), sheetRef: RefObject<BottomSheetMethods | null> }) => {
+const CategoryBottomSheet = ({ currentId, setValue, setRef, sheetRef }: TBottomSheet) => {
 
     const array = Object.values(Categorys);
 
-    const itemPress = (id:string) => {
-        setCategory(id)
+    const itemPress = (id: string) => {
+        setValue(id)
         setRef(sheetRef, -1)
     }
 
@@ -23,7 +22,7 @@ const CategoryBottomSheet = ({setCategory, setRef, sheetRef }: { setCategory:(id
                 snapPoints={['70%', '90%']}
                 //onClose={() => setRef(sheetRef, -1)}
                 enablePanDownToClose
-                backgroundStyle ={{backgroundColor:'#031F2B', }}
+                backgroundStyle={{ backgroundColor: '#031F2B', }}
             >
                 <BottomSheetView style={{ flex: 1 }}>
                     <BottomSheetFlatList
@@ -36,15 +35,24 @@ const CategoryBottomSheet = ({setCategory, setRef, sheetRef }: { setCategory:(id
                         renderItem={({ item }) => (
                             <Pressable
                                 key={item.id}
-                                onPress={()=>itemPress(item.id)}
-                                style={{ flexDirection: 'row', gap: 10, backgroundColor: '#263238', borderRadius: 15, alignItems: 'center' }}>
+                                onPress={() => itemPress(item.id)}
+                                style={{ 
+                                    flexDirection: 'row', 
+                                    gap: 10, 
+                                    backgroundColor: '#263238', 
+                                    borderRadius: 15, 
+                                    alignItems: 'center',
+                                    borderWidth:2, 
+                                    borderColor: item.id == currentId ? 'silver' : '#263238',
+                                }}>
                                 <View style={{ height: 50, width: 50, backgroundColor: item.backColor, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
                                     <MaterialDesignIcons name={item.icon as any} color={item.color} size={38} />
                                 </View>
                                 <View style={{ alignItems: 'center', justifyContent: 'center', minWidth: '70%' }}>
                                     <Text style={{ paddingVertical: 16, color: 'white' }}>{item.name.ru}</Text>
                                 </View>
-                            </Pressable>)}
+                            </Pressable>)
+                        }
                     />
                 </BottomSheetView>
             </BottomSheet>

@@ -78,10 +78,9 @@ export function notifyMessage(msg: string) {
 }
 
 export const getNewTask = (createDate: string, defaultCategory: string, defaultPriority: string, createTime:string) => {
-  console.log('createDate = ', createDate)
-  console.log('createTime = ', createTime)
-  let date = (createDate) ? new Date(createDate+'T'+createTime) : new Date('0000-00-00'+'T'+createTime);
-  console.log('create date = ', date)
+
+  let date = new Date(createDate+'T'+createTime);
+  
   return (
     {
       id: uuid.v4(),

@@ -1,10 +1,34 @@
-export type TName = {
-    [key: string]: string
+import { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
+import { RefObject } from 'react';
+
+export type TBottomSheet = {
+    setValue: (id: string) => void,
+    setRef: ((arg: RefObject<BottomSheetMethods | null>, index: number) => void),
+    sheetRef: RefObject<BottomSheetMethods | null>,
+    currentId: string
 }
+
+export type TTask = {
+    id:string, 
+    date:Date, 
+    title:string, 
+    category:TDataItem, 
+    status:TDataItem,
+    priority:TDataItem, 
+    notes?:string,    
+};
+
+export type TListItem = TTask & {onItemPress: (() => void), onCompletePress: (() => void) };
+
+// export type TName = {
+//     [key: string]: string
+// }
 
 export type TDataItem = {
     id: string,
-    name: TName,
+    name: {
+      [key: string]: string
+    },
     color: string,
     icon: string,
     backColor?: string,
@@ -14,23 +38,5 @@ export type TDataItem = {
 export type TDataDir = {
     [id: string]: TDataItem 
 }
-export type TPropsItem = {item:TItem}
-export type TItem = TTask & {onItemPress: (() => void), onCompletePress: (() => void), onDeletePress: (() => void)};//id:string
-export type TTask = {id:string, date:Date, title:string, category:TDataItem, status:TDataItem, notes?:string, priority:TDataItem};
-//export type TMarkedDays = {[key:string]:{marked:boolean}}
-export type TTaskByDays  = {[key:string]:{data:any}}
 
-export interface ITranslate {
-    [word: string] : {
-        [lang: string] : string
-    }
-}
-//export type TCategoryPanel = { onPressCategory :(arg:string)=>void, category:string}
-export type TNavPanel = { onPressStatus:(arg:string)=>void, onPressAdd:()=>void, theme:any, status:string}
-// type TCategory = {
-//     [id:string]:{
-//         [atr:string]:{
-//             [key:string]:string
-//         }
-//     }
-// }
+export type TTaskByDays  = {[key:string]:{data:any}}

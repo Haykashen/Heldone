@@ -1,5 +1,4 @@
 import { scaleEnd, scaleStart } from '@/utils/animation';
-import { ITranslate } from "@/utils/types";
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RelativePathString, router } from "expo-router";
 import { useRef } from 'react';
@@ -63,17 +62,3 @@ const style = (Theme:any)=> StyleSheet.create({
     padding:5
   },
 });
-
-const translate:ITranslate ={
-  FirstRow:{
-    ru:'У вас пока нет никаких заданий!',
-    en:'You dont have any tasks yet!'
-  },
-  SecondRow:{
-    ru:'Добавьте задачу,',
-    en:'Add new tasks'
-  },
-  ThirdRow:{
-    ru:'чтобы сделать ваш день продуктивным.',
-    en:'to make your days productive.'
-  },}

@@ -59,28 +59,25 @@ const settings = () => {
         <SettingRow title='Язык' text='Русский' onPress={() => null} />
         <SettingRow title='Стиль' text='Классический' onPress={() => null} />
         <SettingRow title='Время по умолчанию' text={defaultTime} onPress={() => setShow(true)} />
-        <SettingRow title='Категория по умолчанию' text={CategoryData[defaultCategory].name.ru} onPress={() => setShow(true)} />
-        <View>
-          <FlatList
-            //initialScrollIndex={}
-            nestedScrollEnabled
-            horizontal
-            //style={{ width: '100%', gap:30}}
-            contentContainerStyle={{ gap: 10 }}
-            data={Object.values(CategoryData)}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={defaultCategory} onPressCategory={changeDefaultCategory} />}
-          />
-        </View>
+        <SettingRow title='Категория по умолчанию' text={CategoryData[defaultCategory].name.ru} onPress={() => null} />
+        <FlatList
+          //initialScrollIndex={}
+          nestedScrollEnabled
+          horizontal
+          contentContainerStyle={{ gap: 10 }}
+          data={Object.values(CategoryData)}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={defaultCategory} onPressCategory={changeDefaultCategory} />}
+        />
         <SettingRow title='Приоритет по умолчанию' text={PriorityData[defaultPriority].name.ru} onPress={() => setRefPriorityBottomSheet(sheetPriorityRef, 0)} />
-        {/* <View style={styles.setting_row}>
-          <Priority currValue={defaultPriority} changePriority={changeDefaultPriority} priority={PriorityData.High.id} />
-          <Priority currValue={defaultPriority} changePriority={changeDefaultPriority} priority={PriorityData.Medium.id} />
-          <Priority currValue={defaultPriority} changePriority={changeDefaultPriority} priority={PriorityData.Low.id} />
-        </View> */}
         <SettingRow title='Версия' text={appVersion} onPress={() => null} />
       </View>
-      <PriorityBottomSheet setPriority={changeDefaultPriority} setRef={setRefPriorityBottomSheet} sheetRef={sheetPriorityRef} />
+      <PriorityBottomSheet
+        currentId={PriorityData[defaultPriority].id}
+        setValue={changeDefaultPriority}
+        setRef={setRefPriorityBottomSheet}
+        sheetRef={sheetPriorityRef}
+      />
     </SafeAreaView>
   )
 }

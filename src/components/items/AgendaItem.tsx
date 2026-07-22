@@ -1,10 +1,10 @@
 import { scaleEnd, scaleStart } from '@/utils/animation';
-import { TItem } from "@/utils/types";
+import { TListItem } from "@/utils/types";
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import React, { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, Vibration, View } from 'react-native';
 
-const AgendaItem = (props: TItem) => {
+const AgendaItem = (props: TListItem) => {
   const { id, date, title, category, status, priority, onItemPress, onCompletePress, } = props;
   const scale = useRef(new Animated.Value(1)).current;
 

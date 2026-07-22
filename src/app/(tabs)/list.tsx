@@ -99,7 +99,6 @@ const list = () => {
             priority={item.priority}
             onCompletePress={() => handleComplete(item.id)}
             onItemPress={() => handlePress(item.id)}
-            onDeletePress={() => null}
           />}
         />
       </CalendarProvider>

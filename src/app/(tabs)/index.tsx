@@ -65,7 +65,6 @@ export default function Index() {
             notes={item.notes}
             onCompletePress={() => handleComplete(item.id)}
             onItemPress={() => handlePress(item.id)}
-            onDeletePress={() => null}
           />
         )}
         ListEmptyComponent={() => (

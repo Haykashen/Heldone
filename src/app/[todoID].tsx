@@ -218,8 +218,18 @@ const taskCard = () => {
                 </Pressable>
               </View>
             </View>
-            <CategoryBottomSheet setCategory={changeCategory} setRef={setRefCategoryBottomSheet} sheetRef={sheetCategoryRef} />
-            <PriorityBottomSheet setPriority={changePriority} setRef={setRefPriorityBottomSheet} sheetRef={sheetPriorityRef} />
+            <CategoryBottomSheet 
+              currentId = {currTask.category.id}
+              setValue = {changeCategory} 
+              setRef = {setRefCategoryBottomSheet} 
+              sheetRef = {sheetCategoryRef} 
+            />
+            <PriorityBottomSheet 
+              currentId = {currTask.priority.id}
+              setValue = {changePriority} 
+              setRef = {setRefPriorityBottomSheet} 
+              sheetRef = {sheetPriorityRef} 
+            />
           </BottomSheetView>
         </BottomSheet>
       </SafeAreaView>
