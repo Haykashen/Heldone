@@ -1,4 +1,4 @@
-import Priority from '@/components/buttons/Priority';
+import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
 import CategoryItem from '@/components/items/CategoryItem';
 import SettingRow from '@/components/SettingRow';
 import Header from '@/components/TabHeader';
@@ -6,8 +6,9 @@ import { Context } from '@/context/context';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
 import { setData } from '@/store/setData';
+import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
-import { useContext, useState } from 'react';
+import { RefObject, useContext, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -17,23 +18,24 @@ const settings = () => {
   const appVersion = pkg.version;
   const [time,setTime] = useState(new Date())
   const [show, setShow] = useState(false);
+  const sheetPriorityRef = useRef<BottomSheet>(null);
 
-  // const defaultCategory = 'Target';
-  // const defaultPriority = 'Low';
   console.log('defaultCategory', defaultCategory)
   console.log('defaultPriority', defaultPriority)
+
   const changeDefaultCategory =(id:string)=>{
-    //alert('категория')
     setDefaultCategory(id);
     setData('defaultCategory', JSON.stringify(id))    
   }
 
   const changeDefaultPriority =(id:string)=>{
-    //alert('Приоритет')
     setDefaultPriority(id);
     setData('defaultPriority', JSON.stringify(id))    
   }
-
+  const setRefPriorityBottomSheet =(ref:RefObject<BottomSheetMethods | null>, index: number)=>{
+    ref.current?.snapToIndex(index)
+  }
+  
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, }}>
       {show && (
@@ -70,14 +72,15 @@ const settings = () => {
             renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={defaultCategory} onPressCategory={changeDefaultCategory} />}
           />
         </View>
-        <SettingRow title='Приоритет по умолчанию' text={PriorityData[defaultPriority].name.ru} onPress={() => null} />
-        <View style={styles.setting_row}>
+        <SettingRow title='Приоритет по умолчанию' text={PriorityData[defaultPriority].name.ru} onPress={() => setRefPriorityBottomSheet(sheetPriorityRef, 0)} />
+        {/* <View style={styles.setting_row}>
           <Priority currValue={defaultPriority} changePriority={changeDefaultPriority} priority={PriorityData.High.id} />
           <Priority currValue={defaultPriority} changePriority={changeDefaultPriority} priority={PriorityData.Medium.id} />
           <Priority currValue={defaultPriority} changePriority={changeDefaultPriority} priority={PriorityData.Low.id} />
-        </View>
+        </View> */}
         <SettingRow title='Версия' text={appVersion} onPress={() => null} />
       </View>
+      <PriorityBottomSheet setPriority={changeDefaultPriority} setRef={setRefPriorityBottomSheet} sheetRef={sheetPriorityRef} />
     </SafeAreaView>
   )
 }
