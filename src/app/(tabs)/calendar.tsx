@@ -7,7 +7,7 @@ import { completeTask } from '@/utils/taskManage';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
 import { useCallback, useContext, useRef, useState } from 'react';
-import { Animated, Easing, Pressable, StyleSheet, Text } from 'react-native';
+import { Animated, Easing, Pressable, Text } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar, LocaleConfig } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -81,15 +81,6 @@ const calendar = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <Header title='Календарь' text='в месячном и недельном виде' />
-              {/* <DateTimePicker
-                mode={'date'}
-                locale='ru_RU'
-                presentation="inline"
-                value={new Date()}
-                themeVariant='dark'
-              /> */}
-              <Text style={{color:'white'}}>{date}</Text>
-              <Text style={{color:'white'}}>{new Date().toLocaleDateString()}</Text>
       <CalendarProvider
         date= '2026-07-23'
         onDateChanged={(date, updateSource) => changeDate(date)}//
@@ -148,7 +139,3 @@ const calendar = () => {
 };
 
 export default calendar;
-
-const style = (Theme:any)=> StyleSheet.create({
-
-});

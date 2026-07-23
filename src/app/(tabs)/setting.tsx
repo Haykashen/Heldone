@@ -8,6 +8,7 @@ import PriorityData from '@/data/PriorityData';
 import { setData } from '@/store/setData';
 import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
+import LottieView from 'lottie-react-native';
 import { RefObject, useContext, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -36,8 +37,13 @@ const settings = () => {
     ref.current?.snapToIndex(index)
   }
   
+  const animation = require('@/assets/animation/Business_plan.json');
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, }}>
+      <View style={{height:400}}>
+        <LottieView style={{ flex:1 }} source={animation} autoPlay loop />
+      </View>
+          
       {show && (
         <DateTimePicker
           mode='time'
