@@ -14,16 +14,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 LocaleConfig.locales['rus'] = {
   monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
   monthNamesShort: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
-  dayNames: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
-  dayNamesShort: ['Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.', 'Вос.'],
+  dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+  dayNamesShort: ['Вос.', 'Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.'],
   today: "Сегодня"
 };
-
 LocaleConfig.defaultLocale = 'rus';
-
-// interface Props {
-//   weekView?: boolean;
-// }props: Props
 
 const calendar = () => {
   const { task, setTask } = useContext(Context);
@@ -85,71 +80,52 @@ const calendar = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
-      <Header title='Календарь' text='в месячном и недельном виде'/> 
+      <Header title='Календарь' text='в месячном и недельном виде' />
+              {/* <DateTimePicker
+                mode={'date'}
+                locale='ru_RU'
+                presentation="inline"
+                value={new Date()}
+                themeVariant='dark'
+              /> */}
+              <Text style={{color:'white'}}>{date}</Text>
+              <Text style={{color:'white'}}>{new Date().toLocaleDateString()}</Text>
       <CalendarProvider
-        date={date}
+        date= '2026-07-23'
         onDateChanged={(date, updateSource) => changeDate(date)}//
-        showTodayButton = {today !== date ? true: false}       
-        style={{ gap: dayTasks[0] ? 0 : 40}}
+        showTodayButton={today !== date ? true : false}
+        style={{ gap: dayTasks[0] ? 0 : 40 }}
         theme={{
           todayButtonTextColor: '#007aff',
-          todayButtonFontWeight:'bold'
+          todayButtonFontWeight: 'bold'
         }}
-        
-      // disabledOpacity={0.6}  
-      // todayBottomMargin={16}
-      // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
       >
-        {/* {weekView ? (
-          <WeekCalendar 
-            //firstDay={0} 
-            //markedDates={multiDots} 
-          />
-        ) : ( )}*/}
-          <ExpandableCalendar
-            //showWeekNumbers
-            renderHeader={renderHeader}
-            ref={calendarRef}
-            onCalendarToggled={onCalendarToggled}
-            markingType="multi-dot"
-            markedDates={multiDots}
-            firstDay={0}
-            //onDayPress={(date)=> {console.log( 'onDayPress', date.dateString); changeDate(date.dateString)}}
-            //closeOnDayPress
-            // horizontal={false}
-            // hideArrows
-            // disablePan
-            // hideKnob
-            // initialPosition={ExpandableCalendar.positions.OPEN}
-            // calendarStyle={styles.calendar}
-            // headerStyle={styles.header} // for horizontal only
-            // disableWeekScroll
-            // disableAllTouchEventsForDisabledDays                        
-          //   leftArrowImageSource={leftArrowIcon}
-          //   rightArrowImageSource={rightArrowIcon}
-          // animateScroll
-          // closeOnDayPress={false}
-            //theme={theme.current}
-            theme={{
-              // arrows
-              arrowColor: 'black',
-              // selected date
-              selectedDayBackgroundColor: "#b1d6f9",
-              selectedDayTextColor: 'white',
-              // dot (marked date)
-              dotColor: '#007aff',
-            }}
+        <ExpandableCalendar
+          //showWeekNumbers
+          renderHeader={renderHeader}
+          ref={calendarRef}
+          onCalendarToggled={onCalendarToggled}
+          markingType="multi-dot"
+          markedDates={multiDots}
+          firstDay={1}
+          theme={{
+            // arrows
+            arrowColor: 'black',
+            // selected date
+            selectedDayBackgroundColor: "#b1d6f9",
+            selectedDayTextColor: 'white',
+            // dot (marked date)
+            dotColor: '#007aff',
+          }}
 
-          />
-        
-        
+        />
         <AgendaList
           sections={dayTasks}
           ListEmptyComponent={
-            <ListEpmtyComponent  
-              date={date} 
-              title ='У вас пока нет никаких заданий!'
-              text  = 'Добавьте задачу, чтобы сделать ваш день продуктивным.'
+            <ListEpmtyComponent
+              date={date}
+              title='У вас пока нет никаких заданий!'
+              text='Добавьте задачу, чтобы сделать ваш день продуктивным.'
             />
           }
           sectionStyle={{ backgroundColor: '#031F2B', }}
@@ -161,9 +137,9 @@ const calendar = () => {
             title={item.title}
             priority={item.priority}
             notes={item.notes}
-            onCompletePress={()=>handleComplete(item.id)}
-            onItemPress={()=>handlePress(item.id)}
-          /> }
+            onCompletePress={() => handleComplete(item.id)}
+            onItemPress={() => handlePress(item.id)}
+          />}
         />
       </CalendarProvider>
       <Add date={date} />
