@@ -9,12 +9,19 @@ const ContextProvider = ({ children }) => {
   //const [platform, setPlatform] = useState(Platform.OS);//
   //const [language, setLanguage] = useState('ru');//storeLanguage? storeLanguage :
   const [task, setTask] = useState([])
-  const [defaultTime, setDefaultTime] = useState('')
-  const [defaultCategory, setDefaultCategory] = useState('')
-  const [defaultPriority, setDefaultPriority] = useState('') 
+  const [defaultTime, setDefaultTime] = useState('14:00')
+  const [defaultCategory, setDefaultCategory] = useState('Target')
+  const [defaultPriority, setDefaultPriority] = useState('Low') 
+  const [onboarded, setOnboarded] = useState(false) 
+  
+  const [loaded, setLoad] = useState(false) 
 
   useEffect(() => {
+
     async function getStoredData() {
+      const onboard = await getData('onboarded')
+      setOnboarded(onboard ? onboard : false)
+
       const defTime = await getData('defaultTime')
       setDefaultTime(defTime ? defTime : '14:00')
 
@@ -26,19 +33,38 @@ const ContextProvider = ({ children }) => {
 
       const storedTask = await getData('todo')
       if (storedTask) {
-        storedTask.forEach((item)=> {
-          item.date = new Date(item.date)
-          //setTimeStatus(item)
-        })
+        storedTask.forEach((item) => { item.date = new Date(item.date) })
         setTask(storedTask)
-        //console.log('storedTask =  ', storedTask)
-      }      
+      }
     }
-    getStoredData()
+    try {
+      getStoredData()
+    }
+    catch (e) {
+      console.log('Error loading getStoredData')
+    }
+    finally {
+      setLoad(true)
+    }
+
   }, []);
 
   return (
-    <Context.Provider value={{ task, setTask, defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority, defaultTime, setDefaultTime }}>
+    <Context.Provider 
+      value={{ 
+        task, 
+        setTask, 
+        defaultCategory, 
+        setDefaultCategory, 
+        defaultPriority, 
+        setDefaultPriority, 
+        defaultTime, 
+        setDefaultTime, 
+        onboarded, 
+        setOnboarded,
+        loaded, 
+        setLoad 
+    }}>
       {children}
     </Context.Provider>
   )

@@ -7,14 +7,15 @@ import { scaleEnd, scaleStart } from '@/utils/animation';
 import { completeTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
 import { getFormatedDay } from '@/utils/utils';
-import { RelativePathString, router } from "expo-router";
+import { Redirect, RelativePathString, router } from "expo-router";
+import LottieView from 'lottie-react-native';
 import { useContext, useRef } from 'react';
 import { Animated, DimensionValue, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function Index() {
-  const { task, setTask } = useContext(Context);
+  const { task, setTask, loaded, onboarded } = useContext(Context);
   const scale = useRef(new Animated.Value(1)).current;
   const today = new Date();
   //const [refresh, setRefresh] = useState(false);
@@ -35,8 +36,14 @@ export default function Index() {
   let progressPercent = Math.round(completed.length / filtered.length * 100);
   let widthProgress = (progressPercent ? progressPercent : 0) + '%';
 
+  if(!onboarded)
+  {
+    return <Redirect href={'/onboarding'}/>
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
+      <Text  style={{ color: 'white', fontWeight: 'bold', fontSize:22 }}>{loaded ? 'true': 'false'}</Text>
       <Header title='Сегодня' text={today.toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })} />
       <View style={{ marginVertical: 15, borderColor: 'silver', borderRadius: 10, borderWidth: 2, height: 100, marginHorizontal: 10, flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
         <View style={{ flexDirection: 'row' }}>
@@ -49,7 +56,9 @@ export default function Index() {
         <View style={{ width: '80%', backgroundColor: 'white', height: 8, borderRadius: 10 }}>
           <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 8, borderRadius: 10 }}></View>
         </View>
+        
       </View>
+      <LottieView style={{ height:200, width:'100%', position:'absolute' }} source={require('@/assets/animation/Confetti.json')} autoPlay loop />
       <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
       <FlatList
         data={filtered}
