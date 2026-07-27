@@ -1,5 +1,7 @@
 import { Context } from '@/context/context';
+import { setData } from '@/store/setData';
 import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
+import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { useContext, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -19,8 +21,13 @@ const OnboardingScreen = ({ path, title }: { path: string, title: string }) => {
 const onboarding = () => {
     const [page, setPage] = useState(0)
     const pagerRef = useRef<PagerViewRef>(null);
-    const { defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority, defaultTime, setDefaultTime } = useContext(Context);
+    const { setOnboarded } = useContext(Context);
 
+    const OnboardingDone = ()=>{
+      setData('onboarded', JSON.stringify(true))
+      setOnboarded(true)
+      router.push('/')
+    }
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, }}>
             <View style={{ height: 500 }}>
@@ -47,6 +54,9 @@ const onboarding = () => {
                 <Pressable onPress={() => pagerRef.current?.setPage(page === 7 ? 0 : page + 1)}>
                     <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Go to page {page + 1}</Text>
                 </Pressable>
+                {page === 7 && <Pressable onPress={OnboardingDone}>
+                    <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>Done</Text>
+                </Pressable>}                
             </View>
         </SafeAreaView>
     )

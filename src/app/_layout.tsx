@@ -1,8 +1,9 @@
 import { ContextProvider } from '@/context/context';
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function RootLayout() {
+  
   return (
     <ContextProvider>
       <SafeAreaProvider>
@@ -13,19 +14,19 @@ export default function RootLayout() {
           <Stack.Screen name="[todoID]"
             options={{
                presentation: 'transparentModal',
-               //animation: 'fade_from_bottom',
-               //contentStyle: { backgroundColor: "#40404040" },
-
-              // presentation: 'transparentModal',
-              // animation: 'fade',
-              // //sheetAllowedDetents: 'fitToContents',
-              // contentStyle: { backgroundColor: "#40404040" },
             }}
           />
           <Stack.Screen
             name="notice"
             options={{
                presentation: 'transparentModal',
+            }}
+          />          
+        </Stack>
+      </SafeAreaProvider>
+    </ContextProvider>
+  );
+}
                //animation: 'fade_from_bottom',
                //contentStyle: { backgroundColor: "#40404040" },
 
@@ -37,10 +38,3 @@ export default function RootLayout() {
               // sheetGrabberVisible: true,
               // sheetInitialDetentIndex: 0,
               // sheetAllowedDetents: [0.5, 0.7, 1.0]
-            }}
-          />          
-        </Stack>
-      </SafeAreaProvider>
-    </ContextProvider>
-  );
-}

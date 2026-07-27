@@ -8,11 +8,14 @@ import { completeTask } from '@/utils/taskManage';
 import { TTask } from '@/utils/types';
 import { getFormatedDay } from '@/utils/utils';
 import { Redirect, RelativePathString, router } from "expo-router";
+import * as SplashScreen from 'expo-splash-screen';
 import LottieView from 'lottie-react-native';
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { Animated, DimensionValue, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 export default function Index() {
   const { task, setTask, loaded, onboarded } = useContext(Context);
@@ -21,6 +24,12 @@ export default function Index() {
   //const [refresh, setRefresh] = useState(false);
   const filtered = task.filter((item: TTask) => item.date.toLocaleDateString() === today.toLocaleDateString());
   const completed: [] = filtered.filter((item: TTask) => item.status.id === 'Completed')
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hide();
+    }
+  }, [loaded]);  
 
   const handlePress = (id: string) => {
     router.push(('/' + id) as RelativePathString)
@@ -41,6 +50,8 @@ export default function Index() {
     return <Redirect href={'/onboarding'}/>
   }
 
+
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <Text  style={{ color: 'white', fontWeight: 'bold', fontSize:22 }}>{loaded ? 'true': 'false'}</Text>
@@ -58,7 +69,7 @@ export default function Index() {
         </View>
         
       </View>
-      <LottieView style={{ height:200, width:'100%', position:'absolute' }} source={require('@/assets/animation/Confetti.json')} autoPlay loop />
+      {(filtered.length> 0 && completed.length === filtered.length) && <LottieView style={{ height:200, width:'100%', position:'absolute' }} source={require('@/assets/animation/Confetti.json')} autoPlay loop />}
       <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
       <FlatList
         data={filtered}
