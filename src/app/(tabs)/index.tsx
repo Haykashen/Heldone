@@ -54,7 +54,6 @@ export default function Index() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
-      <Text  style={{ color: 'white', fontWeight: 'bold', fontSize:22 }}>{loaded ? 'true': 'false'}</Text>
       <Header title='Сегодня' text={today.toLocaleDateString("ru-RU", { weekday: 'long', year: "numeric", month: "long", day: "numeric", })} />
       <View style={{ marginVertical: 15, borderColor: 'silver', borderRadius: 10, borderWidth: 2, height: 100, marginHorizontal: 10, flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', }}>
         <View style={{ flexDirection: 'row' }}>

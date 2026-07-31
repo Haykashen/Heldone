@@ -30,14 +30,14 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#031F2B",
-          
           "android": {
             "image": "./assets/images/splash-icon.png",
             "imageWidth": 200,
-            "resizeMode":"contain"
+            "resizeMode": "contain"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
