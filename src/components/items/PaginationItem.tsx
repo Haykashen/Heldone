@@ -28,7 +28,7 @@ const PaginationItem = ({ onPress, value, currentValue }: TPaginationItem) => {
                 onPress={handlePress}
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
-                style={{ height: 4, width: 20, backgroundColor: value === currentValue ? '#007aff' : 'white' }} />
+                style={{ height: 4, width: 25, backgroundColor: value === currentValue ? '#007aff' : 'white' }} />
         </Animated.View>
     )
 }

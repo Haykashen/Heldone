@@ -1,7 +1,6 @@
 import PaginationItem from '@/components/items/PaginationItem';
 import { Context } from '@/context/context';
 import { setData } from '@/store/setData';
-import { scaleEnd, scaleStart } from '@/utils/animation';
 import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
 import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
@@ -24,20 +23,12 @@ const OnboardingScreen = ({ path, title, text }: { path: string, title: string, 
 
 const onboarding = () => {
   const [page, setPage] = useState(0)
-  const pagerRef = useRef<PagerViewRef>(null);
+  const pagerRef = useRef<PagerViewRef>(null); 
   const { setOnboarded } = useContext(Context);
   const scale = useRef(new Animated.Value(1)).current;
   const screen = require('@/assets/animation/Business_plan.json');
 
-  // Функция для анимации нажатия
-  const handlePressIn = () => {
-    scaleStart(scale, 1.7)
-  };
 
-  // Возврат к обычному размеру
-  const handlePressOut = () => {
-    scaleEnd(scale, 1)
-  };
   const OnboardingDone = () => {
     setData('onboarded', JSON.stringify(true))
     setOnboarded(true)
@@ -52,19 +43,14 @@ const onboarding = () => {
           initialPage={0}
           onPageSelected={event => {
             setPage(event.nativeEvent.position)
-            console.log('selected page', event.nativeEvent.position);
           }}>
           <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'center' }}>
-            <Animated.View style={{ transform: [{ scale }] }}>
-              <ImageBackground source={require('@/assets/images/icon.png')} style={{ width: 'auto', height: '91%', justifyContent: 'flex-end', gap: 10 }}>
-                <Text style={{ color: 'white', fontSize: 28, fontWeight: 'bold', justifyContent: 'center', alignContent: 'center', textAlign: 'center', marginHorizontal: 5 }}>{'Добро пожаловать в Хелдон!'}</Text>
-                <Text numberOfLines={3} style={{ color: 'white', fontSize: 20, justifyContent: 'center', alignContent: 'center', textAlign: 'justify', marginHorizontal: 5 }}>{'Хелдон - ваш личный помощник для эффективного планирования времени'}</Text>
-
-              </ImageBackground>
-              {/* <Image source={require('@/assets/images/icon.png')} style={{width:'100%',}} /> */}
-            </Animated.View>
+            <ImageBackground source={require('@/assets/images/icon.png')} style={{ width: 'auto', height: '91%', justifyContent: 'flex-end', gap: 10, padding: 20  }}>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: 'bold', justifyContent: 'center', alignContent: 'center', textAlign: 'center', marginHorizontal: 5 }}>{'Добро пожаловать в Хелдон!'}</Text>
+              <Text numberOfLines={3} style={{ color: 'white', fontSize: 20, justifyContent: 'center', alignContent: 'center', textAlign: 'justify', marginHorizontal: 5 }}>{'Хелдон - ваш личный помощник для эффективного планирования времени'}</Text>
+            </ImageBackground>
+            {/* <Image source={require('@/assets/images/icon.png')} style={{width:'100%',}} /> */}
           </View>
-
           <OnboardingScreen
             path={screen}
             title='Наведите порядок в хаосе дел и планов'
@@ -75,11 +61,6 @@ const onboarding = () => {
             title="Повышайте эффективность"
             text='Ежедневный контроль задач - гарантия результативного проведения дня'
           />
-          {/* <OnboardingScreen 
-                      path={require('@/assets/animation/Holding_value.json')} 
-                      title='Выполняйте ежедневный план дел' 
-                      text='Ежедневно контролируйте выполнение поставленных задач, что ваши дни были плодотворными'
-                    /> */}
           <OnboardingScreen
             path={require('@/assets/animation/Rotate_a_chart.json')}
             title='Анализируйте план задач'
@@ -90,25 +71,11 @@ const onboarding = () => {
             title='Достигайте целей'
             text="Выполняйте поставленные задачи, плодотворно проводя время и достигая своих целей"
           />
-          {/* <OnboardingScreen 
-                      path={require('@/assets/animation/Task_Loader.json')} 
-                      title='Достигайте свои цели' 
-                      text="Выполняйте поставленные задачи, плодотворно проводя время и достигая своих целей"
-                    /> */}
-          {/* <OnboardingScreen 
-                      path={require('@/assets/animation/The_idea_of_change.json')} 
-                      title='Welcome!!!'
-                      text="" 
-                    />
-                    <OnboardingScreen 
-                      path={require('@/assets/animation/Web_Design.json')} 
-                      title='Welcome!!!'
-                      text=""
-                    /> */}
         </PagerView>
       </View>
-      <View style={{ flexDirection: 'column', alignItems: 'center', gap:10}}>
+      <View style={{ flexDirection: 'column', alignItems: 'center', gap:15}}>
         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Animated.View style={{ transform: [{ scale }] }}></Animated.View>
           <PaginationItem onPress={() => pagerRef.current?.setPage(0)} value={0} currentValue={page} />
           <PaginationItem onPress={() => pagerRef.current?.setPage(1)} value={1} currentValue={page} />
           <PaginationItem onPress={() => pagerRef.current?.setPage(2)} value={2} currentValue={page} />
@@ -141,3 +108,23 @@ const styles = StyleSheet.create({
 
 
 });
+          {/* <OnboardingScreen 
+                      path={require('@/assets/animation/Holding_value.json')} 
+                      title='Выполняйте ежедневный план дел' 
+                      text='Ежедневно контролируйте выполнение поставленных задач, что ваши дни были плодотворными'
+                    /> */}
+          {/* <OnboardingScreen 
+                      path={require('@/assets/animation/Task_Loader.json')} 
+                      title='Достигайте свои цели' 
+                      text="Выполняйте поставленные задачи, плодотворно проводя время и достигая своих целей"
+                    /> */}
+          {/* <OnboardingScreen 
+                      path={require('@/assets/animation/The_idea_of_change.json')} 
+                      title='Welcome!!!'
+                      text="" 
+                    />
+                    <OnboardingScreen 
+                      path={require('@/assets/animation/Web_Design.json')} 
+                      title='Welcome!!!'
+                      text=""
+                    /> */}
