@@ -1,6 +1,5 @@
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
-import CategoryItem from '@/components/items/CategoryItem';
-import SettingRow from '@/components/SettingRow';
+import CardRow from '@/components/CardRow';
 import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
 import CategoryData from '@/data/CategoryData';
@@ -8,9 +7,8 @@ import PriorityData from '@/data/PriorityData';
 import { setData } from '@/store/setData';
 import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
-import { router } from 'expo-router';
 import { RefObject, useContext, useRef, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const settings = () => {
@@ -38,10 +36,7 @@ const settings = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, }}>
-      <Pressable onPress={()=>router.push('/onboarding')}>
-        <Text style={{color:'white', fontSize:22}}>To onboarding</Text>
-      </Pressable>   
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, }}>   
       {show && (
         <DateTimePicker
           mode='time'
@@ -59,22 +54,64 @@ const settings = () => {
         />)
       }
       <Header title='Настройки' text='приложения и аккаунта' />
-      <View style={{ flexDirection: 'column', gap: 10, paddingHorizontal: 10 }} >
-        <SettingRow title='Язык' text='Русский' onPress={() => null} />
-        <SettingRow title='Стиль' text='Классический' onPress={() => null} />
-        <SettingRow title='Время по умолчанию' text={defaultTime} onPress={() => setShow(true)} />
-        <SettingRow title='Категория по умолчанию' text={CategoryData[defaultCategory].name.ru} onPress={() => null} />
-        <FlatList
-          //initialScrollIndex={}
-          nestedScrollEnabled
-          horizontal
-          contentContainerStyle={{ gap: 10 }}
-          data={Object.values(CategoryData)}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => <CategoryItem categoryID={item.id} currentID={defaultCategory} onPressCategory={changeDefaultCategory} />}
-        />
-        <SettingRow title='Приоритет по умолчанию' text={PriorityData[defaultPriority].name.ru} onPress={() => setRefPriorityBottomSheet(sheetPriorityRef, 0)} />
-        <SettingRow title='Версия' text={appVersion} onPress={() => null} />
+      <View style={{ flexDirection: 'column', gap: 10, paddingHorizontal: 10,}} >
+        <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Системные</Text>           
+        <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
+          <CardRow
+            title='Язык'
+            text={'Русский'}
+            icon={'web'}
+            iconBackColor={'#263238'}
+            iconColor={'white'}
+            onPress={() =>  null}
+          />
+          <CardRow
+            title='Стиль'
+            text={'Классический'}
+            icon={'weather-night'}
+            iconBackColor={'#263238'}
+            iconColor={'white'}
+            onPress={() =>  null}
+          />
+          <CardRow
+            title='Уведомления'
+            text={CategoryData[defaultCategory].name.ru}
+            icon={'bell'}
+            iconBackColor={CategoryData[defaultCategory].backColor}
+            iconColor={CategoryData[defaultCategory].color}
+            onPress={() => (null)}
+          // onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)} 
+          />
+        </View>          
+        <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Значения по умолчанию</Text>        
+        <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
+          <CardRow
+            title='Время'
+            text={defaultTime}
+            icon={'clock'}
+            iconBackColor={'#263238'}
+            iconColor={'white'}
+            onPress={() => setShow(true)}
+          />
+          <CardRow
+            title='Приоритет'
+            text={PriorityData[defaultPriority].name.ru}
+            icon={PriorityData[defaultPriority].icon}
+            iconBackColor={PriorityData[defaultPriority].color}
+            iconColor={'white'}
+            onPress={() => setRefPriorityBottomSheet(sheetPriorityRef, 0)}
+          />
+          <CardRow
+            title='Категория'
+            text={CategoryData[defaultCategory].name.ru}
+            icon={CategoryData[defaultCategory].icon}
+            iconBackColor={CategoryData[defaultCategory].backColor}
+            iconColor={CategoryData[defaultCategory].color}
+            onPress={() => (null)}
+          // onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)} 
+          />
+        </View>
+        <View style={{alignItems:'center', justifyContent:'center'}}><Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Хелдон [{appVersion}]</Text></View>
       </View>
       <PriorityBottomSheet
         currentId={PriorityData[defaultPriority].id}
