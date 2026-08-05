@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, Vibration, View } from 'react-native';
 
 const AgendaItem = (props: TListItem) => {
-  const { id, date, title, category, status, priority, onItemPress, onCompletePress, } = props;
+  const { id, date, title, category, status, priority, files, onItemPress, onCompletePress, } = props;
   const scale = useRef(new Animated.Value(1)).current;
 
   const handleComplete = () => {
@@ -43,7 +43,8 @@ const AgendaItem = (props: TListItem) => {
             -  */}
           </Text>
           <MaterialDesignIcons name={priority.icon as any} color={priority.color} size={18} />
-          <Text style={styles.itemHourText}>{priority.name.ru}</Text>
+          <Text style={styles.itemHourText}>{priority.name.ru} - {files.length}</Text>
+          <MaterialDesignIcons name={'file'} color={'green'} size={18} />
         </View>
       </View>
       <Pressable

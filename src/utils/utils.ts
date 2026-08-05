@@ -80,15 +80,30 @@ export function notifyMessage(msg: string) {
 export const getNewTask = (createDate: string, defaultCategory: string, defaultPriority: string, createTime:string) => {
 
   let date = new Date(createDate+'T'+createTime);
-  
-  return (
-    {
+  const newTask:TTask =     {
       id: uuid.v4(),
       date: date,
       title: '',
       category: Categorys[defaultCategory],
       status: TaskStatus.Upcoming,
       notes: '',
-      priority: PriorityData[defaultPriority]
-    })
+      priority: PriorityData[defaultPriority],
+      files:[]
+    }
+  return (newTask)
 };
+
+
+export const formatBytes = (bytes:number, decimals = 2) => {
+	if (bytes === 0) {
+		return '0 байт';
+	} else {
+		const k = 1024;
+    const sizes = ['байт', 'КБ', 'МБ', 'ГБ', 'ТБ'];
+
+		let dm = decimals < 0 ? 0 : decimals;
+		let i = Math.floor(Math.log(bytes) / Math.log(k));
+		return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+	}
+}
+

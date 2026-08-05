@@ -15,7 +15,8 @@ export type TTask = {
     category:TDataItem, 
     status:TDataItem,
     priority:TDataItem, 
-    notes?:string,    
+    notes?:string,
+    files:[]    
 };
 
 export type TListItem = TTask & {onItemPress: (() => void), onCompletePress: (() => void) };
@@ -40,3 +41,9 @@ export type TDataDir = {
 }
 
 export type TTaskByDays  = {[key:string]:{data:any}}
+
+export type TFileDataObject ={
+    name:string,
+    size:number,
+    uri:string
+}

@@ -1,5 +1,6 @@
 //import CategoryPanel from '@/components/CategoryPanel';
 import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
+import FilesBottomSheet from '@/components/bottomSheet/FilesBottomSheet';
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
 import CardRow from '@/components/CardRow';
 import { Context } from '@/context/context';
@@ -8,16 +9,16 @@ import PriorityData from '@/data/PriorityData';
 import TaskStatus from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { deleteTask } from '@/utils/taskManage';
-import { TTask } from '@/utils/types';
+import { TFileDataObject, TTask } from '@/utils/types';
 import { getNewTask } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
+import * as DocumentPicker from 'expo-document-picker';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
 import { RefObject, useContext, useRef, useState } from "react";
 import { Keyboard, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native"; //AppState, 
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 type DateTimePickerMode = "date"| "time"; 
 
 const taskCard = () => {
@@ -27,6 +28,7 @@ const taskCard = () => {
   const sheetRef = useRef<BottomSheet>(null);
   const sheetCategoryRef = useRef<BottomSheet>(null);
   const sheetPriorityRef = useRef<BottomSheet>(null);
+  const sheetFilesRef = useRef<BottomSheet>(null);
 
   if (!currTask) {
     return <Redirect href="/list" />;
@@ -110,7 +112,36 @@ const taskCard = () => {
   const setRefPriorityBottomSheet =(ref:RefObject<BottomSheetMethods | null>, index: number)=>{
     ref.current?.snapToIndex(index)
   }  
+
+  const setRefFilesBottomSheet =(ref:RefObject<BottomSheetMethods | null>, index: number)=>{
+    ref.current?.snapToIndex(index)
+  }    
   //'#63B4FF'
+     
+const pickDocument = async () => {
+  try {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: '*/*', // Фильтруем только PDFapplication/pdf
+      multiple: false, // Разрешаем выбрать один файл
+    });
+    //console.log('result :', result);
+    if (result.canceled === false) {
+      console.log('result.assets :', result.assets);
+      setCurrentTask({...currTask, files: [...currTask.files, {name:result.assets[0].name, size:result.assets[0].size, uri:result.assets[0].uri}]}) 
+      // const { uri } = result.assets;
+      // console.log('URI:', uri);
+      // console.log('Имя файла:', result.assets. name);
+    }
+  } catch (error) {
+    console.error('Ошибка:', error);
+    // result: { "assets": [{ "lastModified": 1785913556000, "mimeType": "application/pdf", "name": "Инструкция.pdf", "size": 1477473, "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/559c9e79-573f-458d-84f3-9381f59a4c82.pdf" }], "canceled": false }
+    // result.assets : [{ "lastModified": 1785913556000, "mimeType": "application/pdf", "name": "Инструкция.pdf", "size": 1477473, "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/559c9e79-573f-458d-84f3-9381f59a4c82.pdf" }]    
+  }
+};
+
+const deleteFile = (name:string)=>{
+  setCurrentTask({...currTask, files: [...currTask.files.filter((item:TFileDataObject) => item.name !== name)]})
+}
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -199,6 +230,22 @@ const taskCard = () => {
                 iconColor={currTask.status.color} 
                 onPress={changeStatus} 
               />
+              <CardRow 
+                title='Файлы' 
+                text={''+currTask.files.length} 
+                icon={'file'} 
+                iconBackColor={'#263238'}
+                iconColor={'white'} 
+                onPress={() => setRefFilesBottomSheet(sheetFilesRef, 0)} 
+              />              
+              {/* <View style={{flexDirection:'column', gap: 5}}>
+                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16,}}>Файлы</Text>
+                <View style={{flexDirection:'row'}}>
+                  <Pressable onPress={pickDocument} style={{width:40, height:40, backgroundColor:'#263238', justifyContent: 'center', alignItems: 'center', borderRadius: 10, }}>
+                    <MaterialDesignIcons name='plus' color={'white'} size={25}/>
+                  </Pressable>
+                </View>
+              </View> */}
               <TextInput
                 style={[styles.card_input, { height: 100, borderColor: focused == 'Notes' ? 'silver' : '#263238', marginBottom:10}]}
                 onFocus={() => setFocused('Notes')}
@@ -229,6 +276,13 @@ const taskCard = () => {
               setValue = {changePriority} 
               setRef = {setRefPriorityBottomSheet} 
               sheetRef = {sheetPriorityRef} 
+            />
+            <FilesBottomSheet
+             files={currTask.files}
+             addFile={pickDocument}
+             deleteFile={deleteFile}
+             sheetRef={sheetFilesRef}
+             setRef={setRefFilesBottomSheet}
             />
           </BottomSheetView>
         </BottomSheet>

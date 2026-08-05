@@ -128,6 +128,7 @@ const calendar = () => {
             title={item.title}
             priority={item.priority}
             notes={item.notes}
+            files={item.files}
             onCompletePress={() => handleComplete(item.id)}
             onItemPress={() => handlePress(item.id)}
           />}

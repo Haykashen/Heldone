@@ -96,6 +96,7 @@ const list = () => {
             status={item.status}
             title={item.title}
             notes={item.notes}
+            files={item.files}
             priority={item.priority}
             onCompletePress={() => handleComplete(item.id)}
             onItemPress={() => handlePress(item.id)}
