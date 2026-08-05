@@ -2,8 +2,9 @@ import { TFileDataObject } from '@/utils/types';
 import { formatBytes } from '@/utils/utils';
 import BottomSheet, { BottomSheetFlatList, BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
+import { File } from 'expo-file-system';
 import { RefObject } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type TFilesBottomSheet = {
@@ -16,12 +17,37 @@ type TFilesBottomSheet = {
 
 
 
-const FilesBottomSheet = ({ files, addFile, deleteFile,setRef, sheetRef }: TFilesBottomSheet ) => {
+const FilesBottomSheet = ({ files, addFile, deleteFile, setRef, sheetRef }: TFilesBottomSheet) => {
 
-    const itemPress = (id: string) => {
+    const itemPress = async (uri: string) => {
+        if (Platform.OS === 'android') {
+            try {
+                const file = new File(uri);
+                console.log('file.exists ?', file.exists)
+                if(!file.exists)
+                {
+                    alert('File dont exist from uri: '+uri)
+                }
+                file.open()
+                // const cUri = await FileSystem.(uri);
+
+                // await IntentLauncher.startActivityAsync("android.intent.action.VIEW", {
+                //     data: cUri,
+                //     flags: 1,
+                //     type: "application/pdf",
+                // });
+            } catch (e) {
+                console.log(e);
+            }
+
+        }
+
+
         //setValue(id)
         //setRef(sheetRef, -1)
     }
+
+
 
     return (
         <SafeAreaView>
