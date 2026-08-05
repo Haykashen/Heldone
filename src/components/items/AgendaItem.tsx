@@ -44,7 +44,7 @@ const AgendaItem = (props: TListItem) => {
           </Text>
           <MaterialDesignIcons name={priority.icon as any} color={priority.color} size={18} />
           <Text style={styles.itemHourText}>{priority.name.ru} - {files.length}</Text>
-          <MaterialDesignIcons name={'file'} color={'green'} size={18} />
+          <MaterialDesignIcons name={'file-outline'} color={"#63B4FF"} size={18} />
         </View>
       </View>
       <Pressable
