@@ -43,6 +43,7 @@ export type TDataDir = {
 export type TTaskByDays  = {[key:string]:{data:any}}
 
 export type TFileDataObject ={
+    id:string,
     name:string,
     size:number,
     uri:string

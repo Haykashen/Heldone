@@ -82,7 +82,7 @@ const calendar = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
       <Header title='Календарь' text='в месячном и недельном виде' />
       <CalendarProvider
-        date= '2026-07-23'
+        date= {today}
         onDateChanged={(date, updateSource) => changeDate(date)}//
         showTodayButton={today !== date ? true : false}
         style={{ gap: dayTasks[0] ? 0 : 40 }}

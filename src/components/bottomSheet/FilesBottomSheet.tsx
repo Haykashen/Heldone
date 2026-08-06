@@ -2,52 +2,24 @@ import { TFileDataObject } from '@/utils/types';
 import { formatBytes } from '@/utils/utils';
 import BottomSheet, { BottomSheetFlatList, BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
-import { File } from 'expo-file-system';
 import { RefObject } from 'react';
-import { Platform, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type TFilesBottomSheet = {
     files:[],
     addFile:() => void,
+    openFile:(uri: string) => void,
     deleteFile:(name:string) => void,
-    setRef: (arg: RefObject<BottomSheetMethods | null>, index: number) => void,
     sheetRef: RefObject<BottomSheetMethods | null>
 }
 
+const FilesBottomSheet = ({ files, addFile, openFile, deleteFile, sheetRef }: TFilesBottomSheet) => {
 
-
-const FilesBottomSheet = ({ files, addFile, deleteFile, setRef, sheetRef }: TFilesBottomSheet) => {
-
-    const itemPress = async (uri: string) => {
-        if (Platform.OS === 'android') {
-            try {
-                const file = new File(uri);
-                console.log('file.exists ?', file.exists)
-                if(!file.exists)
-                {
-                    alert('File dont exist from uri: '+uri)
-                }
-                file.open()
-                // const cUri = await FileSystem.(uri);
-
-                // await IntentLauncher.startActivityAsync("android.intent.action.VIEW", {
-                //     data: cUri,
-                //     flags: 1,
-                //     type: "application/pdf",
-                // });
-            } catch (e) {
-                console.log(e);
-            }
-
-        }
-
-
-        //setValue(id)
+    const itemPress = (uri: string) => {
+        openFile(uri)
         //setRef(sheetRef, -1)
     }
-
-
 
     return (
         <SafeAreaView>
@@ -89,7 +61,7 @@ const FilesBottomSheet = ({ files, addFile, deleteFile, setRef, sheetRef }: TFil
                                     <Text style={{ fontSize:16, fontWeight:'bold', color:'white' }}>{item.name}</Text>
                                     <Text style={{ fontSize: 12, color: 'white' }}>{formatBytes(item.size) }</Text>
                                 </View>
-                                <Pressable onPress={()=>deleteFile(item.name)}>
+                                <Pressable onPress={()=>deleteFile(item.id)}>
                                     <MaterialDesignIcons name={'delete-outline'} color={'red'} size={38} ></MaterialDesignIcons>
                                 </Pressable>
                             </Pressable>)

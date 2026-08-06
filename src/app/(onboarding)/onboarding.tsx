@@ -75,7 +75,6 @@ const onboarding = () => {
       </View>
       <View style={{ flexDirection: 'column', alignItems: 'center', gap:15}}>
         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Animated.View style={{ transform: [{ scale }] }}></Animated.View>
           <PaginationItem onPress={() => pagerRef.current?.setPage(0)} value={0} currentValue={page} />
           <PaginationItem onPress={() => pagerRef.current?.setPage(1)} value={1} currentValue={page} />
           <PaginationItem onPress={() => pagerRef.current?.setPage(2)} value={2} currentValue={page} />
