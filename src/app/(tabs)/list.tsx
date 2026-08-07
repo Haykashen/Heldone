@@ -15,7 +15,7 @@ import { AgendaList, CalendarProvider, LocaleConfig } from 'react-native-calenda
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 LocaleConfig.locales['rus'] = {
-  monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+  monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
   monthNamesShort: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
   dayNames: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
   dayNamesShort: ['Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.', 'Вос.'],
@@ -26,15 +26,15 @@ LocaleConfig.defaultLocale = 'rus';
 
 const list = () => {
   const { task, setTask } = useContext(Context);
-  const [status, setStatus]  = useState(TaskStatus.Upcoming.id)
+  const [status, setStatus] = useState(TaskStatus.Upcoming.id)
   const today = new Date();
   //let comletedCount = task.filter((item:TTask)=> item.status.id == TaskStatus.Completed.id)
   let sortTask = getTaskByDays(task, status)
 
-  useEffect(()=>{
+  useEffect(() => {
     sortTask = getTaskByDays(task, status)
-  },[task, status])
- 
+  }, [task, status])
+
   const handlePress = (id: string) => {
     router.push(('/' + id) as RelativePathString)
   }
@@ -43,50 +43,50 @@ const list = () => {
     completeTask(id, task, setTask)
   }
 
-  const changeStatus = (status:string) =>{
+  const changeStatus = (status: string) => {
     setStatus(status)
   }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
-      <Header title='Мои задачи' text='по дням и статусам'/>
+      <Header title='Мои задачи' text='по дням и статусам' />
       <CalendarProvider
         date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(today)}
-        showTodayButton = {sortTask[0] ? true: false}
+        showTodayButton={sortTask[0] ? true : false}
         theme={{
           todayButtonTextColor: '#007aff',
           todayButtonFontWeight: 'bold'
         }}
-        style={{ gap: sortTask[0] ? 0 : 40}}
+        style={{ gap: sortTask[0] ? 0 : 40 }}
       >
-      <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 5, marginTop: 15, borderRadius: 10 }}>
-        <StatusFilter 
-          status={TaskStatus.Upcoming.id} 
-          currStatus={status} 
-          title={'Предстоит'} 
-          changeStatus={changeStatus}
-        />
-        <StatusFilter 
-          status={TaskStatus.Completed.id} 
-          currStatus={status} 
-          title={'Выполненно'} 
-          changeStatus={changeStatus}
-        />
-        <StatusFilter 
-          status={''} 
-          currStatus={status} 
-          title={'Все'} 
-          changeStatus={changeStatus}
-        />                
-      </View>          
+        <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 5, marginTop: 15, borderRadius: 10 }}>
+          <StatusFilter
+            status={TaskStatus.Upcoming.id}
+            currStatus={status}
+            title={'Предстоит'}
+            changeStatus={changeStatus}
+          />
+          <StatusFilter
+            status={TaskStatus.Completed.id}
+            currStatus={status}
+            title={'Выполненно'}
+            changeStatus={changeStatus}
+          />
+          <StatusFilter
+            status={''}
+            currStatus={status}
+            title={'Все'}
+            changeStatus={changeStatus}
+          />
+        </View>
         <AgendaList
           sections={sortTask}
           sectionStyle={{ backgroundColor: '#031F2B', }}
           ListEmptyComponent={
-            <ListEpmtyComponent 
-              date = {getFormatedDay(today)}
-              title = {status === TaskStatus.Completed.id? 'У вас пока нет выполненных заданий!' :'У вас пока нет никаких заданий!'}
-              text  = {status === TaskStatus.Completed.id? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' :'Добавьте задачу, чтобы быть продуктивным.'}   
+            <ListEpmtyComponent
+              date={getFormatedDay(today)}
+              title={status === TaskStatus.Completed.id ? 'У вас пока нет выполненных заданий!' : 'У вас пока нет никаких заданий!'}
+              text={status === TaskStatus.Completed.id ? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' : 'Добавьте задачу, чтобы быть продуктивным.'}
             />
           }
           renderItem={({ item }: any) => <AgendaItem
@@ -103,7 +103,7 @@ const list = () => {
           />}
         />
       </CalendarProvider>
-      <Add date={getFormatedDay(today)}/>
+      <Add date={getFormatedDay(today)} />
     </SafeAreaView>
   )
 }

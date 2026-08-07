@@ -39,8 +39,6 @@ const AgendaItem = (props: TListItem) => {
           <MaterialDesignIcons name={status.clockIcon as any} color={'black'} size={18} />
           <Text style={styles.itemHourText}>
             {date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })} -
-            {/* <Text style={[styles.itemHourText, { color: statusColor }]}> {statusName} </Text> 
-            -  */}
           </Text>
           <MaterialDesignIcons name={priority.icon as any} color={priority.color} size={18} />
           <Text style={styles.itemHourText}>{priority.name.ru} - {files.length}</Text>

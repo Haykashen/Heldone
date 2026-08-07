@@ -9,7 +9,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const notice = () => {
-   const sheetRef = useRef<BottomSheet>(null);
+  const sheetRef = useRef<BottomSheet>(null);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -21,35 +21,35 @@ const notice = () => {
           ref={sheetRef}
           index={0}
           snapPoints={['70%', '90%']}
-          onClose={()=>router.back()}
+          onClose={() => router.back()}
           enablePanDownToClose
         >
-          <BottomSheetView style={{ flex:1 }}>
+          <BottomSheetView style={{ flex: 1 }}>
             <FlatList
               nestedScrollEnabled
               style={{ flex: 1 }}
               data={Object.values(Categorys)}
               keyExtractor={item => item.id}
-              contentContainerStyle={{ padding: 24, backgroundColor: '#031F2B', paddingBottom: 100  }}
+              contentContainerStyle={{ padding: 24, backgroundColor: '#031F2B', paddingBottom: 100 }}
               renderItem={({ item }) => (
                 <View style={{ flexDirection: 'row', gap: 10, backgroundColor: '#263238', borderRadius: 15, alignItems: 'center' }}>
                   <View style={{ height: 50, width: 50, backgroundColor: item.backColor, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
                     <MaterialDesignIcons name={item.icon as any} color={item.color} size={38} />
                   </View>
-                  <View style={{alignItems:'center', justifyContent:'center', minWidth:'70%'}}>
+                  <View style={{ alignItems: 'center', justifyContent: 'center', minWidth: '70%' }}>
                     <Text style={{ paddingVertical: 16, color: 'white' }}>{item.name.ru}</Text>
-                  </View>               
+                  </View>
                 </View>)}
               ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
             />
           </BottomSheetView>
         </BottomSheet>
       </View>
-    </SafeAreaView> 
+    </SafeAreaView>
   );
 }
 
-export default notice   
+export default notice
 
 // const translate:ITranslate ={
 //   title:{
@@ -58,17 +58,17 @@ export default notice
 //   }
 // }
 
-const style = (Theme:any)=> StyleSheet.create({
+const style = (Theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.bg_Primary,
-    alignItems:'center',
-    gap:5,
-    padding:5,
+    alignItems: 'center',
+    gap: 5,
+    padding: 5,
   },
-  textHeader:{
-    color: Theme.colors.text_Primary, 
-    fontSize:22,
-    fontWeight:'bold'
+  textHeader: {
+    color: Theme.colors.text_Primary,
+    fontSize: 22,
+    fontWeight: 'bold'
   },
 });

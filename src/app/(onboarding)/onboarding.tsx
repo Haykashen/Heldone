@@ -24,21 +24,21 @@ const OnboardingScreen = ({ path, title, text }: { path: string, title: string, 
 
 const onboarding = () => {
   const [page, setPage] = useState(0)
-  const pagerRef = useRef<PagerViewRef>(null); 
+  const pagerRef = useRef<PagerViewRef>(null);
   const { setOnboarded } = useContext(Context);
   const screen = require('@/assets/animation/Business_plan.json');
-
 
   const OnboardingDone = () => {
     setData('onboarded', JSON.stringify(true))
     setOnboarded(true)
     router.push('/')
   }
+  
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', justifyContent: 'center' }}>
-      <View style={{ alignItems:'flex-end', justifyContent:'center'}}>
-        <Pressable style={{marginEnd:30, borderRadius:15, borderWidth:2, borderColor:'silver'}} onPress={OnboardingDone}>
-          <MaterialDesignIcons name='window-close' color={'silver'} size={36}/>
+      <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+        <Pressable style={{ marginEnd: 30, borderRadius: 15, borderWidth: 2, borderColor: 'silver' }} onPress={OnboardingDone}>
+          <MaterialDesignIcons name='window-close' color={'silver'} size={36} />
         </Pressable>
       </View>
       <View style={{ height: '70%' }}>
@@ -50,7 +50,7 @@ const onboarding = () => {
             setPage(event.nativeEvent.position)
           }}>
           <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'center' }}>
-            <ImageBackground source={require('@/assets/images/icon.png')} style={{ width: 'auto', height: '91%', justifyContent: 'flex-end', gap: 10, padding: 20  }}>
+            <ImageBackground source={require('@/assets/images/icon.png')} style={{ width: 'auto', height: '91%', justifyContent: 'flex-end', gap: 10, padding: 20 }}>
               <Text style={{ color: 'white', fontSize: 28, fontWeight: 'bold', justifyContent: 'center', alignContent: 'center', textAlign: 'center', marginHorizontal: 5 }}>{'Добро пожаловать в Хелдон!'}</Text>
               <Text numberOfLines={3} style={{ color: 'white', fontSize: 20, justifyContent: 'center', alignContent: 'center', textAlign: 'justify', marginHorizontal: 5 }}>{'Хелдон - ваш личный помощник для эффективного планирования времени'}</Text>
             </ImageBackground>
@@ -78,7 +78,7 @@ const onboarding = () => {
           />
         </PagerView>
       </View>
-      <View style={{ flexDirection: 'column', alignItems: 'center', gap:15}}>
+      <View style={{ flexDirection: 'column', alignItems: 'center', gap: 15 }}>
         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <PaginationItem onPress={() => pagerRef.current?.setPage(0)} value={0} currentValue={page} />
           <PaginationItem onPress={() => pagerRef.current?.setPage(1)} value={1} currentValue={page} />
@@ -87,12 +87,12 @@ const onboarding = () => {
           <PaginationItem onPress={() => pagerRef.current?.setPage(4)} value={4} currentValue={page} />
         </View>
         {page !== 4 && <View
-          style={{ padding: 5, borderRadius: 5, width: '50%', margin: 'auto', justifyContent:'center', alignItems:'center' }}>
+          style={{ padding: 5, borderRadius: 5, width: '50%', margin: 'auto', justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ color: '#031F2B', fontWeight: 'bold', fontSize: 20 }}>Готово</Text>
-        </View> }
+        </View>}
         {page === 4 && <Pressable
           onPress={OnboardingDone}
-          style={{ backgroundColor: '#007aff', padding: 5, borderRadius: 5, width: '50%', margin: 'auto', justifyContent:'center', alignItems:'center' }}>
+          style={{ backgroundColor: '#007aff', padding: 5, borderRadius: 5, width: '50%', margin: 'auto', justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Готово</Text>
         </Pressable>}
       </View>
@@ -112,17 +112,17 @@ const styles = StyleSheet.create({
 
 
 });
-          {/* <OnboardingScreen 
+{/* <OnboardingScreen 
                       path={require('@/assets/animation/Holding_value.json')} 
                       title='Выполняйте ежедневный план дел' 
                       text='Ежедневно контролируйте выполнение поставленных задач, что ваши дни были плодотворными'
                     /> */}
-          {/* <OnboardingScreen 
+{/* <OnboardingScreen 
                       path={require('@/assets/animation/Task_Loader.json')} 
                       title='Достигайте свои цели' 
                       text="Выполняйте поставленные задачи, плодотворно проводя время и достигая своих целей"
                     /> */}
-          {/* <OnboardingScreen 
+{/* <OnboardingScreen 
                       path={require('@/assets/animation/The_idea_of_change.json')} 
                       title='Welcome!!!'
                       text="" 

@@ -36,13 +36,13 @@ const CategoryBottomSheet = ({ currentId, setValue, setRef, sheetRef }: TBottomS
                             <Pressable
                                 key={item.id}
                                 onPress={() => itemPress(item.id)}
-                                style={{ 
-                                    flexDirection: 'row', 
-                                    gap: 10, 
-                                    backgroundColor: '#263238', 
-                                    borderRadius: 15, 
+                                style={{
+                                    flexDirection: 'row',
+                                    gap: 10,
+                                    backgroundColor: '#263238',
+                                    borderRadius: 15,
                                     alignItems: 'center',
-                                    borderWidth:2, 
+                                    borderWidth: 2,
                                     borderColor: item.id == currentId ? 'silver' : '#263238',
                                 }}>
                                 <View style={{ height: 50, width: 50, backgroundColor: item.backColor, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>

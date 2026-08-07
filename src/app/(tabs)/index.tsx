@@ -28,11 +28,10 @@ export default function Index() {
     if (loaded) {
       SplashScreen.hide();
     }
-  }, [loaded]);  
+  }, [loaded]);
 
-  if(loaded && !onboarded)
-  {
-    return <Redirect href={'/onboarding'}/>
+  if (loaded && !onboarded) {
+    return <Redirect href={'/onboarding'} />
   }
 
   const handlePress = (id: string) => {
@@ -63,9 +62,9 @@ export default function Index() {
         <View style={{ width: '80%', backgroundColor: 'white', height: 8, borderRadius: 10 }}>
           <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 8, borderRadius: 10 }}></View>
         </View>
-        
+
       </View>
-      {(filtered.length> 0 && completed.length === filtered.length) && <LottieView style={{ height:200, width:'100%', position:'absolute' }} source={require('@/assets/animation/Confetti.json')} autoPlay loop />}
+      {(filtered.length > 0 && completed.length === filtered.length) && <LottieView style={{ height: 200, width: '100%', position: 'absolute' }} source={require('@/assets/animation/Confetti.json')} autoPlay loop />}
       <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
       <FlatList
         data={filtered}
@@ -86,22 +85,18 @@ export default function Index() {
         )}
         ListEmptyComponent={() => (
           <ListEpmtyComponent
-            title = 'У вас пока нет никаких заданий!'
-            text = 'Добавьте задачу, чтобы сделать ваш день продуктивным.'
-            date = {getFormatedDay(today)}
+            title='У вас пока нет никаких заданий!'
+            text='Добавьте задачу, чтобы сделать ваш день продуктивным.'
+            date={getFormatedDay(today)}
           />
         )
         }
-      // refreshControl={
-      //   <RefreshControl refreshing={refresh} onRefresh={() => setRefresh(!refresh)} />
-      // }
       />
       <Add date={getFormatedDay(today)} />
     </SafeAreaView>
   )
 }
 //"#4894FE"
-
 
 const style = (Theme: any) => StyleSheet.create({
   container: {
