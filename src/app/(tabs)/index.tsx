@@ -21,7 +21,6 @@ export default function Index() {
   const { task, setTask, loaded, onboarded } = useContext(Context);
   const scale = useRef(new Animated.Value(1)).current;
   const today = new Date();
-  //const [refresh, setRefresh] = useState(false);
   const filtered = task.filter((item: TTask) => item.date.toLocaleDateString() === today.toLocaleDateString());
   const completed: [] = filtered.filter((item: TTask) => item.status.id === 'Completed')
 
@@ -30,6 +29,11 @@ export default function Index() {
       SplashScreen.hide();
     }
   }, [loaded]);  
+
+  if(loaded && !onboarded)
+  {
+    return <Redirect href={'/onboarding'}/>
+  }
 
   const handlePress = (id: string) => {
     router.push(('/' + id) as RelativePathString)
@@ -44,13 +48,6 @@ export default function Index() {
 
   let progressPercent = Math.round(completed.length / filtered.length * 100);
   let widthProgress = (progressPercent ? progressPercent : 0) + '%';
-
-  if(!onboarded)
-  {
-    return <Redirect href={'/onboarding'}/>
-  }
-
-
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>

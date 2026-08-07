@@ -64,7 +64,9 @@ export function getMultiDotsDays(task:[]){
     let strDate = getFormatedDay(new Date(item.date));
     if(!(res[strDate]))
       res[strDate] = {dots:[]};
-    res[strDate].dots.push({key: res[strDate].dots.length, color: item.category.backColor})  
+    let findColor = res[strDate].dots.find((i:{color:string})=> i.color === item.category.backColor)
+    if(!findColor)
+      res[strDate].dots.push({key: res[strDate].dots.length, color: item.category.backColor})  
   })
   return res;
 }

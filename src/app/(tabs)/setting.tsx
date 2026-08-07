@@ -1,3 +1,4 @@
+import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
 import CardRow from '@/components/CardRow';
 import Header from '@/components/TabHeader';
@@ -5,10 +6,10 @@ import { Context } from '@/context/context';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
 import { setData } from '@/store/setData';
-import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
+import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { RefObject, useContext, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const settings = () => {
@@ -18,6 +19,7 @@ const settings = () => {
   const [time,setTime] = useState(new Date())
   const [show, setShow] = useState(false);
   const sheetPriorityRef = useRef<BottomSheet>(null);
+  const sheetCategoryRef = useRef<BottomSheet>(null);
 
   console.log('defaultCategory', defaultCategory)
   console.log('defaultPriority', defaultPriority)
@@ -35,8 +37,14 @@ const settings = () => {
     ref.current?.snapToIndex(index)
   }
 
+  const setRefCategoryBottomSheet =(ref:RefObject<BottomSheetMethods | null>, index: number)=>{
+    ref.current?.snapToIndex(index)
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, }}>   
+    
+
+
       {show && (
         <DateTimePicker
           mode='time'
@@ -54,6 +62,7 @@ const settings = () => {
         />)
       }
       <Header title='Настройки' text='приложения и аккаунта' />
+      <BottomSheetView style={{flex:1}}>
       <View style={{ flexDirection: 'column', gap: 10, paddingHorizontal: 10,}} >
         <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Системные</Text>           
         <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
@@ -107,9 +116,12 @@ const settings = () => {
             icon={CategoryData[defaultCategory].icon}
             iconBackColor={CategoryData[defaultCategory].backColor}
             iconColor={CategoryData[defaultCategory].color}
-            onPress={() => (null)}
-          // onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)} 
+            //onPress={() => (null)}
+            onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)} 
           />
+          <Pressable onPress = {()=> setData('onboarded', JSON.stringify(false))}>
+            <Text style={{color:'white'}}>Сбросить онбординг</Text>
+          </Pressable>
         </View>
         <View style={{alignItems:'center', justifyContent:'center'}}><Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Хелдон [{appVersion}]</Text></View>
       </View>
@@ -119,6 +131,13 @@ const settings = () => {
         setRef={setRefPriorityBottomSheet}
         sheetRef={sheetPriorityRef}
       />
+      <CategoryBottomSheet
+        currentId={defaultCategory}
+        setValue={changeDefaultCategory}
+        setRef={setRefCategoryBottomSheet}
+        sheetRef={sheetCategoryRef}
+      />  
+    </BottomSheetView>          
     </SafeAreaView>
   )
 }

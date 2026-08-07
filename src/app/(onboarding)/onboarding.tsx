@@ -2,10 +2,11 @@ import PaginationItem from '@/components/items/PaginationItem';
 import { Context } from '@/context/context';
 import { setData } from '@/store/setData';
 import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
+import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
 import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { useContext, useRef, useState } from 'react';
-import { Animated, ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const OnboardingScreen = ({ path, title, text }: { path: string, title: string, text: string, }) => {
@@ -25,7 +26,6 @@ const onboarding = () => {
   const [page, setPage] = useState(0)
   const pagerRef = useRef<PagerViewRef>(null); 
   const { setOnboarded } = useContext(Context);
-  const scale = useRef(new Animated.Value(1)).current;
   const screen = require('@/assets/animation/Business_plan.json');
 
 
@@ -35,7 +35,12 @@ const onboarding = () => {
     router.push('/')
   }
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', justifyContent: 'center' }}>
+      <View style={{ alignItems:'flex-end', justifyContent:'center'}}>
+        <Pressable style={{marginEnd:30, borderRadius:15, borderWidth:2, borderColor:'silver'}} onPress={OnboardingDone}>
+          <MaterialDesignIcons name='window-close' color={'silver'} size={36}/>
+        </Pressable>
+      </View>
       <View style={{ height: '70%' }}>
         <PagerView
           ref={pagerRef}

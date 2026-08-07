@@ -45,7 +45,7 @@ const FilesBottomSheet = ({ files, addFile, openFile, deleteFile, sheetRef }: TF
                         ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
                         renderItem={({ item }) => (
                             <Pressable
-                                onPress={()=>itemPress(item.uri)}
+                                onPress={()=>null}
                                 style={{ 
                                     flexDirection: 'row', 
                                     gap: 10, 
@@ -57,10 +57,13 @@ const FilesBottomSheet = ({ files, addFile, openFile, deleteFile, sheetRef }: TF
                                 <View style={{ height: 50, width: 50, alignItems: 'center', justifyContent: 'center' }}>
                                     <MaterialDesignIcons name='file' color={'white'} size={38} />
                                 </View>
-                                <View style={{ alignItems: 'center', justifyContent: 'center', minWidth: '70%', flexDirection:'column' }}>
-                                    <Text style={{ fontSize:16, fontWeight:'bold', color:'white' }}>{item.name}</Text>
-                                    <Text style={{ fontSize: 12, color: 'white' }}>{formatBytes(item.size) }</Text>
+                                <View style={{ flex:1, alignItems: 'center', justifyContent: 'center', flexDirection:'column' }}>
+                                    <Text style={{ fontSize:14, fontWeight:'bold', color:'white' }}>{item.name}</Text>
+                                    <Text style={{ fontSize: 11, color: 'white' }}>{formatBytes(item.size) }</Text>
                                 </View>
+                                <Pressable onPress={()=>itemPress(item.uri)}>
+                                    <MaterialDesignIcons name={'share-variant'} color={'white'} size={38} ></MaterialDesignIcons>
+                                </Pressable>                                
                                 <Pressable onPress={()=>deleteFile(item.id)}>
                                     <MaterialDesignIcons name={'delete-outline'} color={'red'} size={38} ></MaterialDesignIcons>
                                 </Pressable>

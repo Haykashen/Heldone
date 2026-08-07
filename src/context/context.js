@@ -19,34 +19,34 @@ const ContextProvider = ({ children }) => {
   useEffect(() => {
 
     async function getStoredData() {
-      const onboard = await getData('onboarded')
-      setOnboarded(onboard ? onboard : false)
+      try {
+        const onboard = await getData('onboarded')
+        setOnboarded(onboard ? onboard : false)
 
-      const defTime = await getData('defaultTime')
-      setDefaultTime(defTime ? defTime : '14:00')
+        const defTime = await getData('defaultTime')
+        setDefaultTime(defTime ? defTime : '14:00')
 
-      const defCategory = await getData('defaultCategory')
-      setDefaultCategory(defCategory ? defCategory : 'Target')
+        const defCategory = await getData('defaultCategory')
+        setDefaultCategory(defCategory ? defCategory : 'Target')
 
-      const defPriority = await getData('defaultPriority')
-      setDefaultPriority(defPriority ? defPriority : 'Low')
+        const defPriority = await getData('defaultPriority')
+        setDefaultPriority(defPriority ? defPriority : 'Low')
 
-      const storedTask = await getData('todo')
-      if (storedTask) {
-        storedTask.forEach((item) => { item.date = new Date(item.date) })
-        setTask(storedTask)
+        const storedTask = await getData('todo')
+        if (storedTask) {
+          storedTask.forEach((item) => { item.date = new Date(item.date) })
+          setTask(storedTask)
+        }
+      }
+      catch (e) {
+        console.log('Error loading getStoredData')
+      }
+      finally {
+        setLoad(true)
       }
     }
-    try {
-      getStoredData()
-    }
-    catch (e) {
-      console.log('Error loading getStoredData')
-    }
-    finally {
-      setLoad(true)
-    }
 
+    getStoredData()
   }, []);
 
   return (

@@ -84,7 +84,7 @@ const list = () => {
           sectionStyle={{ backgroundColor: '#031F2B', }}
           ListEmptyComponent={
             <ListEpmtyComponent 
-              date=''
+              date = {getFormatedDay(today)}
               title = {status === TaskStatus.Completed.id? 'У вас пока нет выполненных заданий!' :'У вас пока нет никаких заданий!'}
               text  = {status === TaskStatus.Completed.id? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' :'Добавьте задачу, чтобы быть продуктивным.'}   
             />
