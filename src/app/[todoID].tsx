@@ -201,7 +201,7 @@ const deleteFile = (id:string)=>{
                 onFocus={() => setFocused('Title')}
                 onBlur={() => setFocused('')}
                 onChangeText={(text) => changeTitle(text)}
-                placeholder={'Заголовок...'}
+                placeholder={'Заголовок... ( не более 40 символов )'}
                 placeholderTextColor={'gray'}
                 value={currTask.title}
                 //autoFocus={true} 
