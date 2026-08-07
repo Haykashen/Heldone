@@ -40,7 +40,7 @@ const FilesBottomSheet = ({ files, addFile, openFile, deleteFile, sheetRef }: TF
                         nestedScrollEnabled
                         style={{ flex: 1 }}
                         data={files}
-                        keyExtractor={(item:TFileDataObject) => item.name}
+                        keyExtractor={(item:TFileDataObject) => item.id}
                         contentContainerStyle={{ paddingHorizontal: 24, backgroundColor: '#031F2B', paddingBottom: 30 }}
                         ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
                         renderItem={({ item }) => (

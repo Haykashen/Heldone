@@ -130,7 +130,7 @@ const pickDocument = async () => {
     //console.log('result :', result);
     if (result.canceled === false) {
       console.log('result.assets :', result.assets);
-      setCurrentTask({...currTask, files: [...currTask.files, {id:result.assets[0].name+(new Date()).toISOString,name:result.assets[0].name, size:result.assets[0].size, uri:result.assets[0].uri}]}) 
+      setCurrentTask({...currTask, files: [...currTask.files, {id:result.assets[0].name+(new Date().toISOString()),name:result.assets[0].name, size:result.assets[0].size, uri:result.assets[0].uri}]}) 
     }
   } catch (error) {
     console.error('Ошибка:', error);
