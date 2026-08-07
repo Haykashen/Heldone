@@ -41,25 +41,26 @@ const FilesBottomSheet = ({ files, addFile, openFile, deleteFile, sheetRef }: TF
                         style={{ flex: 1 }}
                         data={files}
                         keyExtractor={(item:TFileDataObject) => item.id}
-                        contentContainerStyle={{ paddingHorizontal: 24, backgroundColor: '#031F2B', paddingBottom: 30 }}
+                        contentContainerStyle={{ paddingHorizontal: 15, backgroundColor: '#031F2B', paddingBottom: 30 }}
                         ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
                         renderItem={({ item }) => (
                             <Pressable
                                 onPress={()=>null}
                                 style={{ 
                                     flexDirection: 'row', 
-                                    gap: 10, 
+                                    gap: 5, 
                                     backgroundColor: '#263238', 
                                     borderRadius: 15, 
                                     alignItems: 'center', 
-                                    borderWidth:2, 
-                                    borderColor: '#263238'}}>
+                                    paddingVertical:5
+                                }}
+                            >
                                 <View style={{ height: 50, width: 50, alignItems: 'center', justifyContent: 'center' }}>
                                     <MaterialDesignIcons name='file' color={'white'} size={38} />
                                 </View>
                                 <View style={{ flex:1, alignItems: 'center', justifyContent: 'center', flexDirection:'column' }}>
-                                    <Text style={{ fontSize:14, fontWeight:'bold', color:'white' }}>{item.name}</Text>
-                                    <Text style={{ fontSize: 11, color: 'white' }}>{formatBytes(item.size) }</Text>
+                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize:15, fontWeight:'bold', color:'white' }}>{item.name}</Text>
+                                    <Text style={{ fontSize: 12, color: 'white' }}>{formatBytes(item.size) }</Text>
                                 </View>
                                 <Pressable onPress={()=>itemPress(item.uri)}>
                                     <MaterialDesignIcons name={'share-variant'} color={'white'} size={38} ></MaterialDesignIcons>

@@ -27,6 +27,7 @@ const taskCard = () => {
   const { todoID, day } = useLocalSearchParams();
   const { task, setTask, defaultCategory, defaultPriority, defaultTime } = useContext(Context);
   const [currTask, setCurrentTask] = useState(todoID === 'new'? getNewTask(day as string, defaultCategory as string, defaultPriority as string, defaultTime): task.find((item:TTask)=> item.id === todoID))
+  const [originalTask, setOriginalTask] = useState(JSON.stringify(currTask))
   const sheetRef = useRef<BottomSheet>(null);
   const sheetCategoryRef = useRef<BottomSheet>(null);
   const sheetPriorityRef = useRef<BottomSheet>(null);
@@ -38,9 +39,12 @@ const taskCard = () => {
   // Picker
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState<DateTimePickerMode | undefined >('date');
-
   const [focused, setFocused] = useState('')
 
+  let date = currTask.date? currTask.date.toLocaleDateString():'Пусто';
+  let time = currTask.date? currTask.date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'}):'Пусто';
+  let dataChanged = (originalTask !== JSON.stringify(currTask) && todoID !== 'new')
+  console.log('todoID !== new ? ', todoID !== 'new', 'originalTask !== JSON.stringify(currTask) ? ',originalTask !== JSON.stringify(currTask))
   const showMode = (currentMode:DateTimePickerMode | undefined) => {
     setMode(currentMode);
     setShow(true);
@@ -50,8 +54,7 @@ const taskCard = () => {
     showMode(currentMode);
   };
 
-  let date = currTask.date? currTask.date.toLocaleDateString():'Пусто';
-  let time = currTask.date? currTask.date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'}):'Пусто';
+
 
   const changeTitle = (newTitle:string)=>{
     setCurrentTask({...currTask, title: newTitle})
@@ -175,6 +178,7 @@ const deleteFile = (id:string)=>{
                 <Text style={{ color: "#63B4FF", fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
               </Pressable>
             </View>
+            {dataChanged && <View style={{justifyContent:'center', alignItems:'center'}}><Text style={{ color: '#ffb900', fontSize: 12,}}>Имеются несохраненные изменения</Text></View>}
             {show && (
               <DateTimePicker
                 mode={mode}
