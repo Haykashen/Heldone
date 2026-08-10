@@ -64,7 +64,7 @@ export default function Index() {
         </View>
 
       </View>
-      {(filtered.length > 0 && completed.length === filtered.length) && <LottieView style={{ height: 200, width: '100%', position: 'absolute' }} source={require('@/assets/animation/Confetti.json')} autoPlay loop />}
+      {(filtered.length > 0 && completed.length === filtered.length) && <LottieView style={{ height: 200, width: '100%', position: 'absolute' }} source={require('@/assets/animation/Confetti.json')} autoPlay loop={false} />}
       <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
       <FlatList
         data={filtered}
