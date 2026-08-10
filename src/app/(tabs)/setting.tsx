@@ -46,7 +46,9 @@ const settings = () => {
           presentation="dialog"
           value={time}
           onValueChange={(event, selectedDate) => {
-            setDefaultTime(selectedDate.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" }))
+            const time = selectedDate.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" })
+            setDefaultTime(time)
+            setData('defaultTime', JSON.stringify(time))
             setTime(selectedDate)
             setShow(false);
           }}
