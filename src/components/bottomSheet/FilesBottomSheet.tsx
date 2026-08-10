@@ -10,17 +10,21 @@ type TFilesBottomSheet = {
     files:[],
     addFile:() => void,
     openFile:(uri: string) => void,
-    deleteFile:(name:string) => void,
+    shareFile:(uri: string) => void,
+    deleteFile:(name:string, uri:string) => void,
     sheetRef: RefObject<BottomSheetMethods | null>
 }
 
-const FilesBottomSheet = ({ files, addFile, openFile, deleteFile, sheetRef }: TFilesBottomSheet) => {
+const FilesBottomSheet = ({ files, addFile, openFile, shareFile, deleteFile, sheetRef }: TFilesBottomSheet) => {
 
     const itemPress = (uri: string) => {
         openFile(uri)
         //setRef(sheetRef, -1)
     }
-
+    const sharePress = (uri: string) => {
+        shareFile(uri)
+        //setRef(sheetRef, -1)
+    }
     return (
         <SafeAreaView>
             <BottomSheet
@@ -45,7 +49,7 @@ const FilesBottomSheet = ({ files, addFile, openFile, deleteFile, sheetRef }: TF
                         ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
                         renderItem={({ item }) => (
                             <Pressable
-                                onPress={()=>null}
+                                onPress={()=>itemPress(item.uri)}
                                 style={{ 
                                     flexDirection: 'row', 
                                     gap: 5, 
@@ -62,10 +66,10 @@ const FilesBottomSheet = ({ files, addFile, openFile, deleteFile, sheetRef }: TF
                                     <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize:15, fontWeight:'bold', color:'white' }}>{item.name}</Text>
                                     <Text style={{ fontSize: 12, color: 'white' }}>{formatBytes(item.size) }</Text>
                                 </View>
-                                <Pressable onPress={()=>itemPress(item.uri)}>
+                                <Pressable onPress={()=>sharePress(item.uri)}>
                                     <MaterialDesignIcons name={'share-variant'} color={'white'} size={38} ></MaterialDesignIcons>
                                 </Pressable>                                
-                                <Pressable onPress={()=>deleteFile(item.id)}>
+                                <Pressable onPress={()=>deleteFile(item.id, item.uri)}>
                                     <MaterialDesignIcons name={'delete-outline'} color={'red'} size={38} ></MaterialDesignIcons>
                                 </Pressable>
                             </Pressable>)

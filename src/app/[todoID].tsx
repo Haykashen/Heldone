@@ -15,10 +15,12 @@ import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/commu
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 import * as DocumentPicker from 'expo-document-picker';
+import { File } from 'expo-file-system';
+import * as IntentLauncher from 'expo-intent-launcher';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
 import * as Sharing from 'expo-sharing';
 import { RefObject, useContext, useRef, useState } from "react";
-import { Keyboard, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native"; //AppState, 
+import { Keyboard, Platform, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native"; //AppState, 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type DateTimePickerMode = "date" | "time";
@@ -135,21 +137,33 @@ const taskCard = () => {
     }
   };
 
-  const openFile = async (uri: string) => {
-    console.log('Sharing uri = ', uri)
+  const shareFile = async (uri: string) => {
     if (await Sharing.isAvailableAsync()) {
       Sharing.shareAsync(uri)
     }
     else {
       alert("!Sharing.isAvailable")
     }
-
   }
 
-  const deleteFile = (id: string) => {
+  const deleteFile = (id: string, uri: string) => {
     setCurrentTask({ ...currTask, files: [...currTask.files.filter((item: TFileDataObject) => item.id !== id)] })
   }
 
+  const openFile = async (uri: string) => {
+    console.log('openFile uri = ', uri)
+    if (Platform.OS === 'android') {
+      const file = new File(uri);
+      await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+        data: file.contentUri,   // new API property, no legacy import needed
+        flags: 1,                // FLAG_GRANT_READ_URI_PERMISSION
+        type: file.type,
+      });
+    } else {
+      shareFile(uri); // no ACTION_VIEW equivalent on iOS
+    }
+  }
+  
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -283,6 +297,7 @@ const taskCard = () => {
               addFile={pickDocument}
               deleteFile={deleteFile}
               sheetRef={sheetFilesRef}
+              shareFile={shareFile}
               openFile={openFile}
             />
           </BottomSheetView>

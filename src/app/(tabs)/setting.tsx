@@ -58,7 +58,7 @@ const settings = () => {
       <Header title='Настройки' text='приложения и аккаунта' />
       <BottomSheetView style={{ flex: 1 }}>
         <View style={{ flexDirection: 'column', gap: 10, paddingHorizontal: 10, }} >
-          <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Системные</Text>
+          <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10, marginTop:5 }}>Системные</Text>
           <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
             <CardRow
               title='Язык'
@@ -78,15 +78,15 @@ const settings = () => {
             />
             <CardRow
               title='Уведомления'
-              text={CategoryData[defaultCategory].name.ru}
+              text={'Включены'}
               icon={'bell'}
-              iconBackColor={CategoryData[defaultCategory].backColor}
-              iconColor={CategoryData[defaultCategory].color}
+              iconBackColor={''}
+              iconColor={'white'}
               onPress={() => (null)}
             // onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)} 
             />
           </View>
-          <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Значения по умолчанию</Text>
+          <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10, marginTop:20 }}>Значения по умолчанию</Text>
           <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
             <CardRow
               title='Время'

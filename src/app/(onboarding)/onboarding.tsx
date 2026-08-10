@@ -6,17 +6,20 @@ import MaterialDesignIcons from '@react-native-vector-icons/material-design-icon
 import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { useContext, useRef, useState } from 'react';
-import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const OnboardingScreen = ({ path, title, text }: { path: string, title: string, text: string, }) => {
+const OnboardingScreen = ({ path, titleFirst, titleSecond, text }: { path: string, titleFirst: string, titleSecond: string, text: string, }) => {
 
   return (
-    <View style={{ height: '100%', flexDirection: 'column' }}>
+    <View style={{ height: '100%', flexDirection: 'column', padding:10 }}>
       <LottieView style={{ flex: 1 }} source={path} autoPlay loop />
-      <View style={{ flexDirection: 'column', alignItems: 'center', padding: 20 }}>
-        <Text numberOfLines={2} style={{ color: 'white', fontSize: 28, fontWeight: 'bold', justifyContent: 'center', alignContent: 'center', textAlign: 'center' }}>{title}</Text>
-        <Text numberOfLines={3} style={{ color: 'white', fontSize: 20, justifyContent: 'center', alignContent: 'center', textAlign: 'justify', marginHorizontal: 5 }}>{text}</Text>
+      <View style={styles.onboarding_view}>
+        <View>
+          <Text numberOfLines={2} style={styles.onboarding_title}>{titleFirst}</Text>
+          <Text numberOfLines={2} style={styles.onboarding_title}>{titleSecond}</Text>
+        </View>
+        <Text numberOfLines={3} style={styles.onboarding_text}>{text}</Text>
       </View>
     </View>
   )
@@ -49,31 +52,39 @@ const onboarding = () => {
           onPageSelected={event => {
             setPage(event.nativeEvent.position)
           }}>
-          <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'center' }}>
-            <ImageBackground source={require('@/assets/images/icon.png')} style={{ width: 'auto', height: '91%', justifyContent: 'flex-end', gap: 10, padding: 20 }}>
-              <Text style={{ color: 'white', fontSize: 28, fontWeight: 'bold', justifyContent: 'center', alignContent: 'center', textAlign: 'center', marginHorizontal: 5 }}>{'Добро пожаловать в Хелдон!'}</Text>
-              <Text numberOfLines={3} style={{ color: 'white', fontSize: 20, justifyContent: 'center', alignContent: 'center', textAlign: 'justify', marginHorizontal: 5 }}>{'Хелдон - ваш личный помощник для эффективного планирования времени'}</Text>
-            </ImageBackground>
-            {/* <Image source={require('@/assets/images/icon.png')} style={{width:'100%',}} /> */}
-          </View>
+          <View style={[{ flex: 1, flexDirection: 'column', alignItems: 'center', padding: 10 },]}>
+            <Image source={require('@/assets/images/icon.png')} style={{ flex: 1 }} resizeMode='contain' />
+            <View style={styles.onboarding_view}>
+              <View>
+                <Text numberOfLines={2} style={styles.onboarding_title}>{'Добро пожаловать'}</Text>
+                <Text numberOfLines={2} style={styles.onboarding_title}>{'в Heldone!'}</Text>
+              </View>
+              <Text numberOfLines={3} style={styles.onboarding_text}>{'Хелдон - ваш личный помощник для эффективного планирования и управления временем'}</Text>
+            </View>
+ {/* <ImageBackground source={require('@/assets/images/icon.png')} style={{ width: 'auto', height: '91%', justifyContent: 'flex-end', gap: 10, padding: 20 }}> </ImageBackground>*/}
+          </View>        
           <OnboardingScreen
             path={screen}
-            title='Наведите порядок в хаосе дел и планов'
+            titleFirst='Наведите порядок'
+            titleSecond='в хаосе дел и планов'
             text='Создавайте задачи и равномерно распределяйте их по датам, чтобы избежать суеты'
           />
           <OnboardingScreen
             path={require('@/assets/animation/Growth_Assistance.json')}
-            title="Повышайте эффективность"
-            text='Ежедневный контроль задач - гарантия результативного проведения дня'
+            titleFirst="Повышайте"
+            titleSecond='эффективность'
+            text='Ежедневный контроль выполнения задач - гарантия результативного проведения дня'
           />
           <OnboardingScreen
             path={require('@/assets/animation/Rotate_a_chart.json')}
-            title='Анализируйте план задач'
-            text="Анализ плана задач поможет равномерно распределять усилия по всем сферам жизни"
+            titleFirst='Анализируйте'
+            titleSecond='план задач'
+            text="Систематически анализируйте список задач для равномерного распределения усилий"
           />
           <OnboardingScreen
             path={require('@/assets/animation/Successful_target.json')}
-            title='Достигайте целей'
+            titleFirst='Достигайте'
+            titleSecond='поставленных целей'
             text="Выполняйте поставленные задачи, плодотворно проводя время и достигая своих целей"
           />
         </PagerView>
@@ -103,14 +114,29 @@ const onboarding = () => {
 export default onboarding
 
 const styles = StyleSheet.create({
-  setting_row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  onboarding_title:{ 
+    color: 'white', 
+    fontSize: 28, 
+    fontWeight:'bold',
+    justifyContent: 'center', 
+    alignContent: 'center', 
+    textAlign: 'left',
+    paddingLeft:5 
   },
-  page: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-
-
+  onboarding_text:{ 
+    color: 'white', 
+    fontSize: 18, 
+    justifyContent: 'center', 
+    alignContent: 'center', 
+    textAlign: 'left', 
+    marginHorizontal: 5 
+  },
+  onboarding_view:{ 
+    flexDirection: 'column', 
+    alignItems: 'flex-start', 
+    padding: 20 ,
+    gap:10
+  }
 });
 {/* <OnboardingScreen 
                       path={require('@/assets/animation/Holding_value.json')} 
