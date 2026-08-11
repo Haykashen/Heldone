@@ -9,7 +9,7 @@ export const shareFile = async (uri: string) => {
         Sharing.shareAsync(uri)
     }
     else {
-        notifyMessage("Невозможно поделиться файлом")
+        notifyMessage("Невозможно поделиться файлом.")
     }
 }
 
@@ -22,7 +22,7 @@ export const openFileAndroid = async (uri: string) => {
             type: file.type,
         });
     } catch (e) {
-        notifyMessage("Не удалось открыть файл. Проверьте его формат и попробуйте снова")
+        notifyMessage("Не удалось открыть файл. Проверьте его формат и попробуйте снова.")
     }
 }
 

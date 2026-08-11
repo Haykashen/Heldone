@@ -93,6 +93,7 @@ const calendar = () => {
       >
         <ExpandableCalendar
           //showWeekNumbers
+          //onDayPress={(date)=> changeDate(date.dateString)}
           renderHeader={renderHeader}
           ref={calendarRef}
           onCalendarToggled={onCalendarToggled}
