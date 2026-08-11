@@ -119,7 +119,9 @@ const settings = () => {
               <Text style={{ color: 'white' }}>Сбросить онбординг</Text>
             </Pressable>
           </View>
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Хелдон [{appVersion}]</Text></View>
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Хелдон {appVersion}</Text>
+          </View>
         </View>
         <PriorityBottomSheet
           currentId={PriorityData[defaultPriority].id}
