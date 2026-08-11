@@ -6,21 +6,19 @@ import CardRow from '@/components/CardRow';
 import { Context } from '@/context/context';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
-import TaskStatus from '@/data/StatusData';
+import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
-import { deleteTask } from '@/utils/taskManage';
+import { openFile, shareFile } from '@/utils/fileUtils';
+import { deleteTask, getNewTask } from '@/utils/taskUtils';
 import { TFileDataObject, TTask } from '@/utils/types';
-import { getNewTask } from '@/utils/utils';
+import { notifyMessage } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 import * as DocumentPicker from 'expo-document-picker';
-import { File } from 'expo-file-system';
-import * as IntentLauncher from 'expo-intent-launcher';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
-import * as Sharing from 'expo-sharing';
 import { RefObject, useContext, useRef, useState } from "react";
-import { Keyboard, Platform, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native"; //AppState, 
+import { Keyboard, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native"; //AppState, 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type DateTimePickerMode = "date" | "time";
@@ -62,7 +60,7 @@ const taskCard = () => {
   }
 
   const changeStatus = () => {
-    const newStatus = (currTask.status.id === TaskStatus.Upcoming.id) ? TaskStatus.Completed : TaskStatus.Upcoming;
+    const newStatus = (currTask.status.id === StatusData.Upcoming.id) ? StatusData.Completed : StatusData.Upcoming;
     setCurrentTask({ ...currTask, status: newStatus })
   }
 
@@ -79,7 +77,8 @@ const taskCard = () => {
   }
 
   const handleBack = async () => {
-    sheetRef.current?.snapToIndex(-1)
+    //sheetRef.current?.snapToIndex(-1)
+    setSheetRefIndex(sheetRef, -1)
   }
 
   const handleDone = async () => {
@@ -110,17 +109,10 @@ const taskCard = () => {
       router.push('/index')
   }
 
-  const setRefCategoryBottomSheet = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
-    ref.current?.snapToIndex(index)
+  const setSheetRefIndex = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
+    ref.current?.snapToIndex(index)    
   }
 
-  const setRefPriorityBottomSheet = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
-    ref.current?.snapToIndex(index)
-  }
-
-  const setRefFilesBottomSheet = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
-    ref.current?.snapToIndex(index)
-  }
   //'#63B4FF'
   const pickDocument = async () => {
     try {
@@ -133,35 +125,20 @@ const taskCard = () => {
         setCurrentTask({ ...currTask, files: [...currTask.files, { id: result.assets[0].name + (new Date().toISOString()), name: result.assets[0].name, size: result.assets[0].size, uri: result.assets[0].uri }] })
       }
     } catch (error) {
-      console.error('Ошибка:', error);
+      notifyMessage("Ошибка при попытке выбора файла")
     }
   };
 
-  const shareFile = async (uri: string) => {
-    if (await Sharing.isAvailableAsync()) {
-      Sharing.shareAsync(uri)
-    }
-    else {
-      alert("!Sharing.isAvailable")
-    }
+  const handleShareFile = (uri: string) => {
+    shareFile(uri)
   }
 
   const deleteFile = (id: string, uri: string) => {
     setCurrentTask({ ...currTask, files: [...currTask.files.filter((item: TFileDataObject) => item.id !== id)] })
   }
 
-  const openFile = async (uri: string) => {
-    console.log('openFile uri = ', uri)
-    if (Platform.OS === 'android') {
-      const file = new File(uri);
-      await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-        data: file.contentUri,   // new API property, no legacy import needed
-        flags: 1,                // FLAG_GRANT_READ_URI_PERMISSION
-        type: file.type,
-      });
-    } else {
-      shareFile(uri); // no ACTION_VIEW equivalent on iOS
-    }
+  const handleOpenFile = (uri: string) => {
+    openFile(uri)
   }
   
   return (
@@ -235,7 +212,7 @@ const taskCard = () => {
                 icon={currTask.priority.icon}
                 iconBackColor={currTask.priority.color}
                 iconColor={'white'}
-                onPress={() => setRefPriorityBottomSheet(sheetPriorityRef, 0)}
+                onPress={() => setSheetRefIndex(sheetPriorityRef, 0)}
               />
               <CardRow
                 title='Категория'
@@ -243,7 +220,7 @@ const taskCard = () => {
                 icon={currTask.category.icon}
                 iconBackColor={currTask.category.backColor}
                 iconColor={currTask.category.color}
-                onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)}
+                onPress={() => setSheetRefIndex(sheetCategoryRef, 0)}
               />
               <CardRow
                 title='Статус'
@@ -259,7 +236,7 @@ const taskCard = () => {
                 icon={'file'}
                 iconBackColor={'#263238'}
                 iconColor={'white'}
-                onPress={() => setRefFilesBottomSheet(sheetFilesRef, 0)}
+                onPress={() => setSheetRefIndex(sheetFilesRef, 0)}
               />
               <TextInput
                 style={[styles.card_input, { height: 100, borderColor: focused == 'Notes' ? 'silver' : '#263238', marginBottom: 10 }]}
@@ -283,13 +260,13 @@ const taskCard = () => {
             <CategoryBottomSheet
               currentId={currTask.category.id}
               setValue={changeCategory}
-              setRef={setRefCategoryBottomSheet}
+              setRef={setSheetRefIndex}
               sheetRef={sheetCategoryRef}
             />
             <PriorityBottomSheet
               currentId={currTask.priority.id}
               setValue={changePriority}
-              setRef={setRefPriorityBottomSheet}
+              setRef={setSheetRefIndex}
               sheetRef={sheetPriorityRef}
             />
             <FilesBottomSheet
@@ -297,8 +274,8 @@ const taskCard = () => {
               addFile={pickDocument}
               deleteFile={deleteFile}
               sheetRef={sheetFilesRef}
-              shareFile={shareFile}
-              openFile={openFile}
+              shareFile={handleShareFile}
+              openFile={handleOpenFile}
             />
           </BottomSheetView>
         </BottomSheet>

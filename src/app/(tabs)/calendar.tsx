@@ -3,7 +3,7 @@ import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
-import { completeTask } from '@/utils/taskManage';
+import { completeTask } from '@/utils/taskUtils';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
 import { useCallback, useContext, useRef, useState } from 'react';

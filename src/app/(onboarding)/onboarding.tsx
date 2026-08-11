@@ -16,8 +16,8 @@ const OnboardingScreen = ({ path, titleFirst, titleSecond, text }: { path: strin
       <LottieView style={{ flex: 1 }} source={path} autoPlay loop />
       <View style={styles.onboarding_view}>
         <View>
-          <Text numberOfLines={2} style={styles.onboarding_title}>{titleFirst}</Text>
-          <Text numberOfLines={2} style={styles.onboarding_title}>{titleSecond}</Text>
+          <Text numberOfLines={1} style={styles.onboarding_title}>{titleFirst}</Text>
+          <Text numberOfLines={1} style={styles.onboarding_title}>{titleSecond}</Text>
         </View>
         <Text numberOfLines={3} style={styles.onboarding_text}>{text}</Text>
       </View>
@@ -56,8 +56,8 @@ const onboarding = () => {
             <Image source={require('@/assets/images/icon.png')} style={{ flex: 1 }} resizeMode='contain' />
             <View style={styles.onboarding_view}>
               <View>
-                <Text numberOfLines={2} style={styles.onboarding_title}>{'Добро пожаловать'}</Text>
-                <Text numberOfLines={2} style={styles.onboarding_title}>{'в Heldone!'}</Text>
+                <Text numberOfLines={1} style={styles.onboarding_title}>{'Добро пожаловать'}</Text>
+                <Text numberOfLines={1} style={styles.onboarding_title}>{'в Heldone!'}</Text>
               </View>
               <Text numberOfLines={3} style={styles.onboarding_text}>{'Хелдон - ваш личный помощник для эффективного планирования и управления временем'}</Text>
             </View>
@@ -66,7 +66,7 @@ const onboarding = () => {
           <OnboardingScreen
             path={screen}
             titleFirst='Наведите порядок'
-            titleSecond='в хаосе дел и планов'
+            titleSecond='в хаосе дел'
             text='Создавайте задачи и равномерно распределяйте их по датам, чтобы избежать суеты'
           />
           <OnboardingScreen
@@ -84,7 +84,7 @@ const onboarding = () => {
           <OnboardingScreen
             path={require('@/assets/animation/Successful_target.json')}
             titleFirst='Достигайте'
-            titleSecond='поставленных целей'
+            titleSecond='целей'
             text="Выполняйте поставленные задачи, плодотворно проводя время и достигая своих целей"
           />
         </PagerView>

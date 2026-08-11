@@ -1,8 +1,4 @@
-import PriorityData from '@/data/PriorityData';
 import { Alert, Platform, ToastAndroid } from 'react-native';
-import uuid from 'react-native-uuid';
-import Categorys from '../data/CategoryData';
-import TaskStatus from '../data/StatusData';
 import { TTask, TTaskByDays } from "./types";
 
 export function getCalendarTitle(date: Date) {
@@ -11,62 +7,59 @@ export function getCalendarTitle(date: Date) {
   return title.join('');
 }
 
-export function getFormatedDay(date:Date){
-  let res =  date.toISOString().split('T')
+export function getFormatedDay(date: Date) {
+  let res = date.toISOString().split('T')
   //date.toLocaleDateString("ru-RU", {year:"numeric", month: "2-digit", day:"2-digit"});  
   return res[0];
-} 
+}
 
-export function getDayTasks(task:[], day:string){
-  let res:TTaskByDays = {}
-  task.forEach((item:TTask)=> {
+export function getDayTasks(task: [], day: string) {
+  let res: TTaskByDays = {}
+  task.forEach((item: TTask) => {
     let strDate = getFormatedDay(item.date);
-    if(strDate === day)
-    {
-      if(!(res[strDate]))
-        res[strDate] = {data:[]};
-      res[strDate].data.push(item)      
+    if (strDate === day) {
+      if (!(res[strDate]))
+        res[strDate] = { data: [] };
+      res[strDate].data.push(item)
     }
   })
   let resObj = []
-  for(var key in res)
-  {
-    resObj.push({title:key, data:res[key].data})
+  for (var key in res) {
+    resObj.push({ title: key, data: res[key].data })
   }
   return resObj;
 }
 
-export function getTaskByDays(task:[], status?:string){
-  let res:TTaskByDays = {}
-  task.forEach((item:TTask)=> {
-    if(status && status !== item.status.id)
+export function getTaskByDays(task: [], status?: string) {
+  let res: TTaskByDays = {}
+  task.forEach((item: TTask) => {
+    if (status && status !== item.status.id)
       return;
     let strDate = getFormatedDay(item.date);
     //console.log('getTaskByDays =', strDate)
-    if(!(res[strDate]))
-      res[strDate] = {data:[]};
-    res[strDate].data.push(item)  
+    if (!(res[strDate]))
+      res[strDate] = { data: [] };
+    res[strDate].data.push(item)
   })
   let resObj = []
-  for(var key in res)
-  {
-    resObj.push({title:key, data:res[key].data})
+  for (var key in res) {
+    resObj.push({ title: key, data: res[key].data })
   }
   return resObj;
 }
 
-export function getMultiDotsDays(task:[]){
+export function getMultiDotsDays(task: []) {
 
   //const code = { key: 'code', color: 'green' };
-  let res:{[key:string]:{dots:any}} = {}
+  let res: { [key: string]: { dots: any } } = {}
 
-  task.forEach((item:TTask)=> {
+  task.forEach((item: TTask) => {
     let strDate = getFormatedDay(new Date(item.date));
-    if(!(res[strDate]))
-      res[strDate] = {dots:[]};
-    let findColor = res[strDate].dots.find((i:{color:string})=> i.color === item.category.backColor)
-    if(!findColor)
-      res[strDate].dots.push({key: res[strDate].dots.length, color: item.category.backColor})  
+    if (!(res[strDate]))
+      res[strDate] = { dots: [] };
+    let findColor = res[strDate].dots.find((i: { color: string }) => i.color === item.category.backColor)
+    if (!findColor)
+      res[strDate].dots.push({ key: res[strDate].dots.length, color: item.category.backColor })
   })
   return res;
 }
@@ -78,34 +71,3 @@ export function notifyMessage(msg: string) {
     Alert.alert(msg);
   }
 }
-
-export const getNewTask = (createDate: string, defaultCategory: string, defaultPriority: string, createTime:string) => {
-
-  let date = new Date(createDate+'T'+createTime);
-  const newTask:TTask =     {
-      id: uuid.v4(),
-      date: date,
-      title: '',
-      category: Categorys[defaultCategory],
-      status: TaskStatus.Upcoming,
-      notes: '',
-      priority: PriorityData[defaultPriority],
-      files:[]
-    }
-  return (newTask)
-};
-
-
-export const formatBytes = (bytes:number, decimals = 2) => {
-	if (bytes === 0) {
-		return '0 байт';
-	} else {
-		const k = 1024;
-    const sizes = ['байт', 'КБ', 'МБ', 'ГБ', 'ТБ'];
-
-		let dm = decimals < 0 ? 0 : decimals;
-		let i = Math.floor(Math.log(bytes) / Math.log(k));
-		return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-	}
-}
-

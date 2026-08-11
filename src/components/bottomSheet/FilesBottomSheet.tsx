@@ -1,5 +1,5 @@
+import { formatBytes } from '@/utils/fileUtils';
 import { TFileDataObject } from '@/utils/types';
-import { formatBytes } from '@/utils/utils';
 import BottomSheet, { BottomSheetFlatList, BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { RefObject } from 'react';

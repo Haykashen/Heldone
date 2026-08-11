@@ -5,8 +5,8 @@ import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
-import TaskStatus from '@/data/StatusData';
-import { completeTask } from '@/utils/taskManage';
+import { StatusData } from '@/data/StatusData';
+import { completeTask } from '@/utils/taskUtils';
 import { getFormatedDay, getTaskByDays } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
 import { useContext, useEffect, useState } from 'react';
@@ -26,7 +26,7 @@ LocaleConfig.defaultLocale = 'rus';
 
 const list = () => {
   const { task, setTask } = useContext(Context);
-  const [status, setStatus] = useState(TaskStatus.Upcoming.id)
+  const [status, setStatus] = useState(StatusData.Upcoming.id)
   const today = new Date();
   //let comletedCount = task.filter((item:TTask)=> item.status.id == TaskStatus.Completed.id)
   let sortTask = getTaskByDays(task, status)
@@ -61,13 +61,13 @@ const list = () => {
       >
         <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 5, marginTop: 15, borderRadius: 10 }}>
           <StatusFilter
-            status={TaskStatus.Upcoming.id}
+            status={StatusData.Upcoming.id}
             currStatus={status}
             title={'Предстоит'}
             changeStatus={changeStatus}
           />
           <StatusFilter
-            status={TaskStatus.Completed.id}
+            status={StatusData.Completed.id}
             currStatus={status}
             title={'Выполненно'}
             changeStatus={changeStatus}
@@ -85,8 +85,8 @@ const list = () => {
           ListEmptyComponent={
             <ListEpmtyComponent
               date={getFormatedDay(today)}
-              title={status === TaskStatus.Completed.id ? 'У вас пока нет выполненных заданий!' : 'У вас пока нет никаких заданий!'}
-              text={status === TaskStatus.Completed.id ? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' : 'Добавьте задачу, чтобы быть продуктивным.'}
+              title={status === StatusData.Completed.id ? 'У вас пока нет выполненных заданий!' : 'У вас пока нет никаких заданий!'}
+              text={status === StatusData.Completed.id ? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' : 'Добавьте задачу, чтобы быть продуктивным.'}
             />
           }
           renderItem={({ item }: any) => <AgendaItem

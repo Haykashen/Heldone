@@ -4,7 +4,7 @@ import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
 import { scaleEnd, scaleStart } from '@/utils/animation';
-import { completeTask } from '@/utils/taskManage';
+import { completeTask } from '@/utils/taskUtils';
 import { TTask } from '@/utils/types';
 import { getFormatedDay } from '@/utils/utils';
 import { Redirect, RelativePathString, router } from "expo-router";

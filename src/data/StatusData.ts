@@ -1,7 +1,7 @@
 // MaterialCommunityIcons
 import { TDataDir } from "../utils/types"
 
-const StatusData: TDataDir = {
+export const StatusData: TDataDir = {
     Completed: {
         id:'Completed',
         name: {
@@ -25,4 +25,4 @@ const StatusData: TDataDir = {
     },
 }
 //'#ea820b'
-export default StatusData
+//export default StatusData

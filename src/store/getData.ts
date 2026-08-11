@@ -1,3 +1,4 @@
+import { notifyMessage } from '@/utils/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const getData = async (key:string) => {
@@ -5,6 +6,7 @@ export const getData = async (key:string) => {
     const jsonValue = await AsyncStorage.getItem(key)
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch(e) {
-    console.error('Ошибка чтения в AsyncStorage:', e);
+    notifyMessage("Ошибка при получении данных. Перезапустите приложение.")
+    //console.error('Ошибка чтения в AsyncStorage:', e);
   }
 }
