@@ -59,8 +59,18 @@
           "android":{
             "enableProguardInReleaseBuilds": true,
             "enableMinifyInReleaseBuilds": true,
-            "extraProguardRules":"-keep class expo.modules.notifications.** { *; }"
+            "enableShrinkResourcesInReleaseBuilds": true
           }
+        }
+      ],      
+      ["expo-notifications",       
+        {
+          "icon": "./assets/images/notification_icon.png",
+          "defaultChannel": "default",
+          "sounds": [
+            "./assets/sounds/notification_sound.wav"
+          ],
+          "enableBackgroundRemoteNotifications": false
         }
       ]
     ],
@@ -76,3 +86,5 @@
     }
   }
 }
+
+

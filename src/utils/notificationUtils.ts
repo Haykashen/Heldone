@@ -14,6 +14,6 @@ export const createNotification = async (title:string, text:string, triggerDate:
   return id;
 }
 
-export const deleteAllNotification = async (title:string, text:string, triggerDate:Date) =>{
+export const deleteAllNotification = async () =>{
   await Notifications.cancelAllScheduledNotificationsAsync()
 }
