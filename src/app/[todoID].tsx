@@ -1,4 +1,3 @@
-//import CategoryPanel from '@/components/CategoryPanel';
 import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
 import FilesBottomSheet from '@/components/bottomSheet/FilesBottomSheet';
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';

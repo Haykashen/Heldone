@@ -1,5 +1,7 @@
 import { getData } from '@/store/getData';
+import { createNotification, createNotificationChannel, deleteAllNotification } from '@/utils/notificationUtils';
 import { createContext, useEffect, useState } from 'react';
+import { Platform } from "react-native"; //AppState, 
 //import { setTimeStatus } from '@/utils/utils';
 // Initiate context
 const Context = createContext();
@@ -18,6 +20,12 @@ const ContextProvider = ({ children }) => {
 
   useEffect(() => {
 
+    deleteAllNotification()
+    if (Platform.OS === 'android') 
+    {
+      createNotificationChannel()
+    }
+
     async function getStoredData() {
       try {
         const onboard = await getData('onboarded')
@@ -33,8 +41,12 @@ const ContextProvider = ({ children }) => {
         setDefaultPriority(defPriority ? defPriority : 'Low')
 
         const storedTask = await getData('todo')
-        if (storedTask) {
-          storedTask.forEach((item) => { item.date = new Date(item.date) })
+        if (storedTask.length > 0) {
+
+          storedTask.forEach((item) => { 
+            item.date = new Date(item.date) 
+            item.notifyId = createNotification('Пора сделать дело!', item.title, item.date)
+          })
           setTask(storedTask)
         }
       }
