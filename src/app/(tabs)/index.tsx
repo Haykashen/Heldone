@@ -7,10 +7,10 @@ import { scaleEnd, scaleStart } from '@/utils/animation';
 import { completeTask } from '@/utils/taskUtils';
 import { TTask } from '@/utils/types';
 import { getFormatedDay } from '@/utils/utils';
-import { Redirect, RelativePathString, router } from "expo-router";
+import { Redirect, router } from "expo-router";
 import * as SplashScreen from 'expo-splash-screen';
 import LottieView from 'lottie-react-native';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, DimensionValue, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -20,9 +20,14 @@ SplashScreen.preventAutoHideAsync();
 export default function Index() {
   const { task, setTask, loaded, onboarded } = useContext(Context);
   const scale = useRef(new Animated.Value(1)).current;
+  
   const today = new Date();
   const filtered = task.filter((item: TTask) => item.date.toLocaleDateString() === today.toLocaleDateString());
   const completed: [] = filtered.filter((item: TTask) => item.status.id === 'Completed')
+
+  const [showConfetti, setShowConfetti] = useState((filtered.length > 0 && completed.length === filtered.length))
+  let progressPercent = Math.round(completed.length / filtered.length * 100);
+  let widthProgress = (progressPercent ? progressPercent : 0) + '%';
 
   useEffect(() => {
     if (loaded) {
@@ -30,23 +35,23 @@ export default function Index() {
     }
   }, [loaded]);
 
+  useEffect(() => {
+    setShowConfetti((filtered.length > 0 && completed.length === filtered.length))
+  }, [task]);
+
   if (loaded && !onboarded) {
     return <Redirect href={'/onboarding'} />
   }
 
   const handlePress = (id: string) => {
-    router.push(('/' + id) as RelativePathString)
+    router.push((`/${id}`))
   }
 
   const handleComplete = (id: string) => {
     scaleStart(scale, 1.3)
     completeTask(id, task, setTask)
-    setTimeout(() => scaleEnd(scale, 1), 100)
-    //
+    setTimeout(() => scaleEnd(scale, 1), 50)
   }
-
-  let progressPercent = Math.round(completed.length / filtered.length * 100);
-  let widthProgress = (progressPercent ? progressPercent : 0) + '%';
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
@@ -62,10 +67,16 @@ export default function Index() {
         <View style={{ width: '80%', backgroundColor: 'white', height: 8, borderRadius: 10 }}>
           <View style={{ width: widthProgress as DimensionValue, backgroundColor: '#007aff', height: 8, borderRadius: 10 }}></View>
         </View>
-
       </View>
-      {(filtered.length > 0 && completed.length === filtered.length) && <LottieView style={{ height: 200, width: '100%', position: 'absolute' }} source={require('@/assets/animation/Confetti.json')} autoPlay loop={false} />}
       <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Задачи на сегодня</Text>
+      {showConfetti && 
+        <LottieView
+          style={{ top: 140,height: 200, width: '100%', position: 'absolute' }}
+          source={require('@/assets/animation/Confetti.json')}
+          autoPlay loop={false}
+          onAnimationFinish={() => setShowConfetti(false)}
+        />
+      }      
       <FlatList
         data={filtered}
         keyExtractor={(item, index) => item.id}

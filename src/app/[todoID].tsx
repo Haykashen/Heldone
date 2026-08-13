@@ -91,6 +91,7 @@ const taskCard = () => {
     const sortedArray = resArray.sort((first: TTask, second: TTask) => { return (first.date.getTime() - second.date.getTime()) })
     setTask(sortedArray)
     setData("todo", JSON.stringify(sortedArray))
+    notifyMessage('Данные успешно сохранены!')
     handleBack()
   }
 
