@@ -19,7 +19,7 @@ const OnboardingScreen = ({ path, titleFirst, titleSecond, text }: { path: strin
           <Text numberOfLines={1} style={styles.onboarding_title}>{titleFirst}</Text>
           <Text numberOfLines={1} style={styles.onboarding_title}>{titleSecond}</Text>
         </View>
-        <Text numberOfLines={3} style={styles.onboarding_text}>{text}</Text>
+        <Text numberOfLines={4} style={styles.onboarding_text}>{text}</Text>
       </View>
     </View>
   )
@@ -59,7 +59,7 @@ const onboarding = () => {
                 <Text numberOfLines={1} style={styles.onboarding_title}>{'Добро пожаловать'}</Text>
                 <Text numberOfLines={1} style={styles.onboarding_title}>{'в Heldone!'}</Text>
               </View>
-              <Text numberOfLines={3} style={styles.onboarding_text}>{'Хелдон - ваш личный помощник для эффективного планирования и управления временем'}</Text>
+              <Text numberOfLines={4} style={styles.onboarding_text}>{'Хелдон - ваш личный помощник для эффективного планирования и управления временем'}</Text>
             </View>
  {/* <ImageBackground source={require('@/assets/images/icon.png')} style={{ width: 'auto', height: '91%', justifyContent: 'flex-end', gap: 10, padding: 20 }}> </ImageBackground>*/}
           </View>        
