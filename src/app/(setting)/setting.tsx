@@ -1,13 +1,14 @@
 import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
+import NavigationButton from '@/components/buttons/NavigationButton';
 import CardRow from '@/components/CardRow';
-import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
 import { setData } from '@/store/setData';
 import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
+import { router } from 'expo-router';
 import { RefObject, useContext, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -57,7 +58,13 @@ const settings = () => {
           }}
         />)
       }
-      <Header title='Настройки' text='приложения и аккаунта' />
+      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, gap:10 }}>
+        <NavigationButton onPress={()=>router.back()} icon={'arrow-left'} size={38}/>
+        <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
+          <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>{'Настройки'}</Text>
+          <Text style={{ color: '#7a92a5', fontSize: 16 }}>{'приложения и аккаунта'}</Text>
+        </View>
+      </View>    
       <BottomSheetView style={{ flex: 1 }}>
         <View style={{ flexDirection: 'column', gap: 10, paddingHorizontal: 10, }} >
           <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10, marginTop:5 }}>Системные</Text>

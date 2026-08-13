@@ -160,7 +160,9 @@ const taskCard = () => {
                 <Text style={{ color: "#63B4FF", fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
               </Pressable>
             </View>
-            {dataChanged && <View style={{ justifyContent: 'center', alignItems: 'center' }}><Text style={{ color: '#ffb900', fontSize: 12, }}>Имеются несохраненные изменения</Text></View>}
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ color: '#ffb900', fontSize: 12, }}>{dataChanged ?'Имеются несохраненные изменения' : ''}</Text>
+            </View>
             {show && (
               <DateTimePicker
                 mode={mode}

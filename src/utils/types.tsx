@@ -48,3 +48,6 @@ export type TFileDataObject ={
     size:number,
     uri:string
 }
+/// 
+export type TNavigationButton = { icon: any, size: number, onPress: ()=>void, }
+export type THeader = { title: string, text: string, };

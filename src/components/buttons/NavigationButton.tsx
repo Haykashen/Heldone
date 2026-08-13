@@ -1,10 +1,10 @@
 import { scaleEnd, scaleStart } from '@/utils/animation';
+import { TNavigationButton } from '@/utils/types';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
-import { router } from "expo-router";
 import { useRef } from 'react';
 import { Animated, Pressable } from 'react-native';
 
-const Notice = () => {
+const NavigationButton = ({onPress, icon, size}:TNavigationButton) => {
 
   const scale = useRef(new Animated.Value(1)).current;
 
@@ -19,17 +19,18 @@ const Notice = () => {
   };
     return (
         <Pressable
-            onPress={() => router.push('/notice')}
+            onPress={() => onPress()}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
+            style={{alignItems:'center', justifyContent:'center',}}
         >
             <Animated.View style={{ transform: [{ scale }] }}>
-                <MaterialDesignIcons name={'bell'} color={'white'} size={26} />
+                <MaterialDesignIcons name={icon} color={'white'} size={size} />
             </Animated.View>
         </Pressable>
     )
 }
 
-export default Notice
+export default NavigationButton
 
 

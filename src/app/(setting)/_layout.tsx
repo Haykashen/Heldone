@@ -1,10 +1,10 @@
 import { Stack } from "expo-router";
 
-export default function OnboardingLayout() {
+export default function SettingLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="onboarding"
+      <Stack.Screen name="setting"
         options={{
           animation: 'slide_from_right',
 

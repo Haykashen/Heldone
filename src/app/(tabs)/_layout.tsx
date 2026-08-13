@@ -34,14 +34,7 @@ export default function TabsLayout() {
             <MaterialDesignIcons name={focused ? 'calendar-month' : 'calendar-month-outline'} color={color} size={24} />
           ),
         }} />
-        <Tabs.Screen name="setting" options={{
-          title: 'Setting',
-          tabBarIcon: ({ color, focused }) => (
-            <MaterialDesignIcons name={focused ? 'cog' : 'cog-outline'} color={color} size={24} />
-          ),
-        }}
-        />
       </Tabs>
     </>
-  )    
+  )
 }

@@ -41,8 +41,8 @@ const AgendaItem = (props: TListItem) => {
             {date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })} -
           </Text>
           <MaterialDesignIcons name={priority.icon as any} color={priority.color} size={18} />
-          <Text style={styles.itemHourText}>{priority.name.ru} - {files.length}</Text>
-          <MaterialDesignIcons name={'file-outline'} color={"#63B4FF"} size={18} />
+          <Text style={styles.itemHourText}>{(files.length>0)?priority.name.ru+' - '+files.length:priority.name.ru}</Text>
+          {files.length >0 && <MaterialDesignIcons name={'file-outline'} color={"#63B4FF"} size={18} />}
         </View>
       </View>
       <Pressable
