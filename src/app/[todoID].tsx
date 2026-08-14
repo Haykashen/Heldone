@@ -168,11 +168,13 @@ const taskCard = () => {
               <DateTimePicker
                 mode={mode}
                 locale='ru_RU'
-                presentation="dialog"
+                presentation="dialog"              
                 value={currTask.date ? currTask.date : new Date()}
                 onValueChange={(event, selectedDate) => {
-                  var resss = (mode === 'date') ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate()) : selectedDate;
-                  setCurrentTask({ ...currTask, date: resss })
+                  let day = [currTask.date.getFullYear(),currTask.date.getMonth(), currTask.date.getDate()]
+                  let time = [currTask.date.getHours(),currTask.date.getMinutes()]
+                  var res = (mode === 'date') ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time[0], time[1]) : selectedDate;
+                  setCurrentTask({ ...currTask, date: res})
                   setShow(false);
                 }}
                 onDismiss={() => {
