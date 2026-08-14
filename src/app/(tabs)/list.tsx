@@ -80,6 +80,7 @@ const list = () => {
           />
         </View>
         <AgendaList
+          dayFormat='dddd, d MMM yyyy'
           sections={sortTask}
           sectionStyle={{ backgroundColor: '#031F2B', }}
           ListEmptyComponent={

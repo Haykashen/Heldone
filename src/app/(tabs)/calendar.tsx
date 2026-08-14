@@ -88,13 +88,14 @@ const calendar = () => {
         style={{ gap: dayTasks[0] ? 0 : 40 }}
         theme={{
           todayButtonTextColor: '#007aff',
-          todayButtonFontWeight: 'bold'
+          todayButtonFontWeight: 'bold',
         }}
       >
         <ExpandableCalendar
           //showWeekNumbers
           //onDayPress={(date)=> changeDate(date.dateString)}
           renderHeader={renderHeader}
+          closeOnDayPress={false}
           ref={calendarRef}
           onCalendarToggled={onCalendarToggled}
           markingType="multi-dot"
@@ -112,6 +113,8 @@ const calendar = () => {
 
         />
         <AgendaList
+         //markToday={false}
+          dayFormat='dddd d MMM'
           sections={dayTasks}
           ListEmptyComponent={
             <ListEpmtyComponent
