@@ -1,5 +1,7 @@
 import { getData } from '@/store/getData';
+import { createNotification, createNotificationChannel, deleteAllNotification } from '@/utils/notificationUtils';
 import { createContext, useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 //import { setTimeStatus } from '@/utils/utils';
 // Initiate context
 const Context = createContext();
@@ -18,11 +20,11 @@ const ContextProvider = ({ children }) => {
 
   useEffect(() => {
 
-    // deleteAllNotification()
-    // if (Platform.OS === 'android') 
-    // {
-    //   createNotificationChannel()
-    // }
+    deleteAllNotification()
+    if (Platform.OS === 'android') 
+    {
+       createNotificationChannel()
+    }
 
     async function getStoredData() {
       try {
@@ -43,7 +45,7 @@ const ContextProvider = ({ children }) => {
 
           storedTask.forEach((item) => { 
             item.date = new Date(item.date) 
-            //item.notifyId = createNotification('Пора сделать дело!', item.title, item.date)
+            item.notifyId = createNotification('Пора выполнить задачу!', item.title, item.date)
           })
           setTask(storedTask)
         }

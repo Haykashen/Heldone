@@ -38,3 +38,17 @@ export const createNotification = async (title:string, text:string, triggerDate:
 export const deleteAllNotification = async () =>{
   await Notifications.cancelAllScheduledNotificationsAsync()
 }
+
+export const deletelNotification = async (notId:string) =>{
+  await Notifications.cancelScheduledNotificationAsync(notId);
+}
+
+export const checkPermissions = async () =>{
+const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+  if (existingStatus !== 'granted') {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+  return finalStatus;
+}

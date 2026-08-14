@@ -8,11 +8,12 @@ import PriorityData from '@/data/PriorityData';
 import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { openFile, shareFile } from '@/utils/fileUtils';
+import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
 import { TFileDataObject, TTask } from '@/utils/types';
 import { notifyMessage } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
-import DateTimePicker from '@expo/ui/community/datetime-picker';
+import DateTimePicker, { DateTimePickerChangeEvent } from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 import * as DocumentPicker from 'expo-document-picker';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
@@ -141,6 +142,22 @@ const taskCard = () => {
     openFile(uri)
   }
   
+  const changeDate = async (event: DateTimePickerChangeEvent, selectedDate: Date) => {
+    let time = [currTask.date.getHours(), currTask.date.getMinutes()]
+    var res = (mode === 'date') ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time[0], time[1]) : selectedDate;
+    setCurrentTask({ ...currTask, date: res })
+    setShow(false);
+    if(currTask.notifyId)
+      await deletelNotification(currTask.notifyId)
+    const notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
+    setCurrentTask({ ...currTask, notifyId: notId})
+    notifyMessage('Уведомление для задачи на указанную дату успешно сформировано!')
+    const finalStatus = await checkPermissions() ;
+    if (finalStatus !== 'granted') {
+      notifyMessage('Уведомления от приложения отключены!');
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -170,13 +187,7 @@ const taskCard = () => {
                 locale='ru_RU'
                 presentation="dialog"              
                 value={currTask.date ? currTask.date : new Date()}
-                onValueChange={(event, selectedDate) => {
-                  let day = [currTask.date.getFullYear(),currTask.date.getMonth(), currTask.date.getDate()]
-                  let time = [currTask.date.getHours(),currTask.date.getMinutes()]
-                  var res = (mode === 'date') ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time[0], time[1]) : selectedDate;
-                  setCurrentTask({ ...currTask, date: res})
-                  setShow(false);
-                }}
+                onValueChange={(event, selectedDate) => changeDate(event, selectedDate)}
                 onDismiss={() => {
                   setShow(false);
                 }}
