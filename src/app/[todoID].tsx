@@ -87,7 +87,10 @@ const taskCard = () => {
       Vibration.vibrate(50)
       return;
     }
-
+    const finalStatus = await checkPermissions() ;
+    if (finalStatus !== 'granted') {
+      notifyMessage('Уведомления от приложения отключены!');
+    }
     const resArray = (todoID === 'new') ? [...task, currTask] : task.map((item: TTask) => { return (item.id === todoID) ? currTask : item });
     const sortedArray = resArray.sort((first: TTask, second: TTask) => { return (first.date.getTime() - second.date.getTime()) })
     setTask(sortedArray)
@@ -145,17 +148,12 @@ const taskCard = () => {
   const changeDate = async (event: DateTimePickerChangeEvent, selectedDate: Date) => {
     let time = [currTask.date.getHours(), currTask.date.getMinutes()]
     var res = (mode === 'date') ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time[0], time[1]) : selectedDate;
-    setCurrentTask({ ...currTask, date: res })
-    setShow(false);
+    //setCurrentTask({ ...currTask })
     if(currTask.notifyId)
       await deletelNotification(currTask.notifyId)
-    const notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
-    setCurrentTask({ ...currTask, notifyId: notId})
-    notifyMessage('Уведомление для задачи на указанную дату успешно сформировано!')
-    const finalStatus = await checkPermissions() ;
-    if (finalStatus !== 'granted') {
-      notifyMessage('Уведомления от приложения отключены!');
-    }
+    const notId = await createNotification('Пора выполнить задачу!', currTask.title, res)
+    setCurrentTask({ ...currTask, date: res, notifyId: notId})
+    setShow(false);
   }
 
   return (
