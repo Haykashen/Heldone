@@ -87,12 +87,7 @@ const taskCard = () => {
       Vibration.vibrate(50)
       return;
     }
-    const finalStatus = await checkPermissions() ;
-    if (finalStatus !== 'granted') {
-      notifyMessage('Уведомления от приложения отключены!');
-    }
     await refreshNotify()
-
     const resArray = (todoID === 'new') ? [...task, currTask] : task.map((item: TTask) => { return (item.id === todoID) ? currTask : item });
     const sortedArray = resArray.sort((first: TTask, second: TTask) => { return (first.date.getTime() - second.date.getTime()) })
     setTask(sortedArray)
@@ -101,26 +96,33 @@ const taskCard = () => {
     handleBack()
   }
 
-  const refreshNotify = async()=>{
-    if(currTask.notifyId)
-    { 
-      await deletelNotification(currTask.notifyId)
-    } 
-    if(currTask.sendNotify && currTask.status.id !== StatusData.Completed.id)
+  const refreshNotify = async () => {
+    if (currTask.notifyId) {
+      await deletelNotification(currTask.notifyId) 
+    }  
+    if(!currTask.sendNotify)
     {
+      setCurrentTask({ ...currTask, notifyId: '' }) 
+      return;
+    }  
+      
+    if (currTask.status.id !== StatusData.Completed.id) {
+      const finalStatus = await checkPermissions();
+      // if (finalStatus !== 'granted') {
+      //   notifyMessage('Уведомления от приложения отключены!');
+      // }
       const notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
-      setCurrentTask({ ...currTask, notifyId: notId}) 
-    }else{
-      setCurrentTask({ ...currTask, notifyId: ''})
-    } 
+      setCurrentTask({ ...currTask, notifyId: notId })
+    }
 
   }
 
   const handleDelete = async () => {
-    if (todoID !== 'new')
+    if (todoID !== 'new') {
       deleteTask(currTask.id, task, setTask)
-    if(currTask.notifyId)
-      await deletelNotification(currTask.notifyId)      
+      if (currTask.notifyId)
+        await deletelNotification(currTask.notifyId)
+    }     
     Vibration.vibrate(70)
     handleBack()
   }
@@ -253,7 +255,7 @@ const taskCard = () => {
               <CardRow
                 title='Уведомление'
                 text={currTask.sendNotify?'Включено':'Выключено'}
-                icon={currTask.sendNotify?'bell':'bell-cancel'}
+                icon={currTask.sendNotify?'bell-ring':'bell-off'}
                 iconBackColor={'#263238'}
                 iconColor={'white'}
                 onPress={() => setCurrentTask({ ...currTask, sendNotify: !currTask.sendNotify})}

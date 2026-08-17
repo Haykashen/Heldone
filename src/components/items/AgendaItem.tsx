@@ -36,12 +36,11 @@ const AgendaItem = (props: TListItem) => {
       <View style={{ width: '60%', flexDirection: 'column', gap: 3 }}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitleText}>{title}</Text>
         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-          <MaterialDesignIcons name={status.clockIcon as any} color={'black'} size={18} />
+          {/* <MaterialDesignIcons name={status.clockIcon as any} color={'black'} size={18} /> */}
+          <MaterialDesignIcons name={sendNotify?'bell-ring':'bell-off'} color={sendNotify?'#007aff':'grey'} size={18} />
           <Text style={styles.itemHourText}>
             {date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })} -
-          </Text>
-          {sendNotify && <MaterialDesignIcons name={'bell'} color={'#007aff'} size={18} />}
-          <Text style={styles.itemHourText}> - </Text>            
+          </Text>         
           <MaterialDesignIcons name={priority.icon as any} color={priority.color} size={18} />
           <Text style={styles.itemHourText}>{(files.length>0)?priority.name.ru+' - '+files.length:priority.name.ru}</Text>
           {files.length >0 && <MaterialDesignIcons name={'file-outline'} color={"#63B4FF"} size={18} />}

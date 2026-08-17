@@ -10,7 +10,7 @@ import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/commu
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { router } from 'expo-router';
 import { RefObject, useContext, useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const settings = () => {
@@ -39,6 +39,10 @@ const settings = () => {
     ref.current?.snapToIndex(index)
   }
 
+  const changeDefaultNotify =()=>{
+    setData('defaultNotify', JSON.stringify(!defaultNotify)) 
+    setDefaultNotify(!defaultNotify)      
+  }
 
 
   return (
@@ -113,20 +117,19 @@ const settings = () => {
               icon={CategoryData[defaultCategory].icon}
               iconBackColor={CategoryData[defaultCategory].backColor}
               iconColor={CategoryData[defaultCategory].color}
-              //onPress={() => (null)}
               onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)}
             />
             <CardRow
               title='Создание уведомлений'
               text={defaultNotify?'Включены':'Выключены'}
-              icon={defaultNotify?'bell':'bell-cancel'}
+              icon={defaultNotify?'bell-ring':'bell-off'}
               iconBackColor={''}
               iconColor={'white'}
-              onPress={()=> setDefaultNotify(!defaultNotify)}
+              onPress={changeDefaultNotify}
             />            
-            <Pressable onPress={() => setData('onboarded', JSON.stringify(false))}>
+            {/* <Pressable onPress={() => setData('onboarded', JSON.stringify(false))}>
               <Text style={{ color: 'white' }}>Сбросить онбординг</Text>
-            </Pressable>
+            </Pressable> */}
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Хелдон {appVersion}</Text>
