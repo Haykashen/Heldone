@@ -137,7 +137,9 @@ const taskCard = () => {
     shareFile(uri)
   }
 
-  const deleteFile = (id: string, uri: string) => {
+  const deleteFile = async(id: string, uri: string) => {
+    if(currTask.notifyId)
+      await deletelNotification(currTask.notifyId)  
     setCurrentTask({ ...currTask, files: [...currTask.files.filter((item: TFileDataObject) => item.id !== id)] })
   }
 
@@ -148,10 +150,18 @@ const taskCard = () => {
   const changeDate = async (event: DateTimePickerChangeEvent, selectedDate: Date) => {
     let time = [currTask.date.getHours(), currTask.date.getMinutes()]
     var res = (mode === 'date') ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time[0], time[1]) : selectedDate;
+    let notId = '';
     //setCurrentTask({ ...currTask })
+    try{
     if(currTask.notifyId)
       await deletelNotification(currTask.notifyId)
-    const notId = await createNotification('Пора выполнить задачу!', currTask.title, res)
+      notId = await createNotification('Пора выполнить задачу!', currTask.title, res)      
+    }
+    catch(e)
+    {
+      alert("Ошибка при создании уведомления!")
+      alert(e)
+    }
     setCurrentTask({ ...currTask, date: res, notifyId: notId})
     setShow(false);
   }
