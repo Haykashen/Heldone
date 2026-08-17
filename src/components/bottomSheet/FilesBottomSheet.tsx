@@ -7,7 +7,7 @@ import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type TFilesBottomSheet = {
-    files:[],
+    files:any[],
     addFile:() => void,
     openFile:(uri: string) => void,
     shareFile:(uri: string) => void,

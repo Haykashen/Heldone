@@ -17,7 +17,7 @@ export type TTask = {
     priority:TDataItem, 
     notes?:string,
     notifyId?:string,
-    files:[]    
+    files:any[]    
 };
 
 export type TListItem = TTask & {onItemPress: (() => void), onCompletePress: (() => void) };

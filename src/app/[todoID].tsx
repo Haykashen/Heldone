@@ -26,7 +26,7 @@ type DateTimePickerMode = "date" | "time";
 const taskCard = () => {
   const { todoID, day } = useLocalSearchParams();
   const { task, setTask, defaultCategory, defaultPriority, defaultTime } = useContext(Context);
-  const [currTask, setCurrentTask] = useState(todoID === 'new' ? getNewTask(day as string, defaultCategory as string, defaultPriority as string, defaultTime) : task.find((item: TTask) => item.id === todoID))
+  const [currTask, setCurrentTask] = useState<TTask>(todoID === 'new' ? getNewTask(day as string, defaultCategory as string, defaultPriority as string, defaultTime) : task.find((item: TTask) => item.id === todoID))
   const [originalTask, setOriginalTask] = useState(JSON.stringify(currTask))
   //BottomSheets
   const sheetRef = useRef<BottomSheet>(null);
@@ -91,13 +91,23 @@ const taskCard = () => {
     if (finalStatus !== 'granted') {
       notifyMessage('Уведомления от приложения отключены!');
     }
-
+    await refreshNotify()
+    
     const resArray = (todoID === 'new') ? [...task, currTask] : task.map((item: TTask) => { return (item.id === todoID) ? currTask : item });
     const sortedArray = resArray.sort((first: TTask, second: TTask) => { return (first.date.getTime() - second.date.getTime()) })
     setTask(sortedArray)
     setData("todo", JSON.stringify(sortedArray))
     notifyMessage('Данные успешно сохранены!')
     handleBack()
+  }
+
+  const refreshNotify = async()=>{
+    if(currTask.notifyId)
+    { 
+      await deletelNotification(currTask.notifyId)
+    } 
+    const notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
+    setCurrentTask({ ...currTask, notifyId: notId}) 
   }
 
   const handleDelete = async () => {
@@ -140,7 +150,7 @@ const taskCard = () => {
     shareFile(uri)
   }
 
-  const deleteFile = async(id: string, uri: string) => {
+  const deleteFile = (id: string, uri: string) => {
     setCurrentTask({ ...currTask, files: [...currTask.files.filter((item: TFileDataObject) => item.id !== id)] })
   }
 
@@ -148,27 +158,10 @@ const taskCard = () => {
     openFile(uri)
   }
   
-  const changeDate = async (event: DateTimePickerChangeEvent, selectedDate: Date) => {
-    let time = [currTask.date.getHours(), currTask.date.getMinutes()]
-    var res = (mode === 'date') ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time[0], time[1]) : selectedDate;
-    let notId = '';
-    //setCurrentTask({ ...currTask })
-    alert(currTask.notifyId)
-    alert(JSON.stringify(currTask.notifyId))
-    try{
-      if(currTask.notifyId)
-      { 
-        await deletelNotification(currTask.notifyId)
-      }
-      
-      notId = await createNotification('Пора выполнить задачу!', currTask.title, res)      
-    }
-    catch(e)
-    {
-      alert("Ошибка при создании уведомления!")
-      alert(e)
-    }
-    setCurrentTask({ ...currTask, date: res, notifyId: notId})
+  const changeDate = (event: DateTimePickerChangeEvent, selectedDate: Date) => {
+    let customDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), currTask.date.getHours(), currTask.date.getMinutes())
+    let res = (mode === 'date') ? customDate : selectedDate;
+    setCurrentTask({ ...currTask, date: res})
     setShow(false);
   }
 
