@@ -43,7 +43,7 @@ const ContextProvider = ({ children }) => {
         if (storedTask.length > 0) {
           storedTask.forEach((item) => {
             item.date = new Date(item.date)
-            item.notifyId = createNotification('Пора выполнить задачу!', item.title, item.date)
+            item.notifyId = createNotification('Пора выполнить задачу!', item.title, new Date(item.date))
           })
           setTask(storedTask)
         }

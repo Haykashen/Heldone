@@ -154,7 +154,11 @@ const taskCard = () => {
     //setCurrentTask({ ...currTask })
     try{
     if(currTask.notifyId)
+    {
+      alert(JSON.stringify(currTask.notifyId))
       await deletelNotification(currTask.notifyId)
+    }
+      
       notId = await createNotification('Пора выполнить задачу!', currTask.title, res)      
     }
     catch(e)
