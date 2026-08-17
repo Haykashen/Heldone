@@ -12,6 +12,7 @@ const ContextProvider = ({ children }) => {
   const [defaultCategory, setDefaultCategory] = useState('Target')
   const [defaultPriority, setDefaultPriority] = useState('Low')
   const [onboarded, setOnboarded] = useState(false)
+  const [defaultNotify, setDefaultNotify] = useState(true)
 
   const [loaded, setLoad] = useState(false)
 
@@ -35,18 +36,22 @@ const ContextProvider = ({ children }) => {
         const defPriority = await getData('defaultPriority')
         setDefaultPriority(defPriority ? defPriority : 'Low')
 
+
+        
         const storedTask = await getData('todo')
-        if (storedTask.length > 0) {
+        if (storedTask) {
           storedTask.forEach((item) => {
             item.date = new Date(item.date)
             //item.notifyId = createNotification('Пора выполнить задачу!', item.title, new Date(item.date))
           })
           setTask(storedTask)
         }
+
+        const notifyStatus = await getData('notify')    
+        setDefaultNotify((notifyStatus || !storedTask) ? notifyStatus : false) // !storedTask первая загрузка       
       }
       catch (e) {
         notifyMessage('Ошибка при загрузке данных. Переоткройте приложение.')
-        alert(e)
       }
       finally {
         setLoad(true)
@@ -70,7 +75,9 @@ const ContextProvider = ({ children }) => {
         onboarded,
         setOnboarded,
         loaded,
-        setLoad
+        setLoad,
+        defaultNotify, 
+        setDefaultNotify
       }}>
       {children}
     </Context.Provider>

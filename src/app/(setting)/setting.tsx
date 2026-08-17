@@ -14,7 +14,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const settings = () => {
-  const { defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority, defaultTime, setDefaultTime } = useContext(Context);
+  const { defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority, defaultTime, setDefaultTime, defaultNotify, setDefaultNotify } = useContext(Context);
   const pkg = require('@/../package.json')
   const appVersion = pkg.version;
   const [time, setTime] = useState(new Date())
@@ -38,6 +38,9 @@ const settings = () => {
   const setRefCategoryBottomSheet = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
     ref.current?.snapToIndex(index)
   }
+
+
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, }}>
       {show && (
@@ -85,15 +88,6 @@ const settings = () => {
               iconColor={'white'}
               onPress={() => null}
             />
-            <CardRow
-              title='Уведомления'
-              text={'Включены'}
-              icon={'bell'}
-              iconBackColor={''}
-              iconColor={'white'}
-              onPress={() => (null)}
-            // onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)} 
-            />
           </View>
           <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10, marginTop:20 }}>Значения по умолчанию</Text>
           <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
@@ -122,6 +116,14 @@ const settings = () => {
               //onPress={() => (null)}
               onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)}
             />
+            <CardRow
+              title='Создание уведомлений'
+              text={defaultNotify?'Включены':'Выключены'}
+              icon={defaultNotify?'bell':'bell-cancel'}
+              iconBackColor={''}
+              iconColor={'white'}
+              onPress={()=> setDefaultNotify(!defaultNotify)}
+            />            
             <Pressable onPress={() => setData('onboarded', JSON.stringify(false))}>
               <Text style={{ color: 'white' }}>Сбросить онбординг</Text>
             </Pressable>

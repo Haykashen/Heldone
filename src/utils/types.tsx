@@ -16,6 +16,7 @@ export type TTask = {
     status:TDataItem,
     priority:TDataItem, 
     notes?:string,
+    sendNotify:boolean,
     notifyId?:string,
     files:any[]    
 };

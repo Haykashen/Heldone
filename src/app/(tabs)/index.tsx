@@ -89,6 +89,7 @@ export default function Index() {
             title={item.title}
             priority={item.priority}
             notes={item.notes}
+            sendNotify={item.sendNotify}
             files={item.files}
             onCompletePress={() => handleComplete(item.id)}
             onItemPress={() => handlePress(item.id)}

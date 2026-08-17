@@ -24,7 +24,7 @@ export const deleteTask = (id: string, task: [], setTask: ([]) => void) => {
 }
 
 
-export const getNewTask = (createDate: string, defaultCategory: string, defaultPriority: string, createTime: string) => {
+export const getNewTask = (createDate: string, defaultCategory: string, defaultPriority: string, createTime: string, defaultNotify: boolean) => {
 
   let date = new Date(createDate + 'T' + createTime);
   const newTask: TTask = {
@@ -35,6 +35,7 @@ export const getNewTask = (createDate: string, defaultCategory: string, defaultP
     status: StatusData.Upcoming,
     notes: '',
     priority: PriorityData[defaultPriority],
+    sendNotify: defaultNotify,
     files: []
   }
   return (newTask)

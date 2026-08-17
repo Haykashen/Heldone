@@ -25,8 +25,8 @@ type DateTimePickerMode = "date" | "time";
 
 const taskCard = () => {
   const { todoID, day } = useLocalSearchParams();
-  const { task, setTask, defaultCategory, defaultPriority, defaultTime } = useContext(Context);
-  const [currTask, setCurrentTask] = useState<TTask>(todoID === 'new' ? getNewTask(day as string, defaultCategory as string, defaultPriority as string, defaultTime) : task.find((item: TTask) => item.id === todoID))
+  const { task, setTask, defaultCategory, defaultPriority, defaultTime, defaultNotify } = useContext(Context);
+  const [currTask, setCurrentTask] = useState<TTask>(todoID === 'new' ? getNewTask(day as string, defaultCategory as string, defaultPriority as string, defaultTime, defaultNotify) : task.find((item: TTask) => item.id === todoID))
   const [originalTask, setOriginalTask] = useState(JSON.stringify(currTask))
   //BottomSheets
   const sheetRef = useRef<BottomSheet>(null);
@@ -92,7 +92,7 @@ const taskCard = () => {
       notifyMessage('Уведомления от приложения отключены!');
     }
     await refreshNotify()
-    
+
     const resArray = (todoID === 'new') ? [...task, currTask] : task.map((item: TTask) => { return (item.id === todoID) ? currTask : item });
     const sortedArray = resArray.sort((first: TTask, second: TTask) => { return (first.date.getTime() - second.date.getTime()) })
     setTask(sortedArray)
@@ -106,8 +106,14 @@ const taskCard = () => {
     { 
       await deletelNotification(currTask.notifyId)
     } 
-    const notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
-    setCurrentTask({ ...currTask, notifyId: notId}) 
+    if(currTask.sendNotify && currTask.status.id !== StatusData.Completed.id)
+    {
+      const notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
+      setCurrentTask({ ...currTask, notifyId: notId}) 
+    }else{
+      setCurrentTask({ ...currTask, notifyId: ''})
+    } 
+
   }
 
   const handleDelete = async () => {
@@ -244,6 +250,14 @@ const taskCard = () => {
                 iconColor={currTask.category.color}
                 onPress={() => setSheetRefIndex(sheetCategoryRef, 0)}
               />
+              <CardRow
+                title='Уведомление'
+                text={currTask.sendNotify?'Включено':'Выключено'}
+                icon={currTask.sendNotify?'bell':'bell-cancel'}
+                iconBackColor={'#263238'}
+                iconColor={'white'}
+                onPress={() => setCurrentTask({ ...currTask, sendNotify: !currTask.sendNotify})}
+              />              
               <CardRow
                 title='Статус'
                 text={currTask.status.name.ru}

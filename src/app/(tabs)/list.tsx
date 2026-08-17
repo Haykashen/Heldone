@@ -99,6 +99,7 @@ const list = () => {
             notes={item.notes}
             files={item.files}
             priority={item.priority}
+            sendNotify={item.sendNotify}
             onCompletePress={() => handleComplete(item.id)}
             onItemPress={() => handlePress(item.id)}
           />}
