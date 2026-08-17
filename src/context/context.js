@@ -7,9 +7,6 @@ import { Platform } from 'react-native';
 const Context = createContext();
 
 const ContextProvider = ({ children }) => {
-  //const [theme, setTheme] = useState(themeDark);//theme, setTheme,themeDark
-  //const [platform, setPlatform] = useState(Platform.OS);//
-  //const [language, setLanguage] = useState('ru');//storeLanguage? storeLanguage :
   const [task, setTask] = useState([])
   const [defaultTime, setDefaultTime] = useState('14:00')
   const [defaultCategory, setDefaultCategory] = useState('Target')
@@ -19,13 +16,13 @@ const ContextProvider = ({ children }) => {
   const [loaded, setLoad] = useState(false)
 
   useEffect(() => {
-
     async function getStoredData() {
-      try {
         //await deleteAllNotification()
-        if (Platform.OS === 'android') {
-          await createNotificationChannel()
-        }     
+      if (Platform.OS === 'android') {
+        await createNotificationChannel()
+      }       
+      try {
+    
         const onboard = await getData('onboarded')
         setOnboarded(onboard ? onboard : false)
 
@@ -49,6 +46,7 @@ const ContextProvider = ({ children }) => {
       }
       catch (e) {
         notifyMessage('Ошибка при загрузке данных. Переоткройте приложение.')
+        alert(e)
       }
       finally {
         setLoad(true)
