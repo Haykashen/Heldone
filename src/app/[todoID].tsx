@@ -91,6 +91,7 @@ const taskCard = () => {
     if (finalStatus !== 'granted') {
       notifyMessage('Уведомления от приложения отключены!');
     }
+
     const resArray = (todoID === 'new') ? [...task, currTask] : task.map((item: TTask) => { return (item.id === todoID) ? currTask : item });
     const sortedArray = resArray.sort((first: TTask, second: TTask) => { return (first.date.getTime() - second.date.getTime()) })
     setTask(sortedArray)
@@ -102,6 +103,8 @@ const taskCard = () => {
   const handleDelete = async () => {
     if (todoID !== 'new')
       deleteTask(currTask.id, task, setTask)
+    if(currTask.notifyId)
+      await deletelNotification(currTask.notifyId)      
     Vibration.vibrate(70)
     handleBack()
   }
@@ -138,8 +141,6 @@ const taskCard = () => {
   }
 
   const deleteFile = async(id: string, uri: string) => {
-    if(currTask.notifyId)
-      await deletelNotification(currTask.notifyId)  
     setCurrentTask({ ...currTask, files: [...currTask.files.filter((item: TFileDataObject) => item.id !== id)] })
   }
 
