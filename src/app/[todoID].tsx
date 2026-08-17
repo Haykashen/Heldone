@@ -11,7 +11,7 @@ import { openFile, shareFile } from '@/utils/fileUtils';
 import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
 import { TFileDataObject, TTask } from '@/utils/types';
-import { notifyMessage } from '@/utils/utils';
+import { getFormatedDay, notifyMessage } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker, { DateTimePickerChangeEvent } from '@expo/ui/community/datetime-picker';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
@@ -86,7 +86,7 @@ const taskCard = () => {
     if (!currTask.date || !currTask.title) {
       Vibration.vibrate(50)
       return;
-    }
+    }    
     await refreshNotify()
     const resArray = (todoID === 'new') ? [...task, currTask] : task.map((item: TTask) => { return (item.id === todoID) ? currTask : item });
     const sortedArray = resArray.sort((first: TTask, second: TTask) => { return (first.date.getTime() - second.date.getTime()) })
@@ -169,7 +169,8 @@ const taskCard = () => {
   const changeDate = (event: DateTimePickerChangeEvent, selectedDate: Date) => {
     let customDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), currTask.date.getHours(), currTask.date.getMinutes())
     let res = (mode === 'date') ? customDate : selectedDate;
-    setCurrentTask({ ...currTask, date: res})
+    
+    setCurrentTask({ ...currTask, date: res, dateString: getFormatedDay(res)})
     setShow(false);
   }
 

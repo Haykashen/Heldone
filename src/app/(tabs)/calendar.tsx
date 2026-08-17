@@ -5,7 +5,7 @@ import Header from '@/components/TabHeader';
 import { Context } from '@/context/context';
 import { completeTask } from '@/utils/taskUtils';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
-import { RelativePathString, router } from "expo-router";
+import { router } from "expo-router";
 import { useCallback, useContext, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, Text } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar, LocaleConfig } from 'react-native-calendars';
@@ -69,7 +69,7 @@ const calendar = () => {
 
   const handlePress = (id: string) => {
     /*router.push({pathname: '/components/cards/placeCard',params: { placeID: item.id, otherParam: 'anything you want here' }})*/
-    router.push(('/' + id) as RelativePathString)
+    router.push((`/${id}`))
   }
 
   const changeDate = (date:string) =>{

@@ -16,13 +16,11 @@ export function getFormatedDay(date: Date) {
 export function getDayTasks(task: [], day: string) {
   let res: TTaskByDays = {}
   task.forEach((item: TTask) => {
-    
-    let strDate = getFormatedDay(item.date);
-    console.log('getDayTasks ', item.date, strDate)
-    if (strDate === day) {
-      if (!(res[strDate]))
-        res[strDate] = { data: [] };
-      res[strDate].data.push(item)
+    if (item.dateString === day) 
+    {
+      if (!(res[item.dateString]))
+        res[item.dateString] = { data: [] };
+      res[item.dateString].data.push(item)
     }
   })
   let resObj = []
@@ -35,13 +33,13 @@ export function getDayTasks(task: [], day: string) {
 export function getTaskByDays(task: [], status?: string) {
   let res: TTaskByDays = {}
   task.forEach((item: TTask) => {
-    if (status && status !== item.status.id)
+    if (status && status !== item.status.id || !item.dateString)
       return;
-    let strDate = getFormatedDay(item.date);
-    //console.log('getTaskByDays =', strDate)
-    if (!(res[strDate]))
-      res[strDate] = { data: [] };
-    res[strDate].data.push(item)
+    //let strDate = getFormatedDay(item.date);
+
+    if (!(res[item.dateString]))
+      res[item.dateString] = { data: [] };
+    res[item.dateString].data.push(item)
   })
   let resObj = []
   for (var key in res) {
@@ -56,12 +54,14 @@ export function getMultiDotsDays(task: []) {
   let res: { [key: string]: { dots: any } } = {}
 
   task.forEach((item: TTask) => {
-    let strDate = getFormatedDay(new Date(item.date));
-    if (!(res[strDate]))
-      res[strDate] = { dots: [] };
-    let findColor = res[strDate].dots.find((i: { color: string }) => i.color === item.category.backColor)
+    if(!item.dateString)
+      return
+    //let strDate = item.dateString;//getFormatedDay(new Date(item.date))
+    if (!(res[item.dateString]))
+      res[item.dateString] = { dots: [] };
+    let findColor = res[item.dateString].dots.find((i: { color: string }) => i.color === item.category.backColor)
     if (!findColor)
-      res[strDate].dots.push({ key: res[strDate].dots.length, color: item.category.backColor })
+      res[item.dateString].dots.push({ key: res[item.dateString].dots.length, color: item.category.backColor })
   })
   return res;
 }

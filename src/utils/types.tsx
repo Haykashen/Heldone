@@ -11,6 +11,7 @@ export type TBottomSheet = {
 export type TTask = {
     id:string, 
     date:Date, 
+    dateString?: string,
     title:string, 
     category:TDataItem, 
     status:TDataItem,

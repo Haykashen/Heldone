@@ -4,6 +4,7 @@ import Categorys from '../data/CategoryData';
 import { StatusData } from '../data/StatusData';
 import { setData } from '../store/setData';
 import { TTask } from "./types";
+import { getFormatedDay } from './utils';
 
 export const completeTask = (id: string, task: [], setTask: ([]) => void) => {
 
@@ -30,6 +31,7 @@ export const getNewTask = (createDate: string, defaultCategory: string, defaultP
   const newTask: TTask = {
     id: uuid.v4(),
     date: date,
+    dateString: getFormatedDay(date),
     title: '',
     category: Categorys[defaultCategory],
     status: StatusData.Upcoming,
