@@ -152,12 +152,13 @@ const taskCard = () => {
     var res = (mode === 'date') ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time[0], time[1]) : selectedDate;
     let notId = '';
     //setCurrentTask({ ...currTask })
+    alert(currTask.notifyId)
+    alert(JSON.stringify(currTask.notifyId))
     try{
-    if(currTask.notifyId)
-    {
-      alert(JSON.stringify(currTask.notifyId))
-      await deletelNotification(currTask.notifyId)
-    }
+      if(currTask.notifyId)
+      { 
+        await deletelNotification(currTask.notifyId)
+      }
       
       notId = await createNotification('Пора выполнить задачу!', currTask.title, res)      
     }
