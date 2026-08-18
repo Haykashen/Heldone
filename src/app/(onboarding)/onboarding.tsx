@@ -1,5 +1,5 @@
 import PaginationItem from '@/components/items/PaginationItem';
-import { Context } from '@/context/context';
+import { SettingContext } from '@/context/SettingContext';
 import { setData } from '@/store/setData';
 import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
@@ -28,7 +28,7 @@ const OnboardingScreen = ({ path, titleFirst, titleSecond, text }: { path: strin
 const onboarding = () => {
   const [page, setPage] = useState(0)
   const pagerRef = useRef<PagerViewRef>(null);
-  const { setOnboarded } = useContext(Context);
+  const { setOnboarded } = useContext(SettingContext);
   const screen = require('@/assets/animation/Business_plan.json');
 
   const OnboardingDone = () => {

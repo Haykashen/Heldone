@@ -2,7 +2,7 @@ import Add from '@/components/buttons/Add';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import Header from '@/components/TabHeader';
-import { Context } from '@/context/context';
+import { TaskContext } from '@/context/TaskContext';
 import { completeTask } from '@/utils/taskUtils';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
 import { router } from "expo-router";
@@ -21,7 +21,7 @@ LocaleConfig.locales['rus'] = {
 LocaleConfig.defaultLocale = 'rus';
 
 const calendar = () => {
-  const { task, setTask } = useContext(Context);
+  const { task, setTask } = useContext(TaskContext);
   const CHEVRON = require('@/assets/images/next.png');  
   //const {weekView} = props;///????
   const today = getFormatedDay(new Date());

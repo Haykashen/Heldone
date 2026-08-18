@@ -1,4 +1,4 @@
-import Categorys from '@/data/CategoryData';
+import CategoryData from '@/data/CategoryData';
 import { TBottomSheet } from '@/utils/types';
 import BottomSheet, { BottomSheetFlatList, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CategoryBottomSheet = ({ currentId, setValue, setRef, sheetRef }: TBottomSheet) => {
 
-    const array = Object.values(Categorys);
+    const array = Object.values(CategoryData);
 
     const itemPress = (id: string) => {
         setValue(id)

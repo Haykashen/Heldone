@@ -2,7 +2,7 @@ import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
 import NavigationButton from '@/components/buttons/NavigationButton';
 import CardRow from '@/components/CardRow';
-import { Context } from '@/context/context';
+import { SettingContext } from '@/context/SettingContext';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
 import { setData } from '@/store/setData';
@@ -14,7 +14,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const settings = () => {
-  const { defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority, defaultTime, setDefaultTime, defaultNotify, setDefaultNotify } = useContext(Context);
+  const { defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority, defaultTime, setDefaultTime, defaultNotify, setDefaultNotify } = useContext(SettingContext);
   const pkg = require('@/../package.json')
   const appVersion = pkg.version;
   const [time, setTime] = useState(new Date())

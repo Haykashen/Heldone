@@ -4,7 +4,7 @@ import StatusFilter from '@/components/buttons/StatusFilter';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import Header from '@/components/TabHeader';
-import { Context } from '@/context/context';
+import { TaskContext } from '@/context/TaskContext';
 import { StatusData } from '@/data/StatusData';
 import { completeTask } from '@/utils/taskUtils';
 import { getFormatedDay, getTaskByDays } from '@/utils/utils';
@@ -25,7 +25,7 @@ LocaleConfig.locales['rus'] = {
 LocaleConfig.defaultLocale = 'rus';
 
 const list = () => {
-  const { task, setTask } = useContext(Context);
+  const { task, setTask } = useContext(TaskContext);
   const [status, setStatus] = useState(StatusData.Upcoming.id)
   const today = new Date();
   //let comletedCount = task.filter((item:TTask)=> item.status.id == TaskStatus.Completed.id)

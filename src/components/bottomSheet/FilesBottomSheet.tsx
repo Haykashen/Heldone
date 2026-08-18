@@ -5,6 +5,7 @@ import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-
 import { RefObject } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ListEpmtyComponent from '../items/ListEpmtyComponent';
 
 type TFilesBottomSheet = {
     files:any[],
@@ -31,22 +32,31 @@ const FilesBottomSheet = ({ files, addFile, openFile, shareFile, deleteFile, she
                 ref={sheetRef}
                 index={-1}
                 enablePanDownToClose
+                snapPoints={['50%', '85%']}
                 backgroundStyle={{ backgroundColor: '#031F2B', }}
             >
                 <BottomSheetView style={{ flex: 1, gap: 15 }}>
-                    <BottomSheetView style={{alignItems:'center', justifyContent:'center',}}>
-                        <Pressable onPress={addFile} style={{width:'60%',padding:10, backgroundColor:'#007aff', flexDirection:'row', alignItems:'center', justifyContent:'center', gap:10, borderRadius:10}}>
-                            <MaterialDesignIcons name='file' color={'white'} size={16}/>
-                            <Text style={{fontSize:16, fontWeight:'bold', color:'white'}}>Добавить файл</Text>                          
-                        </Pressable>
-                    </BottomSheetView>
+                            <BottomSheetView style={{ alignItems: 'center', justifyContent: 'center',}}>
+                                <Pressable onPress={addFile} style={{ width: '60%', padding: 10, backgroundColor: '#007aff', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, borderRadius: 10 }}>
+                                    <MaterialDesignIcons name='file' color={'white'} size={16} />
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>Добавить файл</Text>
+                                </Pressable>
+                            </BottomSheetView>
                     <BottomSheetFlatList
                         nestedScrollEnabled
                         style={{ flex: 1 }}
                         data={files}
                         keyExtractor={(item:TFileDataObject) => item.id}
-                        contentContainerStyle={{ paddingHorizontal: 15, backgroundColor: '#031F2B', paddingBottom: 30 }}
+                        contentContainerStyle={{ paddingHorizontal: 15, backgroundColor: '#031F2B', paddingBottom:files.length>5?100:0}}
                         ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
+                        ListEmptyComponent={
+                            <ListEpmtyComponent
+                                onPress={addFile}
+                                date={''}
+                                title={'У задачи нету прикрепленных файлов.'}
+                                text={'Прикрепите файлы, нужные для задачи, чтобы потом их не искать.'}
+                            />
+                        }
                         renderItem={({ item }) => (
                             <Pressable
                                 onPress={()=>itemPress(item.uri)}

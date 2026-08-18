@@ -1,16 +1,19 @@
 import { scaleEnd, scaleStart } from '@/utils/animation';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
-import { RelativePathString, router } from "expo-router";
+import { router } from "expo-router";
 import { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const ListEpmtyComponent = ({ date, title, text }:{date?:string, title:string, text:string }) => {
+const ListEpmtyComponent = ({ date, title, text, onPress }:{date?:string, title:string, text:string, onPress?:()=>void }) => {
 
   const scale = useRef(new Animated.Value(1)).current; 
 
   const hanlePress =()=>{
-    router.push(('/new?day='+date) as RelativePathString)
+    if(onPress)
+      onPress()
+    else
+    router.push((`/new?day=${date}`))
   }
 
   // Функция для анимации нажатия

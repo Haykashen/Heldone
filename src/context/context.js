@@ -1,8 +1,9 @@
 import { getData } from '@/store/getData';
-import { createNotificationChannel } from '@/utils/notificationUtils';
+import { setData } from '@/store/setData';
+//import { createNotificationChannel } from '@/utils/notificationUtils';
 import { notifyMessage } from '@/utils/utils';
 import { createContext, useEffect, useState } from 'react';
-import { Platform } from 'react-native';
+//import { Platform } from 'react-native';
 
 const Context = createContext();
 
@@ -19,9 +20,9 @@ const ContextProvider = ({ children }) => {
   useEffect(() => {
     async function getStoredData() {
 
-      if (Platform.OS === 'android') {
-        await createNotificationChannel()
-      }       
+      // if (Platform.OS === 'android') {
+      //   await createNotificationChannel()
+      // }       
       try {
     
         const onboard = await getData('onboarded')
@@ -35,7 +36,7 @@ const ContextProvider = ({ children }) => {
 
         const defPriority = await getData('defaultPriority')
         setDefaultPriority(defPriority ? defPriority : 'Low')
-       
+       await setData('todo', '')
         const storedTask = await getData('todo')
         if (storedTask) {
           storedTask.forEach((item) => {

@@ -2,13 +2,14 @@ import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
 import FilesBottomSheet from '@/components/bottomSheet/FilesBottomSheet';
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
 import CardRow from '@/components/CardRow';
-import { Context } from '@/context/context';
+import { SettingContext } from '@/context/SettingContext';
+import { TaskContext } from '@/context/TaskContext';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
 import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { openFile, shareFile } from '@/utils/fileUtils';
-import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
+//import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
 import { TFileDataObject, TTask } from '@/utils/types';
 import { getFormatedDay, notifyMessage } from '@/utils/utils';
@@ -25,8 +26,9 @@ type DateTimePickerMode = "date" | "time";
 
 const taskCard = () => {
   const { todoID, day } = useLocalSearchParams();
-  const { task, setTask, defaultCategory, defaultPriority, defaultTime, defaultNotify } = useContext(Context);
-  const [currTask, setCurrentTask] = useState<TTask>(todoID === 'new' ? getNewTask(day as string, defaultCategory as string, defaultPriority as string, defaultTime, defaultNotify) : task.find((item: TTask) => item.id === todoID))
+  const { task, setTask } = useContext(TaskContext);
+  const { defaultCategory, defaultPriority, defaultTime, defaultNotify } = useContext(SettingContext);   
+  const [currTask, setCurrentTask] = useState<TTask>(todoID === 'new' ? getNewTask(day as string, defaultCategory, defaultPriority, defaultTime, defaultNotify) : task.find((item: TTask) => item.id === todoID))
   const [originalTask, setOriginalTask] = useState(JSON.stringify(currTask))
   //BottomSheets
   const sheetRef = useRef<BottomSheet>(null);
@@ -39,7 +41,7 @@ const taskCard = () => {
   const [focused, setFocused] = useState('')
 
   if (!currTask) {
-    return <Redirect href="/list" />;
+    return <Redirect href="/" />;
   }
 
   let date = currTask.date ? currTask.date.toLocaleDateString() : 'Пусто';
@@ -97,31 +99,31 @@ const taskCard = () => {
   }
 
   const refreshNotify = async () => {
-    if (currTask.notifyId) {
-      await deletelNotification(currTask.notifyId) 
-    }  
-    if(!currTask.sendNotify)
-    {
-      setCurrentTask({ ...currTask, notifyId: '' }) 
-      return;
-    }  
+    // if (currTask.notifyId) {
+    //   await deletelNotification(currTask.notifyId) 
+    // }  
+    // if(!currTask.sendNotify)
+    // {
+    //   setCurrentTask({ ...currTask, notifyId: '' }) 
+    //   return;
+    // }  
       
-    if (currTask.status.id !== StatusData.Completed.id) {
-      const finalStatus = await checkPermissions();
-      // if (finalStatus !== 'granted') {
-      //   notifyMessage('Уведомления от приложения отключены!');
-      // }
-      const notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
-      setCurrentTask({ ...currTask, notifyId: notId })
-    }
+    // if (currTask.status.id !== StatusData.Completed.id) {
+    //   const finalStatus = await checkPermissions();
+    //   // if (finalStatus !== 'granted') {
+    //   //   notifyMessage('Уведомления от приложения отключены!');
+    //   // }
+    //   const notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
+    //   setCurrentTask({ ...currTask, notifyId: notId })
+    // }
 
   }
 
   const handleDelete = async () => {
     if (todoID !== 'new') {
       deleteTask(currTask.id, task, setTask)
-      if (currTask.notifyId)
-        await deletelNotification(currTask.notifyId)
+     // if (currTask.notifyId)
+      //  await deletelNotification(currTask.notifyId)
     }     
     Vibration.vibrate(70)
     handleBack()
@@ -174,6 +176,15 @@ const taskCard = () => {
     setShow(false);
   }
 
+  const testData = ()=>{
+    let res = [],
+        limit = 101;
+    for(var i =0; i<limit; i++) 
+    {
+      res.push(getNewTask(day as string, defaultCategory as string, defaultPriority as string, defaultTime, defaultNotify))  
+    } 
+    setTask([...task, ...res])    
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -189,7 +200,7 @@ const taskCard = () => {
               <Pressable onPress={handleBack} style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
                 <Text style={{ color: "silver", fontSize: 16, fontWeight: 'bold' }}>Отмена</Text>
               </Pressable>
-              <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Задача</Text>
+              <Text onPress={testData} style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Задача</Text>
               <Pressable onPress={handleDone} style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
                 <Text style={{ color: "#63B4FF", fontSize: 16, fontWeight: 'bold' }}>Готово</Text>
               </Pressable>
