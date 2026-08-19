@@ -1,3 +1,4 @@
+import { OnboardingContextProvider } from '@/context/OnboardingContext';
 import { SettingContextProvider } from '@/context/SettingContext';
 import { TaskContextProvider } from '@/context/TaskContext';
 import { Stack } from 'expo-router';
@@ -6,23 +7,24 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 export default function RootLayout() {
   
   return (
-      <TaskContextProvider>
-        <SettingContextProvider>
-        <SafeAreaProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="(onboarding)" />
-            <Stack.Screen name="(setting)" />
-            <Stack.Screen name="[todoID]"
-              options={{
-                presentation: 'transparentModal',
-              }}
-            />
-          </Stack>
-        </SafeAreaProvider>
-        </SettingContextProvider>
-      </TaskContextProvider>
-    
+    <OnboardingContextProvider>
+      <SettingContextProvider>
+        <TaskContextProvider>
+          <SafeAreaProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="(onboarding)" />
+              <Stack.Screen name="(setting)" />
+              <Stack.Screen name="[todoID]"
+                options={{
+                  presentation: 'transparentModal',
+                }}
+              />
+            </Stack>
+          </SafeAreaProvider>
+        </TaskContextProvider>
+      </SettingContextProvider>
+    </OnboardingContextProvider>
   );
 }
                //animation: 'fade_from_bottom',

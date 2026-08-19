@@ -2,7 +2,7 @@ import Add from '@/components/buttons/Add';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
 import Header from '@/components/TabHeader';
-import { SettingContext } from '@/context/SettingContext';
+import { OnboardingContext } from '@/context/OnboardingContext';
 import { TaskContext } from '@/context/TaskContext';
 import { scaleEnd, scaleStart } from '@/utils/animation';
 import { completeTask } from '@/utils/taskUtils';
@@ -20,7 +20,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function Index() {
   const { task, setTask, loadedTask } = useContext(TaskContext);
-  const { onboarded } = useContext(SettingContext);  
+  const { onboarded } = useContext(OnboardingContext);  
   const scale = useRef(new Animated.Value(1)).current;
   
   const today = new Date();
@@ -41,7 +41,7 @@ export default function Index() {
     setShowConfetti((filtered.length > 0 && completed.length === filtered.length))
   }, [task]);
 
-  if (loadedTask && !onboarded) {
+   if (loadedTask && !onboarded) {
     return <Redirect href={'/onboarding'} />
   }
 

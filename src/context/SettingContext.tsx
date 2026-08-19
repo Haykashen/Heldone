@@ -12,22 +12,17 @@ const SettingContextProvider: FC<Props> = ({ children }) => {
     const [defaultTime, setDefaultTime] = useState<string>('14:00')
     const [defaultCategory, setDefaultCategory] = useState<string>('Target')
     const [defaultPriority, setDefaultPriority] = useState<string>('Low')
-    const [onboarded, setOnboarded] = useState<boolean>(false)
     const [defaultNotify, setDefaultNotify] = useState<boolean>(true)
     const [loadedSetting, setLoad] = useState<boolean>(false) 
     
   useEffect(() => {
-    console.log('update SettingContextProvider')
+
     async function getStoredData() {
 
       // if (Platform.OS === 'android') {
       //   await createNotificationChannel()
       // }       
       try {
-    
-        const onboard = await getData('onboarded')
-        setOnboarded(onboard ? onboard : false)
-
         const defTime = await getData('defaultTime')
         setDefaultTime(defTime ? defTime : '14:00')
 
@@ -47,9 +42,9 @@ const SettingContextProvider: FC<Props> = ({ children }) => {
         setLoad(true)
       }
     }
-
     getStoredData()
-  }, []);    
+  }, []);
+
     return (
     <SettingContext.Provider
       value={{
@@ -61,8 +56,6 @@ const SettingContextProvider: FC<Props> = ({ children }) => {
         setDefaultTime,
         defaultNotify, 
         setDefaultNotify,        
-        onboarded,
-        setOnboarded,
         loadedSetting
       }}>
       {children}

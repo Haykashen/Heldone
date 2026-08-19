@@ -9,7 +9,7 @@ import { setData } from '@/store/setData';
 import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { router } from 'expo-router';
-import { RefObject, useContext, useRef, useState } from 'react';
+import { RefObject, useContext, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -21,6 +21,11 @@ const settings = () => {
   const [show, setShow] = useState(false);
   const sheetPriorityRef = useRef<BottomSheet>(null);
   const sheetCategoryRef = useRef<BottomSheet>(null);
+
+console.log('render settings tabs  no useEffect')
+  useEffect(()=>{
+    console.log('render settings tabs')
+  },[])
 
   const changeDefaultCategory = (id: string) => {
     setDefaultCategory(id);

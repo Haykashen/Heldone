@@ -86,7 +86,7 @@ const list = () => {
           ListEmptyComponent={
             <ListEpmtyComponent
               date={getFormatedDay(today)}
-              title={status === StatusData.Completed.id ? 'У вас пока нет выполненных заданий!' : 'У вас пока нет никаких заданий!'}
+              title={status === StatusData.Completed.id ? 'У вас пока нет выполненных заданий!' : 'У вас пока нет заданий!'}
               text={status === StatusData.Completed.id ? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' : 'Добавьте задачу, чтобы быть продуктивным.'}
             />
           }
