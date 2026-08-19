@@ -126,7 +126,7 @@ console.log('render settings tabs  no useEffect')
             />
             <CardRow
               title='Создание уведомлений'
-              text={defaultNotify?'Включены':'Выключены'}
+              text={defaultNotify?'Включено':'Выключено'}
               icon={defaultNotify?'bell-ring':'bell-off'}
               iconBackColor={''}
               iconColor={'white'}

@@ -11,24 +11,34 @@ const CategoryData:TDataDir = {
         icon: 'home',
         color: 'white',
         backColor:'#D97706'
-    },  
-    Family: {
-        id:'Family',
-        name: {
-            ru: 'Семья',
-            en: 'Family'
+    }, 
+    Hobby:{
+        id:'Hobby',
+        name:{
+            ru:'Хобби',
+            en:'Hobby'
         },
-        icon: 'account-group',
-        color: 'white',
-        backColor:'#EA580C'
-    },       
+        icon:'palette',
+        color:'white',
+        backColor:'#DB2777'
+    },  
+    Shopping:{
+        id:'Shopping',
+        name:{
+            ru:'Покупки',
+            en:'Shopping'
+        },
+        icon:'cart',
+        color:'white',
+        backColor:'#0D9488'
+    },           
     Target: {
         id:'Target',
         name: {
             ru: 'Цель',
             en: 'Target'
         },
-        icon: 'apple-safari',
+        icon: 'bullseye-arrow',
         color: 'white',
         backColor:'#4894FE'
     },
@@ -52,6 +62,16 @@ const CategoryData:TDataDir = {
         color:"white",
         backColor:"#ffb900"
     },
+    Family: {
+        id:'Family',
+        name: {
+            ru: 'Семья',
+            en: 'Family'
+        },
+        icon: 'account-group',
+        color: 'white',
+        backColor:'#EA580C'
+    },       
     Finance:{
         id:'Finance',
         name:{
@@ -92,16 +112,16 @@ const CategoryData:TDataDir = {
         color:'white',
         backColor:'#2563EB'
     },
-    Shopping:{
-        id:'Shopping',
+    Love:{
+        id:'Love',
         name:{
-            ru:'Покупки',
-            en:'Shopping'
+            ru:'Любовь',
+            en:'Love'
         },
-        icon:'cart',
+        icon:'heart',
         color:'white',
-        backColor:'#0D9488'
-    },
+        backColor:'#fa1bd9'        
+    },    
     Travel:{
         id:'Travel',
         name:{
@@ -112,16 +132,6 @@ const CategoryData:TDataDir = {
         color:'white',
         backColor:'#0891B2'
     },
-    Hobby:{
-        id:'Hobby',
-        name:{
-            ru:'Путешествия',
-            en:'Hobby'
-        },
-        icon:'palette',
-        color:'white',
-        backColor:'#DB2777'
-    },
     Pets:{
         id:'Pets',
         name:{
@@ -131,7 +141,7 @@ const CategoryData:TDataDir = {
         icon:'paw',
         color:'white',
         backColor:'#B45309'
-    },
+    },    
     SelfDevelopment:{
         id:'SelfDevelopment',
         name:{
@@ -168,7 +178,7 @@ const CategoryData:TDataDir = {
             ru:'Отдых',
             en:'Rest'
         },
-        icon:'sofa',
+        icon:'party-popper',
         color:'white',
         backColor:'#C026D3'
     },

@@ -7,7 +7,10 @@ import { Animated, Pressable, StyleSheet, Text, Vibration, View } from 'react-na
 const AgendaItem = (props: TListItem) => {
   const { id, date, title, category, status, priority, files, sendNotify, onItemPress, onCompletePress, } = props;
   const scale = useRef(new Animated.Value(1)).current;
-
+  const currDate = new Date();
+  const bellIcon = sendNotify?((currDate < date)?'bell-ring':'bell'):'bell-off';
+  const bellColor = (sendNotify && currDate < date)?'#007aff':'grey';
+  
   const handleComplete = () => {
     onCompletePress()
   }
@@ -37,7 +40,7 @@ const AgendaItem = (props: TListItem) => {
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitleText}>{title}</Text>
         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: 3 }}>
           {/* <MaterialDesignIcons name={status.clockIcon as any} color={'black'} size={18} /> */}
-          <MaterialDesignIcons name={sendNotify?'bell-ring':'bell-off'} color={sendNotify?'#007aff':'grey'} size={18} />
+          <MaterialDesignIcons name={bellIcon} color={bellColor} size={18} />
           <Text style={styles.itemHourText}>
             {date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })} -
           </Text>         
