@@ -1,4 +1,117 @@
 
+// import Add from '@/components/buttons/Add';
+// import StatusFilter from '@/components/buttons/StatusFilter';
+// import AgendaItem from '@/components/items/AgendaItem';
+// import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
+// import Header from '@/components/TabHeader';
+// import { TaskContext } from '@/context/TaskContext';
+// import { StatusData } from '@/data/StatusData';
+// import { completeTask } from '@/utils/taskUtils';
+// import { getFormatedDay, getTaskByDays } from '@/utils/utils';
+// import { RelativePathString, router } from "expo-router";
+// import { useContext, useEffect, useState } from 'react';
+// import { View } from 'react-native';
+// import { AgendaList, CalendarProvider, LocaleConfig } from 'react-native-calendars';
+// import { SafeAreaView } from 'react-native-safe-area-context';
+
+// LocaleConfig.locales['rus'] = {
+//   monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+//   monthNamesShort: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
+//   dayNames: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
+//   dayNamesShort: ['Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.', 'Вос.'],
+//   today: "Сегодня"
+// };
+
+// LocaleConfig.defaultLocale = 'rus';
+
+// const list = () => {
+//   const { task, setTask } = useContext(TaskContext);
+//   const [status, setStatus] = useState(StatusData.Upcoming.id)
+//   const today = new Date();
+//   //let comletedCount = task.filter((item:TTask)=> item.status.id == TaskStatus.Completed.id)
+//   let sortTask = getTaskByDays(task, status)
+
+//   useEffect(() => {
+//     sortTask = getTaskByDays(task, status)
+//   }, [task, status])
+
+//   const handlePress = (id: string) => {
+//     router.push(('/' + id) as RelativePathString)
+//   }
+
+//   const handleComplete = (id: string) => {
+//     completeTask(id, task, setTask)
+//   }
+
+//   const changeStatus = (status: string) => {
+//     setStatus(status)
+//   }
+
+//   return (
+//     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
+//       <Header title='Мои задачи' text='по дням и статусам' />
+//       <CalendarProvider
+//         date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(today)}
+//         showTodayButton={sortTask[0] ? true : false}
+//         theme={{
+//           todayButtonTextColor: '#007aff',
+//           todayButtonFontWeight: 'bold'
+//         }}
+//         style={{ gap: sortTask[0] ? 0 : 40 }}
+//       >
+//         <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 5, marginTop: 15, borderRadius: 10 }}>
+//           <StatusFilter
+//             status={StatusData.Upcoming.id}
+//             currStatus={status}
+//             title={'Предстоит'}
+//             changeStatus={changeStatus}
+//           />
+//           <StatusFilter
+//             status={StatusData.Completed.id}
+//             currStatus={status}
+//             title={'Выполненно'}
+//             changeStatus={changeStatus}
+//           />
+//           <StatusFilter
+//             status={''}
+//             currStatus={status}
+//             title={'Все'}
+//             changeStatus={changeStatus}
+//           />
+//         </View>
+//         <AgendaList
+//           dayFormat='dddd, d MMM yyyy'
+//           sections={sortTask}
+//           sectionStyle={{ backgroundColor: '#031F2B', }}
+//           ListEmptyComponent={
+//             <ListEpmtyComponent
+//               date={getFormatedDay(today)}
+//               title={status === StatusData.Completed.id ? 'У вас пока нет выполненных заданий!' : 'У вас пока нет заданий!'}
+//               text={status === StatusData.Completed.id ? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' : 'Добавьте задачу, чтобы быть продуктивным.'}
+//             />
+//           }
+//           renderItem={({ item }: any) => <AgendaItem
+//             id={item.id}
+//             date={item.date}
+//             category={item.category}
+//             status={item.status}
+//             title={item.title}
+//             notes={item.notes}
+//             files={item.files}
+//             priority={item.priority}
+//             sendNotify={item.sendNotify}
+//             onCompletePress={() => handleComplete(item.id)}
+//             onItemPress={() => handlePress(item.id)}
+//           />}
+//         />
+//       </CalendarProvider>
+//       <Add date={getFormatedDay(today)} />
+//     </SafeAreaView>
+//   )
+// }
+// //"#4894FE"
+// export default list
+
 import Add from '@/components/buttons/Add';
 import StatusFilter from '@/components/buttons/StatusFilter';
 import AgendaItem from '@/components/items/AgendaItem';
@@ -9,8 +122,8 @@ import { StatusData } from '@/data/StatusData';
 import { completeTask } from '@/utils/taskUtils';
 import { getFormatedDay, getTaskByDays } from '@/utils/utils';
 import { RelativePathString, router } from "expo-router";
-import { useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { useCallback, useContext, useMemo, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { AgendaList, CalendarProvider, LocaleConfig } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -21,93 +134,131 @@ LocaleConfig.locales['rus'] = {
   dayNamesShort: ['Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.', 'Вос.'],
   today: "Сегодня"
 };
-
 LocaleConfig.defaultLocale = 'rus';
 
-const list = () => {
+const PROVIDER_THEME = {
+  todayButtonTextColor: '#007aff',
+  todayButtonFontWeight: 'bold' as const
+};
+
+const TaskListScreen = () => {
   const { task, setTask } = useContext(TaskContext);
-  const [status, setStatus] = useState(StatusData.Upcoming.id)
-  const today = new Date();
-  //let comletedCount = task.filter((item:TTask)=> item.status.id == TaskStatus.Completed.id)
-  let sortTask = getTaskByDays(task, status)
+  const [status, setStatus] = useState(StatusData.Upcoming.id);
+  
+  const today = useMemo(() => new Date(), []);
+  const todayFormatted = useMemo(() => getFormatedDay(today), [today]);
 
-  useEffect(() => {
-    sortTask = getTaskByDays(task, status)
-  }, [task, status])
+  // МЕМОИЗАЦИЯ: Рассчитываем отсортированные задачи правильно и эффективно. 
+  // Эффект useEffect удален за ненадобностью.
+  const sortTask = useMemo(() => getTaskByDays(task, status), [task, status]);
 
-  const handlePress = (id: string) => {
-    router.push(('/' + id) as RelativePathString)
-  }
+  // Вычисляем пропсы для провайдера календаря на основе мемоизированных данных
+  const providerDate = useMemo(() => sortTask[0]?.title || todayFormatted, [sortTask, todayFormatted]);
+  const hasTasks = useMemo(() => !!sortTask[0], [sortTask]);
+  const providerStyle = useMemo(() => ({ gap: hasTasks ? 0 : 40 }), [hasTasks]);
 
-  const handleComplete = (id: string) => {
-    completeTask(id, task, setTask)
-  }
+  // Оптимизированные коллбэки навигации и действий
+  const handlePress = useCallback((id: string) => {
+    router.push(('/' + id) as RelativePathString);
+  }, []);
 
-  const changeStatus = (status: string) => {
-    setStatus(status)
-  }
+  const handleComplete = useCallback((id: string) => {
+    completeTask(id, task, setTask);
+  }, [task, setTask]);
+
+  // Мемоизированный рендер элементов списка для AgendaList
+  const renderAgendaItem = useCallback(({ item }: { item: any }) => (
+    <AgendaItem
+      id={item.id}
+      date={item.date}
+      category={item.category}
+      status={item.status}
+      title={item.title}
+      notes={item.notes}
+      files={item.files}
+      priority={item.priority}
+      sendNotify={item.sendNotify}
+      onCompletePress={() => handleComplete(item.id)}
+      onItemPress={() => handlePress(item.id)}
+    />
+  ), [handleComplete, handlePress]);
+
+  // Мемоизированный компонент пустого списка, чтобы не пересоздавать объекты строк
+  const listEmptyComponent = useMemo(() => {
+    const isCompletedTab = status === StatusData.Completed.id;
+    return (
+      <ListEpmtyComponent
+        date={todayFormatted}
+        title={isCompletedTab ? 'У вас пока нет выполненных заданий!' : 'У вас пока нет заданий!'}
+        text={isCompletedTab ? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' : 'Добавьте задачу, чтобы быть продуктивным.'}
+      />
+    );
+  }, [status, todayFormatted]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
+    <SafeAreaView style={styles.container}>
       <Header title='Мои задачи' text='по дням и статусам' />
+      
       <CalendarProvider
-        date={sortTask[0]?.title ? sortTask[0]?.title : getFormatedDay(today)}
-        showTodayButton={sortTask[0] ? true : false}
-        theme={{
-          todayButtonTextColor: '#007aff',
-          todayButtonFontWeight: 'bold'
-        }}
-        style={{ gap: sortTask[0] ? 0 : 40 }}
+        date={providerDate}
+        showTodayButton={hasTasks}
+        theme={PROVIDER_THEME}
+        style={providerStyle}
       >
-        <View style={{ padding: 5, gap: 7, flexDirection: 'row', marginHorizontal: 5, marginTop: 15, borderRadius: 10 }}>
+        <View style={styles.filterContainer}>
           <StatusFilter
             status={StatusData.Upcoming.id}
             currStatus={status}
             title={'Предстоит'}
-            changeStatus={changeStatus}
+            changeStatus={setStatus} // Передаем напрямую функцию изменения стейта
           />
           <StatusFilter
             status={StatusData.Completed.id}
             currStatus={status}
-            title={'Выполненно'}
-            changeStatus={changeStatus}
+            title={'Выполнено'} // Исправлена опечатка "Выполненно"
+            changeStatus={setStatus}
           />
           <StatusFilter
             status={''}
             currStatus={status}
             title={'Все'}
-            changeStatus={changeStatus}
+            changeStatus={setStatus}
           />
         </View>
+
         <AgendaList
           dayFormat='dddd, d MMM yyyy'
           sections={sortTask}
-          sectionStyle={{ backgroundColor: '#031F2B', }}
-          ListEmptyComponent={
-            <ListEpmtyComponent
-              date={getFormatedDay(today)}
-              title={status === StatusData.Completed.id ? 'У вас пока нет выполненных заданий!' : 'У вас пока нет заданий!'}
-              text={status === StatusData.Completed.id ? 'Выполняйте задачи, чтобы ваши дни были продуктивными.' : 'Добавьте задачу, чтобы быть продуктивным.'}
-            />
-          }
-          renderItem={({ item }: any) => <AgendaItem
-            id={item.id}
-            date={item.date}
-            category={item.category}
-            status={item.status}
-            title={item.title}
-            notes={item.notes}
-            files={item.files}
-            priority={item.priority}
-            sendNotify={item.sendNotify}
-            onCompletePress={() => handleComplete(item.id)}
-            onItemPress={() => handlePress(item.id)}
-          />}
+          sectionStyle={styles.sectionStyle}
+          ListEmptyComponent={listEmptyComponent}
+          renderItem={renderAgendaItem}
         />
       </CalendarProvider>
-      <Add date={getFormatedDay(today)} />
+      
+      <Add date={todayFormatted} />
     </SafeAreaView>
-  )
-}
-//"#4894FE"
-export default list
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#031F2B',
+    paddingTop: 5,
+    flexDirection: 'column',
+    gap: 10,
+  },
+  filterContainer: {
+    padding: 5,
+    gap: 7,
+    flexDirection: 'row',
+    marginHorizontal: 5,
+    marginTop: 15,
+    borderRadius: 10,
+  },
+  sectionStyle: {
+    backgroundColor: '#031F2B',
+  },
+});
+
+export default TaskListScreen;
