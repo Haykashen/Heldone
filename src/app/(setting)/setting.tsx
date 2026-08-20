@@ -1,3 +1,173 @@
+// import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
+// import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
+// import NavigationButton from '@/components/buttons/NavigationButton';
+// import CardRow from '@/components/CardRow';
+// import { SettingContext } from '@/context/SettingContext';
+// import CategoryData from '@/data/CategoryData';
+// import PriorityData from '@/data/PriorityData';
+// import { setData } from '@/store/setData';
+// import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
+// import DateTimePicker from '@expo/ui/community/datetime-picker';
+// import { router } from 'expo-router';
+// import { RefObject, useContext, useEffect, useRef, useState } from 'react';
+// import { StyleSheet, Text, View } from 'react-native';
+// import { SafeAreaView } from 'react-native-safe-area-context';
+
+// const settings = () => {
+//   const { defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority, defaultTime, setDefaultTime, defaultNotify, setDefaultNotify } = useContext(SettingContext);
+//   const pkg = require('@/../package.json')
+//   const appVersion = pkg.version;
+//   const [time, setTime] = useState(new Date())
+//   const [show, setShow] = useState(false);
+//   const sheetPriorityRef = useRef<BottomSheet>(null);
+//   const sheetCategoryRef = useRef<BottomSheet>(null);
+
+// console.log('render settings tabs  no useEffect')
+//   useEffect(()=>{
+//     console.log('render settings tabs')
+//   },[])
+
+//   const changeDefaultCategory = (id: string) => {
+//     setDefaultCategory(id);
+//     setData('defaultCategory', JSON.stringify(id))
+//   }
+
+//   const changeDefaultPriority = (id: string) => {
+//     setDefaultPriority(id);
+//     setData('defaultPriority', JSON.stringify(id))
+//   }
+//   const setRefPriorityBottomSheet = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
+//     ref.current?.snapToIndex(index)
+//   }
+
+//   const setRefCategoryBottomSheet = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
+//     ref.current?.snapToIndex(index)
+//   }
+
+//   const changeDefaultNotify =()=>{
+//     setData('defaultNotify', JSON.stringify(!defaultNotify)) 
+//     setDefaultNotify(!defaultNotify)      
+//   }
+
+
+//   return (
+//     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, }}>
+//       {show && (
+//         <DateTimePicker
+//           mode='time'
+//           locale='ru_RU'
+//           presentation="dialog"
+//           value={time}
+//           onValueChange={(event, selectedDate) => {
+//             const time = selectedDate.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" })
+//             setDefaultTime(time)
+//             setData('defaultTime', JSON.stringify(time))
+//             setTime(selectedDate)
+//             setShow(false);
+//           }}
+//           onDismiss={() => {
+//             setShow(false);
+//           }}
+//         />)
+//       }
+//       <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, gap:10 }}>
+//         <NavigationButton onPress={()=>router.back()} icon={'arrow-left'} size={38}/>
+//         <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
+//           <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>{'Настройки'}</Text>
+//           <Text style={{ color: '#7a92a5', fontSize: 16 }}>{'приложения и аккаунта'}</Text>
+//         </View>
+//       </View>    
+//       <BottomSheetView style={{ flex: 1 }}>
+//         <View style={{ flexDirection: 'column', gap: 10, paddingHorizontal: 10, }} >
+//           <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10, marginTop:5 }}>Системные</Text>
+//           <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
+//             <CardRow
+//               title='Язык'
+//               text={'Русский'}
+//               icon={'web'}
+//               iconBackColor={'#263238'}
+//               iconColor={'white'}
+//               onPress={() => null}
+//             />
+//             <CardRow
+//               title='Стиль'
+//               text={'Классический'}
+//               icon={'weather-night'}
+//               iconBackColor={'#263238'}
+//               iconColor={'white'}
+//               onPress={() => null}
+//             />
+//           </View>
+//           <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10, marginTop:20 }}>Значения по умолчанию</Text>
+//           <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
+//             <CardRow
+//               title='Время'
+//               text={defaultTime}
+//               icon={'clock'}
+//               iconBackColor={'#263238'}
+//               iconColor={'white'}
+//               onPress={() => setShow(true)}
+//             />
+//             <CardRow
+//               title='Приоритет'
+//               text={PriorityData[defaultPriority].name.ru}
+//               icon={PriorityData[defaultPriority].icon}
+//               iconBackColor={PriorityData[defaultPriority].color}
+//               iconColor={'white'}
+//               onPress={() => setRefPriorityBottomSheet(sheetPriorityRef, 0)}
+//             />
+//             <CardRow
+//               title='Категория'
+//               text={CategoryData[defaultCategory].name.ru}
+//               icon={CategoryData[defaultCategory].icon}
+//               iconBackColor={CategoryData[defaultCategory].backColor}
+//               iconColor={CategoryData[defaultCategory].color}
+//               onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)}
+//             />
+//             <CardRow
+//               title='Создание уведомлений'
+//               text={defaultNotify?'Включено':'Выключено'}
+//               icon={defaultNotify?'bell-ring':'bell-off'}
+//               iconBackColor={''}
+//               iconColor={'white'}
+//               onPress={changeDefaultNotify}
+//             />            
+//             {/* <Pressable onPress={() => setData('onboarded', JSON.stringify(false))}>
+//               <Text style={{ color: 'white' }}>Сбросить онбординг</Text>
+//             </Pressable> */}
+//           </View>
+//           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+//             <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Хелдон {appVersion}</Text>
+//           </View>
+//         </View>
+//         <PriorityBottomSheet
+//           currentId={PriorityData[defaultPriority].id}
+//           setValue={changeDefaultPriority}
+//           setRef={setRefPriorityBottomSheet}
+//           sheetRef={sheetPriorityRef}
+//         />
+//         <CategoryBottomSheet
+//           currentId={defaultCategory}
+//           setValue={changeDefaultCategory}
+//           setRef={setRefCategoryBottomSheet}
+//           sheetRef={sheetCategoryRef}
+//         />
+//       </BottomSheetView>
+//     </SafeAreaView>
+//   )
+// }
+
+// export default settings
+
+// const styles = StyleSheet.create({
+//   setting_row: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//   },
+
+// });
+
 import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
 import NavigationButton from '@/components/buttons/NavigationButton';
@@ -6,164 +176,267 @@ import { SettingContext } from '@/context/SettingContext';
 import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
 import { setData } from '@/store/setData';
-import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
-import DateTimePicker from '@expo/ui/community/datetime-picker';
+import { notifyMessage } from '@/utils/utils';
+import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
+import DateTimePicker, { DateTimePickerChangeEvent } from '@expo/ui/community/datetime-picker';
 import { router } from 'expo-router';
-import { RefObject, useContext, useEffect, useRef, useState } from 'react';
+import { RefObject, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const settings = () => {
-  const { defaultCategory, setDefaultCategory, defaultPriority, setDefaultPriority, defaultTime, setDefaultTime, defaultNotify, setDefaultNotify } = useContext(SettingContext);
-  const pkg = require('@/../package.json')
-  const appVersion = pkg.version;
-  const [time, setTime] = useState(new Date())
+// ОПТИМИЗАЦИЯ: Выносим чтение package.json за пределы компонента
+const pkg = require('@/../package.json');
+const APP_VERSION = pkg.version || '1.0.0';
+
+const SettingsScreen = () => {
+  const { 
+    defaultCategory, setDefaultCategory, 
+    defaultPriority, setDefaultPriority, 
+    defaultTime, setDefaultTime, 
+    defaultNotify, setDefaultNotify 
+  } = useContext(SettingContext);
+
+  const [time, setTime] = useState(() => {
+    // Безопасная инициализация объекта даты текущим или дефолтным временем
+    const d = new Date();
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(':');
+      d.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+    }
+    return d;
+  });
+  
   const [show, setShow] = useState(false);
   const sheetPriorityRef = useRef<BottomSheet>(null);
   const sheetCategoryRef = useRef<BottomSheet>(null);
 
-console.log('render settings tabs  no useEffect')
-  useEffect(()=>{
-    console.log('render settings tabs')
-  },[])
+  // ОПТИМИЗАЦИЯ: Мемоизируем методы для безопасного открытия BottomSheets
+  const handleSnapBottomSheet = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
+    ref.current?.snapToIndex(index);
+  }, []);
 
-  const changeDefaultCategory = (id: string) => {
+  const changeDefaultCategory = useCallback((id: string) => {
     setDefaultCategory(id);
-    setData('defaultCategory', JSON.stringify(id))
-  }
+    setData('defaultCategory', JSON.stringify(id));
+  }, [setDefaultCategory]);
 
-  const changeDefaultPriority = (id: string) => {
+  const changeDefaultPriority = useCallback((id: string) => {
     setDefaultPriority(id);
-    setData('defaultPriority', JSON.stringify(id))
-  }
-  const setRefPriorityBottomSheet = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
-    ref.current?.snapToIndex(index)
-  }
+    setData('defaultPriority', JSON.stringify(id));
+  }, [setDefaultPriority]);
 
-  const setRefCategoryBottomSheet = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
-    ref.current?.snapToIndex(index)
-  }
+  const changeDefaultNotify = useCallback(() => {
+    const newValue = !defaultNotify;
+    setDefaultNotify(newValue);      
+    setData('defaultNotify', JSON.stringify(newValue)); 
+  }, [defaultNotify, setDefaultNotify]);
 
-  const changeDefaultNotify =()=>{
-    setData('defaultNotify', JSON.stringify(!defaultNotify)) 
-    setDefaultNotify(!defaultNotify)      
-  }
+  // БЕЗОПАСНОСТЬ: Добавлена проверка на валидность даты и типа события
+  const handleTimeChange = useCallback((event: DateTimePickerChangeEvent, selectedDate?: Date) => {
+    if (!selectedDate) {
+      setShow(false);
+      return;
+    }
 
+    const timeString = selectedDate.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+    setDefaultTime(timeString);
+    setData('defaultTime', JSON.stringify(timeString));
+    setTime(selectedDate);
+    setShow(false);
+  }, [setDefaultTime]);
+
+  const handleDismissTime = useCallback(() => {
+    setShow(false);
+  }, []);
+
+  // БЕЗОПАСНОСТЬ: Защита данных от undefined с помощью оператора ?.
+  const priorityName = useMemo(() => PriorityData[defaultPriority]?.name?.ru || 'Не указан', [defaultPriority]);
+  const priorityIcon = useMemo(() => PriorityData[defaultPriority]?.icon || 'flag', [defaultPriority]);
+  const priorityColor = useMemo(() => PriorityData[defaultPriority]?.color || 'white', [defaultPriority]);
+
+  const categoryName = useMemo(() => CategoryData[defaultCategory]?.name?.ru || 'Не указана', [defaultCategory]);
+  const categoryIcon = useMemo(() => CategoryData[defaultCategory]?.icon || 'folder', [defaultCategory]);
+  const categoryBackColor = useMemo(() => CategoryData[defaultCategory]?.backColor || '#263238', [defaultCategory]);
+  const categoryColor = useMemo(() => CategoryData[defaultCategory]?.color || 'white', [defaultCategory]);
+
+  const handleGoBack = useCallback(() => router.back(), []);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 25, }}>
+    <SafeAreaView style={styles.container}>
       {show && (
         <DateTimePicker
           mode='time'
           locale='ru_RU'
           presentation="dialog"
           value={time}
-          onValueChange={(event, selectedDate) => {
-            const time = selectedDate.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" })
-            setDefaultTime(time)
-            setData('defaultTime', JSON.stringify(time))
-            setTime(selectedDate)
-            setShow(false);
-          }}
-          onDismiss={() => {
-            setShow(false);
-          }}
-        />)
-      }
-      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, gap:10 }}>
-        <NavigationButton onPress={()=>router.back()} icon={'arrow-left'} size={38}/>
-        <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
-          <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold' }}>{'Настройки'}</Text>
-          <Text style={{ color: '#7a92a5', fontSize: 16 }}>{'приложения и аккаунта'}</Text>
+          onValueChange={handleTimeChange}
+          onDismiss={handleDismissTime}
+        />
+      )}
+
+      {/* Шапка настроек */}
+      <View style={styles.header}>
+        <NavigationButton onPress={handleGoBack} icon={'arrow-left'} size={38} />
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.titleText}>Настройки</Text>
+          <Text style={styles.subtitleText}>приложения и аккаунта</Text>
         </View>
       </View>    
-      <BottomSheetView style={{ flex: 1 }}>
-        <View style={{ flexDirection: 'column', gap: 10, paddingHorizontal: 10, }} >
-          <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10, marginTop:5 }}>Системные</Text>
-          <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
+
+      {/* Основной контейнер контента */}
+      <View style={styles.contentContainer}>
+        <View style={styles.sectionsWrapper}>
+          
+          {/* Блок: Системные */}
+          <Text style={styles.sectionTitle}>Системные</Text>
+          <View style={styles.rowsContainer}>
             <CardRow
               title='Язык'
-              text={'Русский'}
-              icon={'web'}
-              iconBackColor={'#263238'}
-              iconColor={'white'}
-              onPress={() => null}
+              text='Русский'
+              icon='web'
+              iconBackColor='#263238'
+              iconColor='white'
+              onPress={()=>notifyMessage('Новые языки появятся в будущих обновлениях')}
             />
             <CardRow
               title='Стиль'
-              text={'Классический'}
-              icon={'weather-night'}
-              iconBackColor={'#263238'}
-              iconColor={'white'}
-              onPress={() => null}
+              text='Классический'
+              icon='weather-night'
+              iconBackColor='#263238'
+              iconColor='white'
+              onPress={()=>notifyMessage('Новые стили появятся в будущих обновлениях')}
             />
           </View>
-          <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10, marginTop:20 }}>Значения по умолчанию</Text>
-          <View style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, gap: 10 }}>
+
+          {/* Блок: Значения по умолчанию */}
+          <Text style={styles.sectionTitle}>Значения по умолчанию</Text>
+          <View style={styles.rowsContainer}>
             <CardRow
               title='Время'
               text={defaultTime}
-              icon={'clock'}
-              iconBackColor={'#263238'}
-              iconColor={'white'}
+              icon='clock'
+              iconBackColor='#263238'
+              iconColor='white'
               onPress={() => setShow(true)}
             />
             <CardRow
               title='Приоритет'
-              text={PriorityData[defaultPriority].name.ru}
-              icon={PriorityData[defaultPriority].icon}
-              iconBackColor={PriorityData[defaultPriority].color}
-              iconColor={'white'}
-              onPress={() => setRefPriorityBottomSheet(sheetPriorityRef, 0)}
+              text={priorityName}
+              icon={priorityIcon}
+              iconBackColor={priorityColor}
+              iconColor='white'
+              onPress={() => handleSnapBottomSheet(sheetPriorityRef, 0)}
             />
             <CardRow
               title='Категория'
-              text={CategoryData[defaultCategory].name.ru}
-              icon={CategoryData[defaultCategory].icon}
-              iconBackColor={CategoryData[defaultCategory].backColor}
-              iconColor={CategoryData[defaultCategory].color}
-              onPress={() => setRefCategoryBottomSheet(sheetCategoryRef, 0)}
+              text={categoryName}
+              icon={categoryIcon}
+              iconBackColor={categoryBackColor}
+              iconColor={categoryColor}
+              onPress={() => handleSnapBottomSheet(sheetCategoryRef, 0)}
             />
             <CardRow
               title='Создание уведомлений'
-              text={defaultNotify?'Включено':'Выключено'}
-              icon={defaultNotify?'bell-ring':'bell-off'}
-              iconBackColor={''}
-              iconColor={'white'}
+              text={defaultNotify ? 'Включено' : 'Выключено'}
+              icon={defaultNotify ? 'bell-ring' : 'bell-off'}
+              iconBackColor={undefined} // ИСПРАВЛЕНО: Заменили '' на undefined для безопасности iOS
+              iconColor='white'
               onPress={changeDefaultNotify}
             />            
-            {/* <Pressable onPress={() => setData('onboarded', JSON.stringify(false))}>
-              <Text style={{ color: 'white' }}>Сбросить онбординг</Text>
-            </Pressable> */}
           </View>
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ color: '#7a92a5', fontSize: 16, fontWeight: 'bold', paddingHorizontal: 10 }}>Хелдон {appVersion}</Text>
+
+          {/* Версия приложения */}
+          <View style={styles.versionContainer}>
+            <Text style={styles.versionText}>Хелдон {APP_VERSION}</Text>
           </View>
         </View>
+
+        {/* Модальные окна BottomSheet */}
         <PriorityBottomSheet
-          currentId={PriorityData[defaultPriority].id}
+          currentId={PriorityData[defaultPriority]?.id}
           setValue={changeDefaultPriority}
-          setRef={setRefPriorityBottomSheet}
+          setRef={handleSnapBottomSheet}
           sheetRef={sheetPriorityRef}
         />
         <CategoryBottomSheet
           currentId={defaultCategory}
           setValue={changeDefaultCategory}
-          setRef={setRefCategoryBottomSheet}
+          setRef={handleSnapBottomSheet}
           sheetRef={sheetCategoryRef}
         />
-      </BottomSheetView>
+      </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default settings
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
-  setting_row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  container: {
+    flex: 1,
+    backgroundColor: '#031F2B',
+    paddingTop: 5,
+    flexDirection: 'column',
+    gap: 25,
   },
-
+  header: {
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 10,
+    gap: 10,
+  },
+  headerTextContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  titleText: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  subtitleText: {
+    color: '#7a92a5',
+    fontSize: 16,
+  },
+  contentContainer: {
+    flex: 1,
+  },
+  sectionsWrapper: {
+    flexDirection: 'column',
+    gap: 10,
+    paddingHorizontal: 10,
+  },
+  sectionTitle: {
+    color: '#7a92a5',
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingHorizontal: 10,
+    marginTop: 5,
+  },
+  // cardGroup: {
+  //   backgroundColor: '#263238',
+  //   padding: 10,
+  //   borderRadius: 15,
+  //   gap: 10,
+  // },
+  rowsContainer: { 
+    gap: 15, 
+    backgroundColor: '#052d3e', 
+    borderRadius: 10, 
+    padding: 15, 
+    marginBottom: 15, 
+  },   
+  versionContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  versionText: {
+    color: '#7a92a5',
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingHorizontal: 10,
+  },
 });

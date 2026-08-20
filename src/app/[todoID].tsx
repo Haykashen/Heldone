@@ -635,7 +635,7 @@ const TaskCardScreen = () => {
               />
             </View>
             {/* Нативные пикеры и кастомные BottomSheets для модального выбора */}
-            {show && (<DateTimePicker value={currTask.date || new Date()} mode={mode} is24Hour={true} onChange={changeDate} />)}
+            {show && (<DateTimePicker value={currTask.date || new Date()} mode={mode} is24Hour={true} onValueChange={changeDate} />)}
 
             {/* ПОЛЕ ВВОДА ПРИМЕЧАНИЯ (CARD_INPUT) */}
             <Text style={styles.inputLabel}>Примечание</Text>
