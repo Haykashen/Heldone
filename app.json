@@ -9,9 +9,9 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon"
-    },    
+    },
     "android": {
-      "permissions": [  
+      "permissions": [
         "android.permission.MANAGE_EXTERNAL_STORAGE",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
@@ -36,8 +36,9 @@
     },
     "plugins": [
       "expo-router",
-      "expo-web-browser",      
-      ["expo-splash-screen",        
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
         {
           "backgroundColor": "#031F2B",
           "android": {
@@ -47,16 +48,18 @@
           }
         }
       ],
-      ["expo-sharing",
+      [
+        "expo-sharing",
         {
           "android": {
             "enabled": true
           }
         }
       ],
-      ["expo-build-properties",      
+      [
+        "expo-build-properties",
         {
-          "android":{
+          "android": {
             "enableProguardInReleaseBuilds": true,
             "enableMinifyInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
@@ -66,8 +69,9 @@
             "buildToolsVersion": "36.0.0"
           }
         }
-      ],      
-      ["expo-notifications",       
+      ],
+      [
+        "expo-notifications",
         {
           "icon": "./assets/images/notification_icon.png",
           "defaultChannel": "default",
@@ -76,7 +80,8 @@
           ],
           "enableBackgroundRemoteNotifications": false
         }
-      ]
+      ],
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -90,5 +95,3 @@
     }
   }
 }
-
-
