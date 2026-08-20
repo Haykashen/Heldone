@@ -375,8 +375,8 @@ type DateTimePickerMode = "date" | "time";
 const TaskCardScreen = () => {
   const { todoID, day } = useLocalSearchParams();
   const { task, setTask } = useContext(TaskContext);
-  const { defaultCategory, defaultPriority, defaultTime, defaultNotify } = useContext(SettingContext);   
-  
+  const { defaultCategory, defaultPriority, defaultTime, defaultNotify } = useContext(SettingContext);
+
   // Инициализируем начальное состояние задачи один раз при монтировании компонента
   const initialTask = useMemo(() => {
     if (todoID === 'new') {
@@ -395,7 +395,7 @@ const TaskCardScreen = () => {
   const sheetCategoryRef = useRef<BottomSheet>(null);
   const sheetPriorityRef = useRef<BottomSheet>(null);
   const sheetFilesRef = useRef<BottomSheet>(null);
-  
+
   // Состояния для Пикера Дат и Фокусировки
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState<DateTimePickerMode | undefined>('date');
@@ -409,7 +409,7 @@ const TaskCardScreen = () => {
   // МЕМОИЗАЦИЯ: строки даты и времени пересчитываются только при реальном изменении currTask.date
   const dateText = useMemo(() => currTask.date ? currTask.date.toLocaleDateString() : 'Пусто', [currTask.date]);
   const timeText = useMemo(() => currTask.date ? currTask.date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : 'Пусто', [currTask.date]);
-  
+
   // Быстрая проверка изменений без полной перегрузки стейта компонента
   const dataChanged = useMemo(() => {
     return originalTaskRef.current !== JSON.stringify(currTask) && todoID !== 'new';
@@ -451,7 +451,7 @@ const TaskCardScreen = () => {
   }, []);
 
   const setSheetRefIndex = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
-    ref.current?.snapToIndex(index);    
+    ref.current?.snapToIndex(index);
   }, []);
 
   const handleBack = useCallback(async () => {
@@ -462,16 +462,16 @@ const TaskCardScreen = () => {
     if (!currTask.date || !currTask.title) {
       Vibration.vibrate(50);
       return;
-    }    
-    
+    }
+
     // Формируем новый массив без прямой мутации контекста
-    const resArray = (todoID === 'new') 
-      ? [...task, currTask] 
+    const resArray = (todoID === 'new')
+      ? [...task, currTask]
       : task.map((item: TTask) => item.id === todoID ? currTask : item);
-    
+
     // БЕЗОПАСНОСТЬ: Сортируем поверхностную копию массива [...resArray], чтобы избежать багов реактивности
     const sortedArray = [...resArray].sort((first, second) => first.date.getTime() - second.date.getTime());
-    
+
     setTask(sortedArray);
     setData("todo", JSON.stringify(sortedArray));
     notifyMessage('Данные успешно сохранены!');
@@ -481,7 +481,7 @@ const TaskCardScreen = () => {
   const handleDelete = useCallback(async () => {
     if (todoID !== 'new') {
       deleteTask(currTask.id, task, setTask);
-    }     
+    }
     Vibration.vibrate(70);
     handleBack();
   }, [todoID, currTask.id, task, setTask, handleBack]);
@@ -501,23 +501,24 @@ const TaskCardScreen = () => {
         multiple: false,
         copyToCacheDirectory: true
       });
-      if (result.canceled === false) {
-        setCurrentTask(prev => {
-          if (!prev) return undefined;
-          return {
-            ...prev,
-            files: [
-              ...prev.files,
-              {
-                id: result.assets[0].name + (new Date().toISOString()),
-                name: result.assets[0].name,
-                size: result.assets[0].size || 0,
-                uri: result.assets[0].uri
-              }
-            ]
-          };
-        });
-      }
+      if (result.canceled !== false)
+        return
+      setCurrentTask(prev => {
+        if (!prev) return undefined;
+        return {
+          ...prev,
+          files: [
+            ...prev.files,
+            {
+              id: result.assets[0].name + (new Date().toISOString()),
+              name: result.assets[0].name,
+              size: result.assets[0].size || 0,
+              uri: result.assets[0].uri
+            }
+          ]
+        };
+      });
+
     } catch (error) {
       notifyMessage("Ошибка при попытке выбора файла");
     }
@@ -534,12 +535,12 @@ const TaskCardScreen = () => {
   }, []);
 
   const handleShareFile = (uri: string) => {
-     shareFile(uri)
+    shareFile(uri)
   }
 
   const handleOpenFile = (uri: string) => {
     openFile(uri)
-  }  
+  }
 
   // БЕЗОПАСНОСТЬ: Добавлена проверка на существование выбранной даты selectedDate (защита от краша при отмене)
   const changeDate = useCallback((event: DateTimePickerChangeEvent, selectedDate?: Date) => {
@@ -584,10 +585,12 @@ const TaskCardScreen = () => {
                 <Text style={styles.doneText}>Готово</Text>
               </Pressable>
             </View>
-
+            <View style={styles.dataChangeContainer}>
+               <Text style={styles.dataChangeText}>{dataChanged ?'Имеются несохраненные изменения' : ''}</Text>
+            </View>
             {/* Поле ввода заголовка задачи */}
             <TextInput
-              style={styles.titleInput}
+              style={[styles.titleInput, !currTask.title&&styles.titleInputEmpty]}
               value={currTask.title}
               onChangeText={changeTitle}
               placeholder="Название задачи"
@@ -613,76 +616,67 @@ const TaskCardScreen = () => {
               <CardRow
                 title="Категория"
                 text={currTask.category.name.ru || 'Нет'}
-                icon="folder"
+                icon={currTask.category.icon}
                 iconColor={currTask.category?.backColor || 'white'}
                 onPress={() => setSheetRefIndex(sheetCategoryRef, 0)}
               />
-              <CardRow 
+              <CardRow
                 title="Приоритет"
                 text={currTask.priority.name.ru || 'Нет'}
-                icon="flag"iconColor={currTask.priority?.color || 'white'}
-                onPress={() => setSheetRefIndex(sheetPriorityRef, 0)}/>
-              <CardRow 
+                icon="flag"
+                iconColor={currTask.priority?.color || 'white'}
+                onPress={() => setSheetRefIndex(sheetPriorityRef, 0)} />
+              <CardRow
                 title="Вложения"
                 text={`${currTask.files?.length || 0} шт.`}
                 icon="paperclip"
                 iconColor="white"
                 onPress={() => setSheetRefIndex(sheetFilesRef, 0)}
-                />
-               {/* <TextInput
-                 style={[styles.card_input, { height: 100, borderColor: focused == 'Notes' ? 'silver' : '#263238', marginBottom: 10 }]}
-                 onFocus={() => setFocused('Notes')}
-                 onBlur={() => setFocused('')}
-                 onChangeText={(text) => changeNotes(text)}
-                 placeholder={'Примечание...'}
-                 placeholderTextColor={'gray'}
-                 value={currTask.notes}
-                 multiline={true}
-                 textAlignVertical='top'
-               />                 */}
-                {/* Кнопка удаления (Показывается только если это не новая задача) */}
-                {todoID !== 'new' && (<View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginBottom: 20 }}>
-                 <Pressable
-                   style={{ backgroundColor: '#263238', padding: 10, borderRadius: 15, width: '60%', justifyContent: 'center', alignItems: 'center' }}
-                   onPress={handleDelete}>
-                   <MaterialDesignIcons name={'trash-can-outline'} color={"red"} size={34} />
-                 </Pressable>
-               </View>)}
-                {/* Нативные пикеры и кастомные BottomSheets для модального выбора */}
-                {show && (<DateTimePicker value={currTask.date || new Date()} mode={mode} is24Hour={true} onChange={changeDate}/>)}
-                </View>
-                 {/* ПОЛЕ ВВОДА ПРИМЕЧАНИЯ (CARD_INPUT) */}
-              <Text style={styles.inputLabel}>Примечание</Text>
-              <TextInput
-                style={styles.cardInput}
-                value={currTask.notes}
-                onChangeText={changeNotes}
-                placeholder="Добавьте детали или описание задачи..."
-                placeholderTextColor="silver"
-                multiline={true}
-                numberOfLines={4}
-                textAlignVertical="top" // Фикс для Android, чтобы текст начинался сверху
               />
+            </View>
+            {/* Нативные пикеры и кастомные BottomSheets для модального выбора */}
+            {show && (<DateTimePicker value={currTask.date || new Date()} mode={mode} is24Hour={true} onChange={changeDate} />)}
+
+            {/* ПОЛЕ ВВОДА ПРИМЕЧАНИЯ (CARD_INPUT) */}
+            <Text style={styles.inputLabel}>Примечание</Text>
+            <TextInput
+              style={styles.cardInput}
+              value={currTask.notes}
+              onChangeText={changeNotes}
+              placeholder="Добавьте детали или описание задачи..."
+              placeholderTextColor="silver"
+              multiline={true}
+              numberOfLines={4}
+              textAlignVertical="top" // Фикс для Android, чтобы текст начинался сверху
+            />
+            {todoID !== 'new' && (<View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginBottom: 20 }}>
+              <Pressable
+                style={styles.deleteButton}
+                onPress={handleDelete}>
+                <MaterialDesignIcons name={'trash-can-outline'} color={"white"} size={34} />
+                <Text style={styles.deleteButtonText}>Удалить</Text>
+              </Pressable>
+            </View>)}
             <CategoryBottomSheet
-               currentId={currTask.category.id}
-               setValue={changeCategory}
-               setRef={setSheetRefIndex}
-               sheetRef={sheetCategoryRef}
-             />
-             <PriorityBottomSheet
-               currentId={currTask.priority.id}
-               setValue={changePriority}
-               setRef={setSheetRefIndex}
-               sheetRef={sheetPriorityRef}
-             />
-             <FilesBottomSheet
-               files={currTask.files}
-               addFile={pickDocument}
-               deleteFile={deleteFile}
-               sheetRef={sheetFilesRef}
-               shareFile={handleShareFile}
-               openFile={handleOpenFile}
-             />      
+              currentId={currTask.category.id}
+              setValue={changeCategory}
+              setRef={setSheetRefIndex}
+              sheetRef={sheetCategoryRef}
+            />
+            <PriorityBottomSheet
+              currentId={currTask.priority.id}
+              setValue={changePriority}
+              setRef={setSheetRefIndex}
+              sheetRef={sheetPriorityRef}
+            />
+            <FilesBottomSheet
+              files={currTask.files}
+              addFile={pickDocument}
+              deleteFile={deleteFile}
+              sheetRef={sheetFilesRef}
+              shareFile={handleShareFile}
+              openFile={handleOpenFile}
+            />
           </BottomSheetView>
         </BottomSheet>
       </SafeAreaView>
@@ -695,7 +689,7 @@ export default TaskCardScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#031F2B',
+    //backgroundColor: '#031F2B',
   },
   bottomSheetBackground: {
     backgroundColor: '#031F2B',
@@ -711,10 +705,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', 
     alignItems: 'center', 
     paddingVertical: 10, 
-    marginBottom: 15, 
   }, 
+  dataChangeContainer: { 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginBottom:10
+  },
+  dataChangeText:{ 
+    color: '#ffb900', 
+    fontSize: 12
+  },
   navButton: { 
-    paddingVertical: 5, 
+    //paddingVertical: 5, 
     paddingHorizontal: 10, 
   }, 
   cancelText: { 
@@ -741,6 +743,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: '100%', 
   }, 
+  titleInputEmpty:{
+    borderColor: '#E11D48', 
+    borderWidth:2
+  },
   rowsContainer: { 
     gap: 15, 
     backgroundColor: '#052d3e', 
@@ -756,6 +762,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 'auto',
     marginBottom: 20,
+    flexDirection:'row'
   },
   deleteButtonText: {
     color: 'white',
