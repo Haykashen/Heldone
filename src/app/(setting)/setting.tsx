@@ -340,7 +340,7 @@ const SettingsScreen = () => {
               icon={categoryIcon}
               iconBackColor={categoryBackColor}
               iconColor={categoryColor}
-              onPress={() => setSheetRef(sheetCategoryRef, 0)}
+              onPress={() => router.push('/DataBottomSheet')}
             />
             <CardRow
               title='Создание уведомлений'

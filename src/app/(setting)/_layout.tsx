@@ -6,10 +6,10 @@ export default function SettingLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="setting"
         options={{
-          animation: 'slide_from_right',
-
+          presentation: 'transparentModal',
         }}
       />
+
     </Stack>
   )
 }

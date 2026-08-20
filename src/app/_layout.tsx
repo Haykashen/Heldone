@@ -14,12 +14,21 @@ export default function RootLayout() {
             <Stack screenOptions={{ headerShown: false }}>
               <Stack.Screen name="(tabs)" />
               <Stack.Screen name="(onboarding)" />
-              <Stack.Screen name="(setting)" />
+              <Stack.Screen name="(setting)"
+                options={{
+                  presentation: 'transparentModal',
+                }}
+              />
               <Stack.Screen name="[todoID]"
                 options={{
                   presentation: 'transparentModal',
                 }}
               />
+              <Stack.Screen name="DataBottomSheet"
+                options={{
+                  presentation: 'transparentModal',
+                }}
+              />              
             </Stack>
           </SafeAreaProvider>
         </TaskContextProvider>
