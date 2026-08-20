@@ -115,7 +115,7 @@
 import Add from '@/components/buttons/Add';
 import StatusFilter from '@/components/buttons/StatusFilter';
 import AgendaItem from '@/components/items/AgendaItem';
-import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
+import ListEpmtyComponent from "@/components/items/ListEmptyComponent";
 import Header from '@/components/TabHeader';
 import { TaskContext } from '@/context/TaskContext';
 import { StatusData } from '@/data/StatusData';

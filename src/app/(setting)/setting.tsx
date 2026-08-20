@@ -350,21 +350,22 @@ const SettingsScreen = () => {
             <Text style={styles.versionText}>Хелдон {APP_VERSION}</Text>
           </View>
         </View>
-
-        {/* Модальные окна BottomSheet */}
-        <PriorityBottomSheet
-          currentId={PriorityData[defaultPriority]?.id}
-          setValue={changeDefaultPriority}
-          setRef={handleSnapBottomSheet}
-          sheetRef={sheetPriorityRef}
-        />
-        <CategoryBottomSheet
-          currentId={defaultCategory}
-          setValue={changeDefaultCategory}
-          setRef={handleSnapBottomSheet}
-          sheetRef={sheetCategoryRef}
-        />
+      {/* Модальные окна BottomSheet */}
+    
+         
       </View>
+      <PriorityBottomSheet
+        currentId={PriorityData[defaultPriority]?.id}
+        setValue={changeDefaultPriority}
+        setRef={handleSnapBottomSheet}
+        sheetRef={sheetPriorityRef}
+      />
+      <CategoryBottomSheet
+        currentId={defaultCategory}
+        setValue={changeDefaultCategory}
+        setRef={handleSnapBottomSheet}
+        sheetRef={sheetCategoryRef}
+      />                  
     </SafeAreaView>
   );
 };

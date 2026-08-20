@@ -137,7 +137,7 @@
 
 import Add from '@/components/buttons/Add';
 import AgendaItem from '@/components/items/AgendaItem';
-import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
+import ListEpmtyComponent from "@/components/items/ListEmptyComponent";
 import Header from '@/components/TabHeader';
 import { OnboardingContext } from '@/context/OnboardingContext';
 import { TaskContext } from '@/context/TaskContext';
@@ -156,7 +156,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function Index() {
   const { task, setTask, loadedTask } = useContext(TaskContext);
-  const { onboarded } = useContext(OnboardingContext);  
+  const { loadedOnboarding, onboarded } = useContext(OnboardingContext);  
   const scale = useRef(new Animated.Value(1)).current;
   
   // Создаем дату один раз при рендере (или мемоизируем строковое значение)
@@ -196,7 +196,7 @@ export default function Index() {
   }, [completed.length, filtered.length]);
 
   // Навигация на Onboarding
-  if (loadedTask && !onboarded) {
+  if (loadedTask && loadedOnboarding && !onboarded) {
     return <Redirect href={'/onboarding'} />;
   }
 

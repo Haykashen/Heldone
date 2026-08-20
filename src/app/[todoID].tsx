@@ -671,11 +671,11 @@ const TaskCardScreen = () => {
             />
             <FilesBottomSheet
               files={currTask.files}
-              addFile={pickDocument}
-              deleteFile={deleteFile}
+              onPick={pickDocument}
+              onDelete={deleteFile}
               sheetRef={sheetFilesRef}
-              shareFile={handleShareFile}
-              openFile={handleOpenFile}
+              onShare={handleShareFile}
+              onOpen={handleOpenFile}
             />
           </BottomSheetView>
         </BottomSheet>

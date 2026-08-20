@@ -148,7 +148,7 @@
 
 import Add from '@/components/buttons/Add';
 import AgendaItem from '@/components/items/AgendaItem';
-import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
+import ListEpmtyComponent from "@/components/items/ListEmptyComponent";
 import Header from '@/components/TabHeader';
 import { TaskContext } from '@/context/TaskContext';
 import { completeTask } from '@/utils/taskUtils';
