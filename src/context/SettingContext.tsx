@@ -2,11 +2,11 @@ import { getData } from "@/store/getData";
 import { notifyMessage } from "@/utils/utils";
 import { createContext, FC, useEffect, useState } from "react";
 
-const SettingContext = createContext<any>(null);
-
 interface Props {
   children: React.ReactNode;
 }
+
+const SettingContext = createContext<any>(null);
 
 const SettingContextProvider: FC<Props> = ({ children }) => {
     const [defaultTime, setDefaultTime] = useState<string>('14:00')

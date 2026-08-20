@@ -450,13 +450,13 @@ const TaskCardScreen = () => {
     setCurrentTask(prev => prev ? { ...prev, notes: newNotes } : undefined);
   }, []);
 
-  const setSheetRefIndex = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
+  const setSheetRef = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
     ref.current?.snapToIndex(index);
   }, []);
 
   const handleBack = useCallback(async () => {
-    setSheetRefIndex(sheetRef, -1);
-  }, [setSheetRefIndex]);
+    setSheetRef(sheetRef, -1);
+  }, [setSheetRef]);
 
   const handleDone = useCallback(async () => {
     if (!currTask.date || !currTask.title) {
@@ -618,20 +618,20 @@ const TaskCardScreen = () => {
                 text={currTask.category.name.ru || 'Нет'}
                 icon={currTask.category.icon}
                 iconColor={currTask.category?.backColor || 'white'}
-                onPress={() => setSheetRefIndex(sheetCategoryRef, 0)}
+                onPress={() => setSheetRef(sheetCategoryRef, 0)}
               />
               <CardRow
                 title="Приоритет"
                 text={currTask.priority.name.ru || 'Нет'}
                 icon="flag"
                 iconColor={currTask.priority?.color || 'white'}
-                onPress={() => setSheetRefIndex(sheetPriorityRef, 0)} />
+                onPress={() => setSheetRef(sheetPriorityRef, 0)} />
               <CardRow
                 title="Вложения"
                 text={`${currTask.files?.length || 0} шт.`}
                 icon="paperclip"
                 iconColor="white"
-                onPress={() => setSheetRefIndex(sheetFilesRef, 0)}
+                onPress={() => setSheetRef(sheetFilesRef, 0)}
               />
             </View>
             {/* Нативные пикеры и кастомные BottomSheets для модального выбора */}
@@ -660,22 +660,22 @@ const TaskCardScreen = () => {
             <CategoryBottomSheet
               currentId={currTask.category.id}
               setValue={changeCategory}
-              setRef={setSheetRefIndex}
+              setRef={setSheetRef}
               sheetRef={sheetCategoryRef}
             />
             <PriorityBottomSheet
               currentId={currTask.priority.id}
               setValue={changePriority}
-              setRef={setSheetRefIndex}
+              setRef={setSheetRef}
               sheetRef={sheetPriorityRef}
             />
             <FilesBottomSheet
               files={currTask.files}
               onPick={pickDocument}
               onDelete={deleteFile}
-              sheetRef={sheetFilesRef}
               onShare={handleShareFile}
-              onOpen={handleOpenFile}
+              onOpen={handleOpenFile}              
+              sheetRef={sheetFilesRef}
             />
           </BottomSheetView>
         </BottomSheet>

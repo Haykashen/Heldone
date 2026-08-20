@@ -211,7 +211,14 @@ const SettingsScreen = () => {
   const sheetCategoryRef = useRef<BottomSheet>(null);
 
   // ОПТИМИЗАЦИЯ: Мемоизируем методы для безопасного открытия BottomSheets
-  const handleSnapBottomSheet = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
+  // const handleSnapBottomSheet = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
+  //   ref.current?.snapToIndex(index);
+  // }, []);
+  // // ОПТИМИЗАЦИЯ: Мемоизируем методы для безопасного открытия BottomSheets
+  // const handleSnapBottomSheet = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
+  //   ref.current?.snapToIndex(index);
+  // }, []);
+  const setSheetRef = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
     ref.current?.snapToIndex(index);
   }, []);
 
@@ -325,7 +332,7 @@ const SettingsScreen = () => {
               icon={priorityIcon}
               iconBackColor={priorityColor}
               iconColor='white'
-              onPress={() => handleSnapBottomSheet(sheetPriorityRef, 0)}
+              onPress={() => setSheetRef(sheetPriorityRef, 0)}
             />
             <CardRow
               title='Категория'
@@ -333,7 +340,7 @@ const SettingsScreen = () => {
               icon={categoryIcon}
               iconBackColor={categoryBackColor}
               iconColor={categoryColor}
-              onPress={() => handleSnapBottomSheet(sheetCategoryRef, 0)}
+              onPress={() => setSheetRef(sheetCategoryRef, 0)}
             />
             <CardRow
               title='Создание уведомлений'
@@ -354,18 +361,19 @@ const SettingsScreen = () => {
     
          
       </View>
-      <PriorityBottomSheet
-        currentId={PriorityData[defaultPriority]?.id}
-        setValue={changeDefaultPriority}
-        setRef={handleSnapBottomSheet}
-        sheetRef={sheetPriorityRef}
-      />
       <CategoryBottomSheet
         currentId={defaultCategory}
         setValue={changeDefaultCategory}
-        setRef={handleSnapBottomSheet}
+        setRef={setSheetRef}
         sheetRef={sheetCategoryRef}
-      />                  
+      />          
+      <PriorityBottomSheet
+        currentId={defaultPriority}
+        setValue={changeDefaultPriority}
+        setRef={setSheetRef}
+        sheetRef={sheetPriorityRef}
+      />
+              
     </SafeAreaView>
   );
 };

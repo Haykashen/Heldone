@@ -2,11 +2,11 @@ import { getData } from "@/store/getData";
 import { notifyMessage } from "@/utils/utils";
 import { createContext, FC, useEffect, useState } from "react";
 
-const OnboardingContext = createContext<any>(null);
-
 interface Props {
   children: React.ReactNode;
 }
+
+const OnboardingContext = createContext<any>(null);
 
 const OnboardingContextProvider: FC<Props> = ({ children }) => {
   const [onboarded, setOnboarded] = useState<boolean>(false)
