@@ -754,10 +754,11 @@ const styles = StyleSheet.create({
     padding: 12, 
     marginBottom: 20,
     width: '100%', 
+    borderColor: '#052d3e', 
+    borderWidth:2    
   }, 
   titleInputEmpty:{
     borderColor: '#E11D48', 
-    borderWidth:2
   },
   rowsContainer: { 
     gap: 15, 

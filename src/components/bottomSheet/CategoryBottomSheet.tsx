@@ -65,7 +65,7 @@
 
 import CategoryData from '@/data/CategoryData';
 import { TBottomSheet } from '@/utils/types';
-import BottomSheet, { BottomSheetFlatList, BottomSheetView } from '@expo/ui/community/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import React, { useCallback } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -116,26 +116,22 @@ const CategoryBottomSheet = ({ currentId, setValue, setRef, sheetRef }: TBottomS
   }, [currentId, handleItemPress]);
 
   return (
-    // ИСПРАВЛЕНО: Убран SafeAreaView, чтобы не ломать анимацию выезда и оверлей BottomSheet
     <BottomSheet
       ref={sheetRef}
       index={-1}
       snapPoints={['50%', '100%']} // Немного уменьшили стартовую высоту для аккуратности
-      
       enablePanDownToClose
       backgroundStyle={styles.sheetBackground}
     >
-      <BottomSheetView style={styles.innerView}>
-        <BottomSheetFlatList
-          nestedScrollEnabled
-          style={styles.list}
-          data={CATEGORIES_ARRAY}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          ItemSeparatorComponent={renderSeparator}
-          renderItem={renderItem}
-        />
-      </BottomSheetView>
+      <BottomSheetFlatList
+        nestedScrollEnabled
+        style={styles.list}
+        data={CATEGORIES_ARRAY}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContent}
+        ItemSeparatorComponent={renderSeparator}
+        renderItem={renderItem}
+      />
     </BottomSheet>
   );
 };
