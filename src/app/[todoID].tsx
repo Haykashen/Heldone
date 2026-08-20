@@ -430,6 +430,10 @@ const TaskCardScreen = () => {
     setCurrentTask(prev => prev ? { ...prev, title: newTitle } : undefined);
   }, []);
 
+  const handleNotify = useCallback(() => {
+    setCurrentTask(prev => prev ? { ...prev, sendNotify: !prev.sendNotify} : undefined);
+  }, []);
+
   const changeStatus = useCallback(() => {
     setCurrentTask(prev => {
       if (!prev) return undefined;
@@ -613,6 +617,14 @@ const TaskCardScreen = () => {
                 iconColor="white"
                 onPress={() => showDatepicker('time')}
               />
+              <CardRow
+                title='Уведомление'
+                text={currTask.sendNotify?'Включено':'Выключено'}
+                icon={currTask.sendNotify?'bell-ring':'bell-off'}
+                //iconBackColor={'#263238'}
+                iconColor={'white'}
+                onPress={handleNotify}
+              />                
               <CardRow
                 title="Категория"
                 text={currTask.category.name.ru || 'Нет'}

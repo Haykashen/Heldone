@@ -195,11 +195,6 @@ export default function Index() {
     }
   }, [completed.length, filtered.length]);
 
-  // Навигация на Onboarding
-  if (loadedTask && loadedOnboarding && !onboarded) {
-    return <Redirect href={'/onboarding'} />;
-  }
-
   // Оптимизированные хэндлеры
   const handlePress = useCallback((id: string) => {
     router.push(`/${id}`);
@@ -244,6 +239,11 @@ export default function Index() {
 
   const progressTextStyle = useMemo(() => ({ transform: [{ scale }] }), [scale]);
   const progressBarSubStyle = useMemo(() => ({ width: widthProgress, backgroundColor: '#007aff' }), [widthProgress]);
+
+  // Навигация на Onboarding
+  if (loadedTask && loadedOnboarding && !onboarded) {
+    return <Redirect href={'/onboarding'} />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>

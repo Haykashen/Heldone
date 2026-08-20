@@ -1,36 +1,101 @@
-import { scaleEnd, scaleStart } from '@/utils/animation';
-import { useRef } from 'react';
-import { Animated, Pressable } from 'react-native';
+// import { scaleEnd, scaleStart } from '@/utils/animation';
+// import { useRef } from 'react';
+// import { Animated, Pressable } from 'react-native';
 
-export type TPaginationItem= { onPress :(arg:number)=>void, value:number, currentValue:number }
+// export type TPaginationItem= { onPress :(arg:number)=>void, value:number, currentValue:number }
+
+// const PaginationItem = ({ onPress, value, currentValue }: TPaginationItem) => {
+
+//     const scale = useRef(new Animated.Value(1)).current;
+
+//     // Функция для анимации нажатия
+//     const handlePressIn = () => {
+//         scaleStart(scale, 1.5)
+//     };
+
+//     // Возврат к обычному размеру
+//     const handlePressOut = () => {
+//         scaleEnd(scale, 1)
+//     };
+
+//     const handlePress = () => {
+//         onPress(value)//id
+//     }
+
+//     return (
+//         <Animated.View style={{ transform: [{ scale }] }}>
+//             <Pressable
+//                 onPress={handlePress}
+//                 onPressIn={handlePressIn}
+//                 onPressOut={handlePressOut}
+//                 style={{ height: 4, width: 25, backgroundColor: value === currentValue ? '#007aff' : 'white' }} />
+//         </Animated.View>
+//     )
+// }
+
+// export default PaginationItem
+
+import { scaleEnd, scaleStart } from '@/utils/animation';
+import React, { useCallback, useRef } from 'react';
+import { Animated, Pressable, StyleSheet } from 'react-native';
+
+export type TPaginationItem = { 
+  onPress: (arg: number) => void; 
+  value: number; 
+  currentValue: number; 
+};
 
 const PaginationItem = ({ onPress, value, currentValue }: TPaginationItem) => {
+  const scale = useRef(new Animated.Value(1)).current;
+  const isActive = value === currentValue;
 
-    const scale = useRef(new Animated.Value(1)).current;
+  // ОПТИМИЗАЦИЯ: Кэшируем функции для идеальной плавности слайдера
+  const handlePressIn = useCallback(() => {
+    scaleStart(scale, 1.3); // 1.3 вместо 1.5, чтобы полоска не перекрывала соседние элементы
+  }, [scale]);
 
-    // Функция для анимации нажатия
-    const handlePressIn = () => {
-        scaleStart(scale, 1.5)
-    };
+  const handlePressOut = useCallback(() => {
+    scaleEnd(scale, 1);
+  }, [scale]);
 
-    // Возврат к обычному размеру
-    const handlePressOut = () => {
-        scaleEnd(scale, 1)
-    };
+  const handlePress = useCallback(() => {
+    onPress(value);
+  }, [value, onPress]);
 
-    const handlePress = () => {
-        onPress(value)//id
-    }
+  return (
+    <Pressable
+      onPress={handlePress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={styles.touchTarget} // Расширенная невидимая зона нажатия (Good UX)
+    >
+      {/* Анимированный индикатор находится ВНУТРИ Pressable */}
+      <Animated.View 
+        style={[
+          styles.indicator, 
+          { 
+            backgroundColor: isActive ? '#007aff' : 'white',
+            transform: [{ scale }] 
+          }
+        ]} 
+      />
+    </Pressable>
+  );
+};
 
-    return (
-        <Animated.View style={{ transform: [{ scale }] }}>
-            <Pressable
-                onPress={handlePress}
-                onPressIn={handlePressIn}
-                onPressOut={handlePressOut}
-                style={{ height: 4, width: 25, backgroundColor: value === currentValue ? '#007aff' : 'white' }} />
-        </Animated.View>
-    )
-}
+// Мемоизация спасет онбординг от просадки FPS при горизонтальном свайпе страниц
+export default React.memo(PaginationItem);
 
-export default PaginationItem
+const styles = StyleSheet.create({
+  touchTarget: {
+    paddingVertical: 15,     // Создает комфортную невидимую высоту 34px для легкого нажатия пальцем
+    paddingHorizontal: 6,    // Расширяет расстояние между точками, защищая от случайных ложных тапов
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  indicator: {
+    height: 4, 
+    width: 25,
+    borderRadius: 2, // Добавим легкое скругление краев полоски, чтобы интерфейс выглядел современно
+  }
+});
