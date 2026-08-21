@@ -14,45 +14,50 @@ export const shareFile = async (uri: string) => {
 }
 
 /**
- * Современный и безопасный шеринг файла с кастомным наименованием (Expo SDK 54+)
+ * Современный шеринг файла с кастомным наименованием (Исправлено для Expo SDK 54+)
  * @param currentUri - Текущий рабочий строковый URI файла (file://...)
- * @param desiredName - Новое желаемое имя файла (например, "План_Задач.pdf")
+ * @param desiredName - Новое желаемое имя файла с расширением (например, "План_Задач.pdf")
  */
 export const shareFileWithCustomName = async (currentUri: string, desiredName: string) => {
   try {
-    // 1. Проверяем доступность шеринга на устройстве
+    // 1. Проверяем доступность шеринга
     const isSharingAvailable = await Sharing.isAvailableAsync();
     if (!isSharingAvailable) {
-      notifyMessage('Шеринг недоступен на данном устройстве');
+      throw new Error('Шеринг недоступен на данном устройстве');
     }
 
-    // 2. Инициализируем объект целевой папки в кэше с помощью нового API классов
+    // 2. Инициализируем объект временной ПАПКИ в кэше
     const tempDirectory = new Directory(Paths.cache, 'TemporaryShares');
 
-    // 3. Создаем директорию, если она еще не создана на диске
+    // 3. Гарантируем, что папка физически создана на диске [INDEX]
     if (!tempDirectory.exists) {
-      tempDirectory.create(); // Новый нативный метод создания вместо makeDirectoryAsync
+      tempDirectory.create(); // Создаем папку [INDEX]
     }
 
-    // 4. Инициализируем объект исходного файла и объект нового временного файла
+    // 4. Инициализируем объект исходного файла
     const sourceFile = new File(currentUri);
-    const targetFile = new Directory(tempDirectory, desiredName); // Создаем структуру файла внутри нашей папки
 
-    // 5. Копируем файл под новым именем
+    // 5. ИСПРАВЛЕНО: Создаем структуру ФАЙЛА (через класс File, а не Directory!) внутри готовой папки
+    const targetFile = new File(tempDirectory, desiredName);
+
+    // 6. Выполняем копирование. Теперь нативный слой видит валидный путь файла назначения [INDEX]
     sourceFile.copy(targetFile);
 
-    // 6. Вызываем окно шеринга, передавая нативный URI нового файла (.uri)
+    // 7. Открываем нативную шторку отправки
     await Sharing.shareAsync(targetFile.uri, {
       dialogTitle: `Поделиться: ${desiredName}`,
     });
 
-    // 7. Очистка кэша: удаляем временный файл после отправки
-    targetFile.delete();
+    // 8. Удаляем временный файл из кэша после шеринга
+    if (targetFile.exists) {
+      targetFile.delete();
+    }
 
   } catch (error) {
-    alert(error);
+    alert(error);   
   }
 };
+
 
 
 export const openFileAndroid = async (uri: string) => {
