@@ -106,7 +106,7 @@ type TFilesBottomSheet = {
   files: TFileDataObject[];
   onPick: () => void;
   onOpen: (uri: string) => void;
-  onShare: (uri: string) => void;
+  onShare: (uri: string, fileName: string) => void;
   onDelete: (id: string, uri: string) => void;
   sheetRef: React.RefObject<BottomSheetMethods | null>;
 };
@@ -118,8 +118,8 @@ const FilesBottomSheet = ({ files = [], onPick, onOpen, onShare, onDelete, sheet
     onOpen(uri);
   }, [onOpen]);
 
-  const handleSharePress = useCallback((uri: string) => {
-    onShare(uri);
+  const handleSharePress = useCallback((uri: string, fileName: string) => {
+    onShare(uri, fileName);
   }, [onShare]);
 
   const handleDeletePress = useCallback((id: string, uri: string) => {
@@ -160,7 +160,7 @@ const FilesBottomSheet = ({ files = [], onPick, onOpen, onShare, onDelete, sheet
 
       {/* Кнопка Поделиться */}
       <Pressable 
-        onPress={() => handleSharePress(item.uri)} 
+        onPress={() => handleSharePress(item.uri, item.name)} 
         style={styles.actionButton}
       >
         <MaterialDesignIcons name='share-variant' color='white' size={22} />

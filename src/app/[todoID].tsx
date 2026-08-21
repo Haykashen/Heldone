@@ -357,7 +357,7 @@ import CategoryData from '@/data/CategoryData';
 import PriorityData from '@/data/PriorityData';
 import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
-import { openFile, shareFile } from '@/utils/fileUtils';
+import { openFile, shareFileWithCustomName } from '@/utils/fileUtils';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
 import { TFileDataObject, TTask } from '@/utils/types';
 import { getFormatedDay, notifyMessage } from '@/utils/utils';
@@ -538,8 +538,9 @@ const TaskCardScreen = () => {
     });
   }, []);
 
-  const handleShareFile = (uri: string) => {
-    shareFile(uri)
+  const handleShareFile = (uri: string, fileName: string) => {
+    //shareFile(uri)
+    shareFileWithCustomName(uri, fileName)
   }
 
   const handleOpenFile = (uri: string) => {
