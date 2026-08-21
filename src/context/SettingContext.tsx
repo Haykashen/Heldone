@@ -17,11 +17,7 @@ const SettingContextProvider: FC<Props> = ({ children }) => {
     
   useEffect(() => {
 
-    async function getStoredData() {
-
-      // if (Platform.OS === 'android') {
-      //   await createNotificationChannel()
-      // }       
+    async function getStoredData() {     
       try {
         const defTime = await getData('defaultTime')
         setDefaultTime(defTime ? defTime : '14:00')

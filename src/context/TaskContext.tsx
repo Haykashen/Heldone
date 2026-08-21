@@ -1,8 +1,9 @@
 import { getData } from "@/store/getData";
-import { setData } from "@/store/setData";
+import { createNotificationChannel } from "@/utils/notificationUtils";
 import { TTask } from "@/utils/types";
 import { notifyMessage } from "@/utils/utils";
 import { createContext, FC, useEffect, useState } from "react";
+import { Platform } from "react-native";
 
 const TaskContext = createContext<any>(null);
 
@@ -13,15 +14,15 @@ interface Props {
 const TaskContextProvider: FC<Props> = ({ children }) => {
   const [task, setTask] = useState<TTask[]>([])
   const [loadedTask, setLoad] = useState<boolean>(false) 
+  
   useEffect(() => {
-        console.log('update TaskContextProvider')
     async function getStoredData() {
 
-      // if (Platform.OS === 'android') {
-      //   await createNotificationChannel()
-      // }       
+      if (Platform.OS === 'android') {
+        await createNotificationChannel()
+      }       
+
       try {
-       await setData('todo', '')
         const storedTask = await getData('todo')
         if (storedTask) {
           storedTask.forEach((item:TTask) => {

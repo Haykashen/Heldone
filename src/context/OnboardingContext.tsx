@@ -16,7 +16,7 @@ const OnboardingContextProvider: FC<Props> = ({ children }) => {
     async function getStoredData() {
       try {
         const onboard = await getData('onboarded')
-        setOnboarded(onboard ?  false : false)
+        setOnboarded(onboard ?  onboard : false)
       }
       catch (e) {
         notifyMessage('Ошибка при загрузке приветсвия приложения. Переоткройте приложение.')

@@ -346,7 +346,6 @@
 //     paddingVertical: 10
 //   }
 // });
-
 import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
 import FilesBottomSheet from '@/components/bottomSheet/FilesBottomSheet';
 import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
@@ -358,6 +357,7 @@ import PriorityData from '@/data/PriorityData';
 import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { openFile, shareFileWithCustomName } from '@/utils/fileUtils';
+import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
 import { TFileDataObject, TTask } from '@/utils/types';
 import { getFormatedDay, notifyMessage } from '@/utils/utils';
@@ -467,7 +467,7 @@ const TaskCardScreen = () => {
       Vibration.vibrate(50);
       return;
     }
-
+    await refreshNotify()
     // Формируем новый массив без прямой мутации контекста
     const resArray = (todoID === 'new')
       ? [...task, currTask]
@@ -568,6 +568,27 @@ const TaskCardScreen = () => {
     });
     setShow(false);
   }, [mode]);
+  
+  const refreshNotify = async () => {
+    if (currTask.notifyId) {
+      await deletelNotification(currTask.notifyId)
+    }
+    if (!currTask.sendNotify) {
+      //setCurrentTask({ ...currTask, notifyId: '' })
+      setCurrentTask(prev => prev ? { ...prev, notifyId: ''} : undefined);
+      return;
+    }
+
+    if (currTask.status.id !== StatusData.Completed.id) {
+      const finalStatus = await checkPermissions();
+      // if (finalStatus !== 'granted') {
+      //   notifyMessage('Уведомления от приложения отключены!');
+      // }
+      const notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
+      setCurrentTask(prev => prev ? { ...prev, notifyId: notId} : undefined);
+    }
+
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
