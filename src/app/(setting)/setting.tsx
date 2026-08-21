@@ -301,7 +301,6 @@ const SettingsScreen = () => {
               title='Язык'
               text='Русский'
               icon='web'
-              iconBackColor='#263238'
               iconColor='white'
               onPress={()=>notifyMessage('Новые языки появятся в будущих обновлениях')}
             />
@@ -309,7 +308,6 @@ const SettingsScreen = () => {
               title='Стиль'
               text='Классический'
               icon='weather-night'
-              iconBackColor='#263238'
               iconColor='white'
               onPress={()=>notifyMessage('Новые стили появятся в будущих обновлениях')}
             />
@@ -322,7 +320,6 @@ const SettingsScreen = () => {
               title='Время'
               text={defaultTime}
               icon='clock'
-              iconBackColor='#263238'
               iconColor='white'
               onPress={() => setShow(true)}
             />
@@ -330,8 +327,7 @@ const SettingsScreen = () => {
               title='Приоритет'
               text={priorityName}
               icon={priorityIcon}
-              iconBackColor={priorityColor}
-              iconColor='white'
+              iconColor={priorityColor}
               onPress={() => setSheetRef(sheetPriorityRef, 0)}
             />
             <CardRow
@@ -346,7 +342,6 @@ const SettingsScreen = () => {
               title='Создание уведомлений'
               text={defaultNotify ? 'Включено' : 'Выключено'}
               icon={defaultNotify ? 'bell-ring' : 'bell-off'}
-              iconBackColor={undefined} // ИСПРАВЛЕНО: Заменили '' на undefined для безопасности iOS
               iconColor='white'
               onPress={changeDefaultNotify}
             />            

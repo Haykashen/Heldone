@@ -189,7 +189,7 @@ const AgendaItem = (props: TListItem) => {
             {priorityText}
           </Text>
           {files && files.length > 0 && (
-            <MaterialDesignIcons name='file-outline' color="#63B4FF" size={16} />
+            <MaterialDesignIcons name='paperclip' color="#63B4FF" size={16} />
           )}
         </View>
       </View>

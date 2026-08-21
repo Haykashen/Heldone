@@ -295,6 +295,7 @@ const CalendarScreen = () => {
         />
         <AgendaList
           dayFormat='dddd d MMM'
+          markToday={false}
           sections={dayTasks}
           ListEmptyComponent={listEmptyComponent}
           sectionStyle={styles.sectionStyle}

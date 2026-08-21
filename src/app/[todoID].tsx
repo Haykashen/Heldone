@@ -399,7 +399,6 @@ const TaskCardScreen = () => {
   // Состояния для Пикера Дат и Фокусировки
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState<DateTimePickerMode | undefined>('date');
-  const [focused, setFocused] = useState('');
 
   // Безопасный редирект, если задача не найдена
   if (!currTask) {
@@ -651,7 +650,8 @@ const TaskCardScreen = () => {
                 title="Категория"
                 text={currTask.category.name.ru || 'Нет'}
                 icon={currTask.category.icon}
-                iconColor={currTask.category?.backColor || 'white'}
+                iconColor={'white'}
+                iconBackColor={currTask.category?.backColor}
                 onPress={() => setSheetRef(sheetCategoryRef, 0)}
               />
               <CardRow
@@ -669,7 +669,7 @@ const TaskCardScreen = () => {
               />
             </View>
             {/* Нативные пикеры и кастомные BottomSheets для модального выбора */}
-            {show && (<DateTimePicker value={currTask.date || new Date()} mode={mode} is24Hour={true} onValueChange={changeDate} />)}
+            {show && (<DateTimePicker value={currTask.date || new Date()} mode={mode} is24Hour={true} onValueChange={changeDate} onDismiss={()=>setShow(false)}/>)}
 
             {/* ПОЛЕ ВВОДА ПРИМЕЧАНИЯ (CARD_INPUT) */}
             <Text style={styles.inputLabel}>Примечание</Text>
