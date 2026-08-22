@@ -1,9 +1,9 @@
 import { getData } from "@/store/getData";
-import { createNotificationChannel } from "@/utils/notificationUtils";
+//import { createNotificationChannel } from "@/utils/notificationUtils";
 import { TTask } from "@/utils/types";
 import { notifyMessage } from "@/utils/utils";
 import { createContext, FC, useEffect, useState } from "react";
-import { Platform } from "react-native";
+//import { Platform } from "react-native";
 
 const TaskContext = createContext<any>(null);
 
@@ -18,9 +18,9 @@ const TaskContextProvider: FC<Props> = ({ children }) => {
   useEffect(() => {
     async function getStoredData() {
 
-      if (Platform.OS === 'android') {
-        await createNotificationChannel()
-      }       
+      // if (Platform.OS === 'android') {
+      //   await createNotificationChannel()
+      // }       
 
       try {
         const storedTask = await getData('todo')

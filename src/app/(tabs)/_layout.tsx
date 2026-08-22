@@ -19,21 +19,27 @@ export default function TabsLayout() {
         <Tabs.Screen name="index" options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialDesignIcons name={focused ? 'home' : 'home-outline'} color={color} size={24} />
+            <MaterialDesignIcons name={focused ? 'home' : 'home-outline'} color={color} size={28} />
           ),
         }} />
         <Tabs.Screen name="list" options={{
           title: 'List',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialDesignIcons name={focused ? 'clipboard-text' : 'clipboard-text-outline'} color={color} size={24} />
+            <MaterialDesignIcons name={focused ? 'clipboard-text' : 'clipboard-text-outline'} color={color} size={28} />
           ),
         }} />
         <Tabs.Screen name="calendar" options={{
           title: 'Calendar',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialDesignIcons name={focused ? 'calendar-month' : 'calendar-month-outline'} color={color} size={24} />
+            <MaterialDesignIcons name={focused ? 'calendar-month' : 'calendar-month-outline'} color={color} size={28} />
           ),
         }} />
+        <Tabs.Screen name="hostScreen" options={{
+          title: 'hostScreen',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialDesignIcons name={focused ? 'cog' : 'cog-outline'} color={color} size={28} />
+          ),
+        }} />        
       </Tabs>
     </>
   )
