@@ -35,7 +35,7 @@ export type TDataItem = {
     },
     color: string,
     icon: string,
-    backColor?: string,
+    backColor: string,
     clockIcon?: string,
 }
 

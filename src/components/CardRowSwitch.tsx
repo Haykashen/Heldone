@@ -1,15 +1,17 @@
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Switch, Text, View } from 'react-native';
 
 export type TCardRow = {
   title: string;
   text: string;
-  icon: string; // Заменили any на string (или специфичный тип из библиотеки иконок)
+  icon: string;
+  value: boolean;
   iconColor: string;
   onPress: () => void;
 };
 
-const CardRow = ({ title, text, icon, iconColor, onPress }: TCardRow) => {
+const CardRowSwitch = ({ title, text, icon, iconColor, value, onPress }: TCardRow) => {
+  
   return (
     <View style={styles.cardRow}>
       <View style={styles.cardRowContainer}>
@@ -19,14 +21,17 @@ const CardRow = ({ title, text, icon, iconColor, onPress }: TCardRow) => {
           <Text style={styles.cardRowLabel}>{title}</Text>
         </View>
       </View>
-      <Pressable onPress={onPress} style={styles.cardRowPressable}>
-        <MaterialDesignIcons name={'chevron-right'} color={iconColor} size={18} />
-      </Pressable>
+      <Switch
+        trackColor={{ false: '#767577', true: '#81b0ff' }}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={onPress}
+        value={value}
+      />
     </View>
   );
 };
 
-export default CardRow;
+export default CardRowSwitch;
 
 const styles = StyleSheet.create({
   cardRow: {
@@ -35,24 +40,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%', // Гарантирует растяжение по всей ширине родителя
   },
-  cardRowContainer:{ 
-    flex: 1, 
-    flexDirection: 'row', 
-    gap: 10, 
-    alignItems: 'center' 
-  },
   cardRowLabel: {
     color: 'white',   
     fontSize: 14,
    // flexShrink: 1,  Позволяет заголовку сжиматься, если текст справа слишком длинный
-  },    
-  cardRowPressable: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    gap: 5,
-    flex: 1, // Позволяет кликабельной зоне занимать оставшееся пространство
-  },
+  },  
+  cardRowContainer: {
+    flex: 1, 
+    flexDirection: 'row', 
+    gap: 10, 
+    alignItems: 'center'
+  },  
+  // cardRowPressable: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   justifyContent: 'flex-end',
+  //   gap: 5,
+  //   flex: 1, // Позволяет кликабельной зоне занимать оставшееся пространство
+  // },
   cardRowText: {
     color: 'white',
     fontWeight: 'bold',
