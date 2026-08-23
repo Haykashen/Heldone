@@ -155,7 +155,7 @@ import { completeTask } from '@/utils/taskUtils';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
 import { router } from "expo-router";
 import { useCallback, useContext, useMemo, useRef, useState } from 'react';
-import { Animated, Easing, Pressable, StyleSheet, Text } from 'react-native';
+import { Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar, LocaleConfig } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -178,6 +178,14 @@ const PROVIDER_THEME = {
 };
 
 const CALENDAR_THEME = {
+  'stylesheet.calendar.header': {
+    dayTextAtIndex5: {
+      color: '#4ca0fa'
+    },
+    dayTextAtIndex6: {
+      color: '#4ca0fa'
+    },
+  },
   arrowColor: 'black',
   selectedDayBackgroundColor: "#b1d6f9",
   selectedDayTextColor: 'white',
@@ -276,6 +284,7 @@ const CalendarScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title='Календарь' text='в месячном и недельном виде' />
+      <Text style={{color:'white'}}>{JSON.stringify(multiDots)}</Text>
       <CalendarProvider
         date={today}
         onDateChanged={changeDate}
@@ -288,10 +297,41 @@ const CalendarScreen = () => {
           closeOnDayPress={false}
           ref={calendarRef}
           onCalendarToggled={onCalendarToggled}
-          markingType="multi-dot"
-          markedDates={multiDots}
+          // markingType="custom"
+          // markedDates={multiDots}
           firstDay={1}
           theme={CALENDAR_THEME}
+  dayComponent={({date, state}) => {
+    let dayData = multiDots[date?.dateString as any];
+
+    return (
+      <Pressable style={{ gap: 2 }} onPress={()=>changeDate(date?.dateString?date.dateString:today)}>
+        <Text style={{
+          textAlign: 'center',
+          fontSize: 16,
+          color: state === 'today' ? '#007aff' : 'gray',
+          backgroundColor: state === 'selected' ? '#b1d6f9' : 'white',
+          borderRadius:25
+        }}>
+          {date?.day}
+        </Text>
+        {dayData && <View style={{flexDirection:'row', alignItems:'center', gap:4,height:14}}>
+          {dayData.dots[0] && <View style={{height:6, width:6, backgroundColor:dayData.dots[0]?.color, borderRadius:25}}/>}
+          {dayData.dots[1] && <View style={{height:6, width:6, backgroundColor:dayData.dots[1]?.color, borderRadius:25}}/>}
+          {dayData.dots.length>2  && <Text style={{
+            textAlign: 'center',
+            fontSize: 10,
+            color: 'gray',
+            // borderRadius: 25,
+            // borderColor: '#b1d6f9',
+            // borderWidth: 1
+          }}>
+           +{multiDots[date?.dateString as any]?.dots.length-2}
+          </Text>}
+        </View>}
+      </Pressable>
+    );
+  }}          
         />
         <AgendaList
           dayFormat='dddd d MMM'
