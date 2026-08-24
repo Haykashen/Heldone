@@ -1,5 +1,5 @@
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
-import { StyleSheet, Switch, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
 export type TCardRow = {
   title: string;
@@ -13,7 +13,7 @@ export type TCardRow = {
 const CardRowSwitch = ({ title, text, icon, iconColor, value, onPress }: TCardRow) => {
   
   return (
-    <View style={styles.cardRow}>
+    <Pressable onPress={onPress}  style={styles.cardRow}>
       <View style={styles.cardRowContainer}>
         <MaterialDesignIcons name={icon as any} color={iconColor} size={26} />
         <View style={{ flexDirection: 'column', width: 'auto' }}>
@@ -24,10 +24,10 @@ const CardRowSwitch = ({ title, text, icon, iconColor, value, onPress }: TCardRo
       <Switch
         trackColor={{ false: '#767577', true: '#81b0ff' }}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={onPress}
+        //onValueChange={onPress}
         value={value}
       />
-    </View>
+    </Pressable>
   );
 };
 

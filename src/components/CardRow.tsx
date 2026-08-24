@@ -11,7 +11,7 @@ export type TCardRow = {
 
 const CardRow = ({ title, text, icon, iconColor, onPress }: TCardRow) => {
   return (
-    <View style={styles.cardRow}>
+    <Pressable onPress={onPress} style={styles.cardRow}>
       <View style={styles.cardRowContainer}>
         <MaterialDesignIcons name={icon as any} color={iconColor} size={26} />
         <View style={{ flexDirection: 'column', width: 'auto' }}>
@@ -19,10 +19,10 @@ const CardRow = ({ title, text, icon, iconColor, onPress }: TCardRow) => {
           <Text style={styles.cardRowLabel}>{title}</Text>
         </View>
       </View>
-      <Pressable onPress={onPress} style={styles.cardRowPressable}>
+      <View style={styles.cardRowPressable}>
         <MaterialDesignIcons name={'chevron-right'} color={iconColor} size={18} />
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
 };
 
