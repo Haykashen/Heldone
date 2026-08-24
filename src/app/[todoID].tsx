@@ -14,13 +14,13 @@ import { openFile, shareFileWithCustomName } from '@/utils/fileUtils';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
 import { TFileDataObject, TTask } from '@/utils/types';
 import { getFormatedDay, notifyMessage } from '@/utils/utils';
-import BottomSheet, { BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
+import BottomSheet, { BottomSheetMethods, BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker, { DateTimePickerChangeEvent } from '@expo/ui/community/datetime-picker';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
 import { RefObject, useCallback, useContext, useMemo, useRef, useState } from "react";
-import { Keyboard, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type DateTimePickerMode = "date" | "time";
@@ -247,16 +247,17 @@ const TaskCardScreen = () => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>      
+      <SafeAreaView style={styles.container}>     
         <BottomSheet
           ref={sheetRef}
           index={0}
           onClose={handleClose}
           enablePanDownToClose
           backgroundStyle={styles.bottomSheetBackground}
-        >
-          <BottomSheetView style={styles.innerContainer}>
+        >       
+          <BottomSheetScrollView style={styles.innerContainer}>
+            <KeyboardAvoidingView style={styles.container}>  
             {/* Панель управления (Верхняя шапка карточки) */}
             <View style={styles.topBar}>
               <Pressable onPress={handleBack} style={styles.navButton}>
@@ -367,8 +368,9 @@ const TaskCardScreen = () => {
               onOpen={handleOpenFile}              
               sheetRef={sheetFilesRef}
             />
-          </BottomSheetView>
-        </BottomSheet>
+            </KeyboardAvoidingView>
+          </BottomSheetScrollView>
+        </BottomSheet>       
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
