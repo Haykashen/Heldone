@@ -101,16 +101,7 @@ const SettingsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {show && (
-        <DateTimePicker
-          mode='time'
-          locale='ru_RU'
-          presentation="dialog"
-          value={time}
-          onValueChange={handleTimeChange}
-          onDismiss={handleDismissTime}
-        />
-      )}
+
 
       {/* Шапка настроек */}
       <View style={styles.header}>
@@ -185,7 +176,16 @@ const SettingsScreen = () => {
           </View>
         </View>
       {/* Модальные окна BottomSheet */}
-    
+      {show && (
+        <DateTimePicker
+          mode='time'
+          locale='ru_RU'
+          presentation="dialog"
+          value={time}
+          onValueChange={handleTimeChange}
+          onDismiss={handleDismissTime}
+        />
+      )}    
          
       </View>
       <CategoryBottomSheet
