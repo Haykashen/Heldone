@@ -1,151 +1,3 @@
-// import Add from '@/components/buttons/Add';
-// import AgendaItem from '@/components/items/AgendaItem';
-// import ListEpmtyComponent from "@/components/items/ListEpmtyComponent";
-// import Header from '@/components/TabHeader';
-// import { TaskContext } from '@/context/TaskContext';
-// import { completeTask } from '@/utils/taskUtils';
-// import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
-// import { router } from "expo-router";
-// import { useCallback, useContext, useRef, useState } from 'react';
-// import { Animated, Easing, Pressable, Text } from 'react-native';
-// import { AgendaList, CalendarProvider, ExpandableCalendar, LocaleConfig } from 'react-native-calendars';
-// import { SafeAreaView } from 'react-native-safe-area-context';
-
-// LocaleConfig.locales['rus'] = {
-//   monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-//   monthNamesShort: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
-//   dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-//   dayNamesShort: ['Вос.', 'Пон.', 'Вт.', 'Ср.', 'Чет.', 'Пят.', 'Суб.'],
-//   today: "Сегодня"
-// };
-// LocaleConfig.defaultLocale = 'rus';
-
-// const calendar = () => {
-//   const { task, setTask } = useContext(TaskContext);
-//   const CHEVRON = require('@/assets/images/next.png');  
-//   //const {weekView} = props;///????
-//   const today = getFormatedDay(new Date());
-//   const [date, setDate] = useState(today)
-//   let dayTasks = getDayTasks(task, date)
-//   const multiDots = getMultiDotsDays(task)
-  
-//   const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
-//   const rotation = useRef(new Animated.Value(0));
-
-//   const toggleCalendarExpansion = useCallback(() => {
-//     const isOpen = calendarRef.current?.toggleCalendarPosition();
-//     Animated.timing(rotation.current, {
-//       toValue: isOpen ? 1 : 0,
-//       duration: 200,
-//       useNativeDriver: true,
-//       easing: Easing.out(Easing.ease)
-//     }).start();
-//   }, []);
-
-//   const renderHeader = useCallback(
-//     (date: Date) => {
-//       const title = getCalendarTitle(new Date(date))
-//       const rotationInDegrees = rotation.current.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '-180deg'] });
-
-//       return (
-//         <Pressable style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 10, gap:5}} onPress={toggleCalendarExpansion}>
-//           <Text style={{fontSize: 16, fontWeight: 'bold', marginRight: 6}}>{title}</Text>
-//           <Animated.Image source={CHEVRON} style={{transform: [{rotate: '90deg'}, {rotate: rotationInDegrees}]}}/>
-//         </Pressable>
-//       );
-//     },
-//     [toggleCalendarExpansion]
-//   );
-
-//   const onCalendarToggled = useCallback(
-//     (isOpen: boolean) => {
-//       rotation.current.setValue(isOpen ? 1 : 0);
-//     },
-//     [rotation]);
-    
-//   const handleComplete = (id: string) => {
-//     completeTask(id, task, setTask)
-//   }
-
-//   const handlePress = (id: string) => {
-//     /*router.push({pathname: '/components/cards/placeCard',params: { placeID: item.id, otherParam: 'anything you want here' }})*/
-//     router.push((`/${id}`))
-//   }
-
-//   const changeDate = (date:string) =>{
-//     setDate(date)
-//     dayTasks = getDayTasks(task, date)//getFormatedDay(new Date(date))
-      
-//   }
-
-//   return (
-//     <SafeAreaView style={{ flex: 1, backgroundColor: '#031F2B', paddingTop: 5, flexDirection: 'column', gap: 10 }}>
-//       <Header title='Календарь' text='в месячном и недельном виде' />
-//       <CalendarProvider
-//         date= {today}
-//         onDateChanged={(date, updateSource) => changeDate(date)}//
-//         showTodayButton={today !== date ? true : false}
-//         style={{ gap: dayTasks[0] ? 0 : 40 }}
-//         theme={{
-//           todayButtonTextColor: '#007aff',
-//           todayButtonFontWeight: 'bold',
-//         }}
-//       >
-//         <ExpandableCalendar
-//           //showWeekNumbers
-//           //onDayPress={(date)=> changeDate(date.dateString)}
-//           renderHeader={renderHeader}
-//           closeOnDayPress={false}
-//           ref={calendarRef}
-//           onCalendarToggled={onCalendarToggled}
-//           markingType="multi-dot"
-//           markedDates={multiDots}
-//           firstDay={1}
-//           theme={{
-//             // arrows
-//             arrowColor: 'black',
-//             // selected date
-//             selectedDayBackgroundColor: "#b1d6f9",
-//             selectedDayTextColor: 'white',
-//             // dot (marked date)
-//             dotColor: '#007aff',
-//           }}
-
-//         />
-//         <AgendaList
-//          //markToday={false}
-//           dayFormat='dddd d MMM'
-//           sections={dayTasks}
-//           ListEmptyComponent={
-//             <ListEpmtyComponent
-//               date={date}
-//               title='У вас пока нет никаких заданий!'
-//               text='Добавьте задачу, чтобы сделать ваш день продуктивным.'
-//             />
-//           }
-//           sectionStyle={{ backgroundColor: '#031F2B', }}
-//           renderItem={({ item }: any) => <AgendaItem
-//             id={item.id}
-//             date={item.date}
-//             category={item.category}
-//             status={item.status}
-//             title={item.title}
-//             priority={item.priority}
-//             notes={item.notes}
-//             sendNotify={item.sendNotify}
-//             files={item.files}
-//             onCompletePress={() => handleComplete(item.id)}
-//             onItemPress={() => handlePress(item.id)}
-//           />}
-//         />
-//       </CalendarProvider>
-//       <Add date={date} />
-//     </SafeAreaView>
-//   );
-// };
-
-// export default calendar;
-
 import Add from '@/components/buttons/Add';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEpmtyComponent from "@/components/items/ListEmptyComponent";
@@ -156,7 +8,8 @@ import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from 
 import { router } from "expo-router";
 import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
-import { AgendaList, CalendarProvider, ExpandableCalendar, LocaleConfig } from 'react-native-calendars';
+import { AgendaList, CalendarProvider, DateData, ExpandableCalendar, LocaleConfig } from 'react-native-calendars';
+import { DayState } from 'react-native-calendars/src/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Изображения импортируем НАВЕРХУ
@@ -187,18 +40,18 @@ const CALENDAR_THEME = {
     },
   },
   arrowColor: 'black',
-  selectedDayBackgroundColor: "#b1d6f9",
-  selectedDayTextColor: 'white',
-  dotColor: '#007aff',
+  // selectedDayBackgroundColor: "#b1d6f9",
+  // selectedDayTextColor: 'white',
+  // dotColor: '#007aff',
 };
 
 const CalendarScreen = () => {
   const { task, setTask } = useContext(TaskContext);
   const today = useMemo(() => getFormatedDay(new Date()), []);
-  const [date, setDate] = useState(today);
+  const [selDate, setDate] = useState(today);
   
   // Мемоизируем тяжелые вычисления, чтобы они не перезапускались при анимации
-  const dayTasks = useMemo(() => getDayTasks(task, date), [task, date]);
+  const dayTasks = useMemo(() => getDayTasks(task, selDate), [task, selDate]);
   const multiDots = useMemo(() => getMultiDotsDays(task), [task]);
   
   const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
@@ -236,6 +89,40 @@ const CalendarScreen = () => {
     [toggleCalendarExpansion]
   );
 
+  const renderDay = useCallback(
+    ( currDate: (string & DateData) | undefined, state: DayState | undefined, selDate:string) => {
+      let dayData = multiDots[currDate?.dateString as any];
+      if(selDate === currDate?.dateString)
+        console.log(currDate?.dateString,today, selDate )
+
+      return (
+        <Pressable style={{ gap: 2 }} onPress={() => setDate(currDate?.dateString ? currDate.dateString : today)}>
+          <Text style={{
+            textAlign: 'center',
+            fontSize: 14,
+            color: currDate?.dateString === today ? '#007aff' : 'grey',
+            backgroundColor: currDate?.dateString === selDate ? '#c0defa' : 'white',
+            padding:3,
+            borderRadius: 25
+          }}>
+            {currDate?.day}
+          </Text>
+          {dayData && <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4, height: 14 }}>
+            {dayData.dots[0] && <View style={{ height: 6, width: 6, backgroundColor: dayData.dots[0]?.color, borderRadius: 25 }} />}
+            {dayData.dots[1] && <View style={{ height: 6, width: 6, backgroundColor: dayData.dots[1]?.color, borderRadius: 25 }} />}
+            {dayData.dots.length > 2 && <Text style={{
+              textAlign: 'center',
+              fontSize: 10,
+              color: 'gray',
+            }}>
+              +{multiDots[currDate?.dateString as any]?.dots.length - 2}
+            </Text>}
+          </View>}
+        </Pressable>
+      );
+    },
+    [selDate]
+  );
   const onCalendarToggled = useCallback((isOpen: boolean) => {
     rotation.current.setValue(isOpen ? 1 : 0);
   }, []);
@@ -271,24 +158,24 @@ const CalendarScreen = () => {
 
   const listEmptyComponent = useMemo(() => (
     <ListEpmtyComponent
-      date={date}
+      date={selDate}
       title='У вас пока нет никаких заданий!'
       text='Добавьте задачу, чтобы сделать ваш день продуктивным.'
     />
-  ), [date]);
+  ), [selDate]);
 
   const providerStyle = useMemo(() => ({ 
     gap: dayTasks[0] ? 0 : 40 
   }), [dayTasks]);
-
+  console.log('render calendar')
   return (
     <SafeAreaView style={styles.container}>
       <Header title='Календарь' text='в месячном и недельном виде' />
-      <Text style={{color:'white'}}>{JSON.stringify(multiDots)}</Text>
+      <Text style={{color:'white'}}>{today} !== {selDate}  {(today !== selDate)? "true": "false"}</Text>
       <CalendarProvider
-        date={today}
+        date={selDate}//today
         onDateChanged={changeDate}
-        showTodayButton={today !== date}
+        showTodayButton={today !== selDate}
         style={providerStyle}
         theme={PROVIDER_THEME}
       >
@@ -297,41 +184,12 @@ const CalendarScreen = () => {
           closeOnDayPress={false}
           ref={calendarRef}
           onCalendarToggled={onCalendarToggled}
+          //date={date}
           // markingType="custom"
           // markedDates={multiDots}
           firstDay={1}
           theme={CALENDAR_THEME}
-  dayComponent={({date, state}) => {
-    let dayData = multiDots[date?.dateString as any];
-
-    return (
-      <Pressable style={{ gap: 2 }} onPress={()=>changeDate(date?.dateString?date.dateString:today)}>
-        <Text style={{
-          textAlign: 'center',
-          fontSize: 16,
-          color: state === 'today' ? '#007aff' : 'gray',
-          backgroundColor: state === 'selected' ? '#b1d6f9' : 'white',
-          borderRadius:25
-        }}>
-          {date?.day}
-        </Text>
-        {dayData && <View style={{flexDirection:'row', alignItems:'center', gap:4,height:14}}>
-          {dayData.dots[0] && <View style={{height:6, width:6, backgroundColor:dayData.dots[0]?.color, borderRadius:25}}/>}
-          {dayData.dots[1] && <View style={{height:6, width:6, backgroundColor:dayData.dots[1]?.color, borderRadius:25}}/>}
-          {dayData.dots.length>2  && <Text style={{
-            textAlign: 'center',
-            fontSize: 10,
-            color: 'gray',
-            // borderRadius: 25,
-            // borderColor: '#b1d6f9',
-            // borderWidth: 1
-          }}>
-           +{multiDots[date?.dateString as any]?.dots.length-2}
-          </Text>}
-        </View>}
-      </Pressable>
-    );
-  }}          
+          dayComponent={({ date, state }) =>renderDay(date, state, selDate)}           
         />
         <AgendaList
           dayFormat='dddd d MMM'
@@ -342,7 +200,7 @@ const CalendarScreen = () => {
           renderItem={renderAgendaItem}
         />
       </CalendarProvider>
-      <Add date={date} />
+      <Add date={selDate} />
     </SafeAreaView>
   );
 };

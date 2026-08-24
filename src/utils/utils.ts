@@ -135,15 +135,15 @@ export function getTaskByDays(task: TTask[], status?: string) {
  */
 export function getMultiDotsDays(task: TTask[]) {
   // Промежуточный объект, где для каждого дня храним Set с уникальными цветами
-  const colorSets: { [key: string]: Set<string> } = {};
+  const colorSets: { [key: string]: string[] } = {};
 
   task.forEach((item) => {
     if (!item.dateString || !item.category?.backColor) return;
 
     if (!colorSets[item.dateString]) {
-      colorSets[item.dateString] = new Set<string>();
+      colorSets[item.dateString] = new Array<string>();
     }
-    colorSets[item.dateString].add(item.category.backColor);
+    colorSets[item.dateString].push(item.category.backColor);
   });
 
   // Преобразуем Set-ы в формат, который требует react-native-calendars
