@@ -121,7 +121,7 @@ const CalendarScreen = () => {
         </Pressable>
       );
     },
-    [selDate]
+    [selDate, dayTasks]
   );
   const onCalendarToggled = useCallback((isOpen: boolean) => {
     rotation.current.setValue(isOpen ? 1 : 0);
@@ -171,7 +171,6 @@ const CalendarScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title='Календарь' text='в месячном и недельном виде' />
-      <Text style={{color:'white'}}>{today} !== {selDate}  {(today !== selDate)? "true": "false"}</Text>
       <CalendarProvider
         date={selDate}//today
         onDateChanged={changeDate}
