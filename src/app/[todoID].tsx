@@ -1,6 +1,6 @@
 import FilesBottomSheet from '@/components/bottomSheet/FilesBottomSheet';
-import CardRow from '@/components/CardRow';
-import CardRowSwitch from '@/components/CardRowSwitch';
+import CardRow from '@/components/rows/CardRow';
+import CardRowSwitch from '@/components/rows/CardRowSwitch';
 import { SettingContext } from '@/context/SettingContext';
 import { TaskContext } from '@/context/TaskContext';
 import CategoryData, { CATEGORIES_ARRAY } from '@/data/CategoryData';

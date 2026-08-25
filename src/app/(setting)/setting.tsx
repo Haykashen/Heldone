@@ -1,7 +1,7 @@
 import SelectionBottomSheet from '@/components/bottomSheet/SelectionBottomSheet';
 import NavigationButton from '@/components/buttons/NavigationButton';
-import CardRow from '@/components/CardRow';
-import CardRowSwitch from '@/components/CardRowSwitch';
+import CardRow from '@/components/rows/CardRow';
+import CardRowSwitch from '@/components/rows/CardRowSwitch';
 import { SettingContext } from '@/context/SettingContext';
 import CategoryData from '@/data/CategoryData';
 import PriorityData, { PRIORITIES_ARRAY } from '@/data/PriorityData';
