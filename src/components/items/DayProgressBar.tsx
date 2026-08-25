@@ -80,9 +80,9 @@ const DayProgressBar = ({ completedCount, totalCount, scaleAnimatedValue }: DayP
 export default React.memo(DayProgressBar);
 
 const styles = StyleSheet.create({
-  // ИСПРАВЛЕНО: Задана жесткая фиксированная высота для предотвращения скачков UI
+  // ИСПРАВЛЕНО: Задана жесткая фиксированная высота для предотвращения скачков UI'#1C3542'
   cardContainer: {
-    backgroundColor: '#1C3542',
+    backgroundColor: '#052d3e',
     borderWidth: 1,
     borderColor: '#263238',
     borderRadius: 14,
