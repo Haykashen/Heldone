@@ -141,7 +141,208 @@
 //   },
 // });
 
+// import { TListItem } from "@/components/types/typesTask";
+// import { scaleEnd, scaleStart } from '@/utils/animation';
+// import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
+// import React, { useCallback, useRef } from 'react';
+// import { Animated, Pressable, StyleSheet, Text, Vibration, View } from 'react-native';
+
+// const AgendaItem = (props: TListItem) => {
+//   const { id, date, title, category, status, priority, files, sendNotify, onItemPress, onCompletePress } = props;
+//   const scale = useRef(new Animated.Value(1)).current;
+
+//   // Проверяем, выполнена ли задача
+//   const isCompleted = status?.id === 'Completed';
+
+//   // Вычисляем состояние уведомлений (React 19 оптимизирует это автоматически)
+//   let bellIcon = 'bell-off';
+//   let bellColor = '#7a92a5';
+  
+//   if (sendNotify) {
+//     const isUpcoming = new Date().getTime() < new Date(date).getTime();
+//     bellIcon = isUpcoming ? 'bell-ring' : 'bell';
+//     bellColor = isUpcoming ? '#007aff' : '#7a92a5';
+//   }
+
+//   // Безопасное форматирование времени задачи
+//   const formattedTime = date instanceof Date 
+//     ? date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+//     : '00:00';
+
+//   // Обработчики анимации чекбокса
+//   const handlePressIn = useCallback(() => {
+//     scaleStart(scale, 0.85);
+//     Vibration.vibrate(20);
+//   }, [scale]);
+
+//   const handlePressOut = useCallback(() => {
+//     scaleEnd(scale, 1);
+//   }, [scale]);
+
+//   return (
+//     <Pressable 
+//       onPress={onItemPress} 
+//       style={[
+//         styles.itemCard, 
+//         isCompleted && styles.completedCard
+//       ]}
+//     >
+//       {/* Левая часть: Иконка категории в аккуратной круглой подложке */}
+//       <View style={[styles.iconWrapper, { backgroundColor: category.color || '#263238' }]}>
+//         <MaterialDesignIcons name={(category?.icon as any) || 'folder'} color={'white'} size={24} />
+//       </View>
+
+//       {/* Центральная часть: Контент */}
+//       <View style={styles.contentContainer}>
+//         <Text 
+//           numberOfLines={2} 
+//           style={[
+//             styles.itemTitleText, 
+//             isCompleted && styles.completedTitleText
+//           ]}
+//         >
+//           {title}
+//         </Text>
+        
+//         <View style={styles.metaRow}>
+//           {/* Время */}
+//           <Text style={styles.metaText}>{formattedTime}</Text>
+          
+//           <Text style={styles.bullet}>•</Text>
+
+//           {/* Приоритет */}
+//           <View style={styles.metaGroup}>
+//             <MaterialDesignIcons name={(priority?.icon as any) || 'flag'} color={priority?.color || '#7a92a5'} size={14} />
+//             <Text style={styles.metaText} numberOfLines={1}>
+//               {priority?.name?.ru || 'Без приоритета'}
+//             </Text>
+//           </View>
+
+//           {/* Индикатор напоминания (показываем только если включено) */}
+//           {sendNotify && (
+//             <>
+//               <Text style={styles.bullet}>•</Text>
+//               <MaterialDesignIcons name={bellIcon as any} color={bellColor} size={14} />
+//             </>
+//           )}
+
+//           {/* Файлы */}
+//           {files && files.length > 0 && (
+//             <>
+//               <Text style={styles.bullet}>•</Text>
+//               <View style={styles.metaGroup}>
+//                 <MaterialDesignIcons name='paperclip' color="#63B4FF" size={14} />
+//                 <Text style={[styles.metaText, { color: '#63B4FF' }]}>{files.length}</Text>
+//               </View>
+//             </>
+//           )}
+//         </View>
+//       </View>
+
+//       {/* Правая часть: Чекбокс выполнения с мягкой анимацией */}
+//       <Pressable
+//         onPress={onCompletePress}
+//         onPressIn={handlePressIn}
+//         onPressOut={handlePressOut}
+//         style={styles.checkboxContainer}
+//       >
+//         <Animated.View style={{ transform: [{ scale }] }}>
+//           <MaterialDesignIcons 
+//             name={isCompleted ? "checkbox-marked-circle" : "checkbox-blank-circle-outline"} 
+//             color={isCompleted ? "#4CD964" : "#7a92a5"} 
+//             size={26} 
+//           />
+//         </Animated.View>
+//       </Pressable>
+//     </Pressable>
+//   );
+// };
+
+// export default React.memo(AgendaItem);
+
+// const styles = StyleSheet.create({
+//   itemCard: {
+//     backgroundColor: '#1C3542',
+//     borderWidth: 1,
+//     borderColor: '#263238',
+//     borderRadius: 16,
+//     paddingVertical: 14,
+//     paddingHorizontal: 16,
+//     marginHorizontal: 10,
+//     marginVertical: 6,
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     // Легкая нативная тень для объема на iOS/Android
+//     elevation: 2,
+//     shadowColor: '#000',
+//     shadowOffset: { width: 0, height: 2 },
+//     shadowOpacity: 0.2,
+//     shadowRadius: 4,
+//   },
+//   // Стиль для выполненной карточки (приглушаем прозрачность)
+//   completedCard: {
+//     opacity: 0.5,
+//     backgroundColor: '#142731',
+//     borderColor: 'transparent',
+//     elevation: 0,
+//     shadowOpacity: 0,
+//   },
+//   iconWrapper: {
+//     height: 44,
+//     width: 44,
+//     borderRadius: 22, // Сделали круглым — так интерфейс выглядит мягче
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     marginRight: 14,
+//   },
+//   contentContainer: {
+//     flex: 1,
+//     flexDirection: 'column',
+//     gap: 6,
+//     justifyContent: 'center',
+//   },
+//   itemTitleText: {
+//     color: 'white', // Изменено на белый для темной темы
+//     fontWeight: '600',
+//     fontSize: 15,
+//     lineHeight: 20,
+//   },
+//   // Зачеркивание текста для выполненной задачи
+//   completedTitleText: {
+//     textDecorationLine: 'line-through',
+//     color: '#7a92a5',
+//   },
+//   metaRow: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   metaGroup: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     gap: 4,
+//   },
+//   metaText: {
+//     color: '#9BB0C1', // Приятный пастельный цвет для второстепенного текста
+//     fontSize: 12,
+//     fontWeight: '500',
+//   },
+//   bullet: {
+//     color: '#263238',
+//     paddingHorizontal: 6,
+//     fontSize: 12,
+//   },
+//   checkboxContainer: {
+//     paddingLeft: 12,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     minWidth: 40,
+//     minHeight: 40,
+//   },
+// });
+
+
 import { TListItem } from "@/components/types/typesTask";
+import { useAppColors } from "@/context/ThemeContext"; // Импортируем наш хук
 import { scaleEnd, scaleStart } from '@/utils/animation';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import React, { useCallback, useRef } from 'react';
@@ -150,26 +351,49 @@ import { Animated, Pressable, StyleSheet, Text, Vibration, View } from 'react-na
 const AgendaItem = (props: TListItem) => {
   const { id, date, title, category, status, priority, files, sendNotify, onItemPress, onCompletePress } = props;
   const scale = useRef(new Animated.Value(1)).current;
-
-  // Проверяем, выполнена ли задача
   const isCompleted = status?.id === 'Completed';
+  const colors = useAppColors(); // Вся палитра доступна здесь автоматически!
+  // ХУК ТЕМЫ: Автоматически получаем 'light' или 'dark' из контекста
+//  const theme = useAppTheme();
 
-  // Вычисляем состояние уведомлений (React 19 оптимизирует это автоматически)
+  // // Динамическая палитра цветов
+  // const colors = theme === 'dark' ? {
+  //   cardBg: '#1C3542',
+  //   cardBgCompleted: '#142731',
+  //   borderColor: '#263238',
+  //   titleText: '#FFFFFF',
+  //   titleTextCompleted: '#7A92A5',
+  //   metaText: '#9BB0C1',
+  //   bulletColor: '#263238',
+  //   shadowColor: '#000000',
+  //   checkboxOutline: '#7A92A5',
+  //   bellOff: '#7A92A5'
+  // } : {
+  //   cardBg: '#FFFFFF',
+  //   cardBgCompleted: '#F8FAFC',
+  //   borderColor: '#E2E8F0',
+  //   titleText: '#1E293B',
+  //   titleTextCompleted: '#94A3B8',
+  //   metaText: '#64748B',
+  //   bulletColor: '#E2E8F0',
+  //   shadowColor: '#0F172A',
+  //   checkboxOutline: '#94A3B8',
+  //   bellOff: '#94A3B8'
+  // };
+
   let bellIcon = 'bell-off';
-  let bellColor = '#7a92a5';
+  let bellColor = colors.bellOff;
   
   if (sendNotify) {
     const isUpcoming = new Date().getTime() < new Date(date).getTime();
     bellIcon = isUpcoming ? 'bell-ring' : 'bell';
-    bellColor = isUpcoming ? '#007aff' : '#7a92a5';
+    bellColor = isUpcoming ? '#007aff' : colors.metaText;
   }
 
-  // Безопасное форматирование времени задачи
   const formattedTime = date instanceof Date 
     ? date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
     : '00:00';
 
-  // Обработчики анимации чекбокса
   const handlePressIn = useCallback(() => {
     scaleStart(scale, 0.85);
     Vibration.vibrate(20);
@@ -184,20 +408,26 @@ const AgendaItem = (props: TListItem) => {
       onPress={onItemPress} 
       style={[
         styles.itemCard, 
-        isCompleted && styles.completedCard
+        { 
+          backgroundColor: isCompleted ? colors.cardBgCompleted : colors.cardBg,
+          borderColor: isCompleted ? 'transparent' : colors.borderColor,
+          shadowColor: colors.shadowColor,
+          opacity: isCompleted ? 0.5 : 1,
+          elevation: isCompleted ? 0 : 2,
+          shadowOpacity: isCompleted ? 0 : 0.08
+        }
       ]}
     >
-      {/* Левая часть: Иконка категории в аккуратной круглой подложке */}
-      <View style={[styles.iconWrapper, { backgroundColor: category.color || '#263238' }]}>
+      <View style={[styles.iconWrapper, { backgroundColor: category.color || '#64748B' }]}>
         <MaterialDesignIcons name={(category?.icon as any) || 'folder'} color={'white'} size={24} />
       </View>
 
-      {/* Центральная часть: Контент */}
       <View style={styles.contentContainer}>
         <Text 
           numberOfLines={2} 
           style={[
             styles.itemTitleText, 
+            { color: isCompleted ? colors.titleTextCompleted : colors.titleText },
             isCompleted && styles.completedTitleText
           ]}
         >
@@ -205,31 +435,26 @@ const AgendaItem = (props: TListItem) => {
         </Text>
         
         <View style={styles.metaRow}>
-          {/* Время */}
-          <Text style={styles.metaText}>{formattedTime}</Text>
-          
-          <Text style={styles.bullet}>•</Text>
+          <Text style={[styles.metaText, { color: colors.metaText }]}>{formattedTime}</Text>
+          <Text style={[styles.bullet, { color: colors.bulletColor }]}>•</Text>
 
-          {/* Приоритет */}
           <View style={styles.metaGroup}>
-            <MaterialDesignIcons name={(priority?.icon as any) || 'flag'} color={priority?.color || '#7a92a5'} size={14} />
-            <Text style={styles.metaText} numberOfLines={1}>
+            <MaterialDesignIcons name={(priority?.icon as any) || 'flag'} color={priority?.color || colors.metaText} size={14} />
+            <Text style={[styles.metaText, { color: colors.metaText }]} numberOfLines={1}>
               {priority?.name?.ru || 'Без приоритета'}
             </Text>
           </View>
 
-          {/* Индикатор напоминания (показываем только если включено) */}
           {sendNotify && (
             <>
-              <Text style={styles.bullet}>•</Text>
+              <Text style={[styles.bullet, { color: colors.bulletColor }]}>•</Text>
               <MaterialDesignIcons name={bellIcon as any} color={bellColor} size={14} />
             </>
           )}
 
-          {/* Файлы */}
           {files && files.length > 0 && (
             <>
-              <Text style={styles.bullet}>•</Text>
+              <Text style={[styles.bullet, { color: colors.bulletColor }]}>•</Text>
               <View style={styles.metaGroup}>
                 <MaterialDesignIcons name='paperclip' color="#63B4FF" size={14} />
                 <Text style={[styles.metaText, { color: '#63B4FF' }]}>{files.length}</Text>
@@ -239,7 +464,6 @@ const AgendaItem = (props: TListItem) => {
         </View>
       </View>
 
-      {/* Правая часть: Чекбокс выполнения с мягкой анимацией */}
       <Pressable
         onPress={onCompletePress}
         onPressIn={handlePressIn}
@@ -249,7 +473,7 @@ const AgendaItem = (props: TListItem) => {
         <Animated.View style={{ transform: [{ scale }] }}>
           <MaterialDesignIcons 
             name={isCompleted ? "checkbox-marked-circle" : "checkbox-blank-circle-outline"} 
-            color={isCompleted ? "#4CD964" : "#7a92a5"} 
+            color={isCompleted ? "#4CD964" : colors.checkboxOutline} 
             size={26} 
           />
         </Animated.View>
@@ -262,9 +486,7 @@ export default React.memo(AgendaItem);
 
 const styles = StyleSheet.create({
   itemCard: {
-    backgroundColor: '#1C3542',
     borderWidth: 1,
-    borderColor: '#263238',
     borderRadius: 16,
     paddingVertical: 14,
     paddingHorizontal: 16,
@@ -272,25 +494,13 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     flexDirection: 'row',
     alignItems: 'center',
-    // Легкая нативная тень для объема на iOS/Android
-    elevation: 2,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
     shadowRadius: 4,
-  },
-  // Стиль для выполненной карточки (приглушаем прозрачность)
-  completedCard: {
-    opacity: 0.5,
-    backgroundColor: '#142731',
-    borderColor: 'transparent',
-    elevation: 0,
-    shadowOpacity: 0,
   },
   iconWrapper: {
     height: 44,
     width: 44,
-    borderRadius: 22, // Сделали круглым — так интерфейс выглядит мягче
+    borderRadius: 22, 
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
@@ -302,15 +512,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   itemTitleText: {
-    color: 'white', // Изменено на белый для темной темы
     fontWeight: '600',
     fontSize: 15,
     lineHeight: 20,
   },
-  // Зачеркивание текста для выполненной задачи
   completedTitleText: {
     textDecorationLine: 'line-through',
-    color: '#7a92a5',
   },
   metaRow: {
     flexDirection: 'row',
@@ -322,12 +529,10 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   metaText: {
-    color: '#9BB0C1', // Приятный пастельный цвет для второстепенного текста
     fontSize: 12,
     fontWeight: '500',
   },
   bullet: {
-    color: '#263238',
     paddingHorizontal: 6,
     fontSize: 12,
   },

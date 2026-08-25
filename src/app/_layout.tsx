@@ -1,14 +1,14 @@
 import { OnboardingContextProvider } from '@/context/OnboardingContext';
 import { SettingContextProvider } from '@/context/SettingContext';
 import { TaskContextProvider } from '@/context/TaskContext';
-import { ThemeContextProvider } from '@/context/ThemeContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function RootLayout() {
   
   return (
-    <ThemeContextProvider>
+    <ThemeProvider>
       <OnboardingContextProvider>
         <SettingContextProvider>
           <TaskContextProvider>
@@ -36,7 +36,7 @@ export default function RootLayout() {
           </TaskContextProvider>
         </SettingContextProvider>
       </OnboardingContextProvider>
-    </ThemeContextProvider>
+    </ThemeProvider>
   );
 }
                //animation: 'fade_from_bottom',

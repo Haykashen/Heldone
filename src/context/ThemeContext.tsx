@@ -1,40 +1,41 @@
-import React, { createContext, use } from "react";
+import { IAppColors, ThemeColors } from '@/components/constants/ThemeColors';
+import React, { createContext, use } from 'react';
 import { useColorScheme } from 'react-native';
 
-interface Props {
-  children: React.ReactNode;
-}
-
-// Описываем тип контекста
-type ThemeType = 'light' | 'dark';
+type ThemeMode = 'light' | 'dark';
 
 interface ThemeContextProps {
-  theme: ThemeType;
+  theme: ThemeMode;
+  colors: IAppColors; // Добавляем объект цветов в контекст
 }
-const ThemeContext = createContext<ThemeContextProps>({ theme: 'dark' });
 
-const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
-  // Нативно подписываемся на системную тему устройства (iOS/Android)
+export const ThemeContext = createContext<ThemeContextProps>({
+  theme: 'dark',
+  colors: ThemeColors.dark,
+});
+
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const systemScheme = useColorScheme();
-  
-  // Если система не определила тему, по умолчанию ставим 'dark'
-  const theme: ThemeType = systemScheme === 'light' ? 'light' : 'dark';
+  const theme: ThemeMode = systemScheme === 'light' ? 'light' : 'dark';
+
+  // Выбираем нужную палитру на основе темы
+  const colors = ThemeColors[theme];
 
   return (
-    <ThemeContext.Provider value={{ theme }}>
+    <ThemeContext.Provider value={{ theme, colors }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
-
-export {
-    ThemeContext,
-    ThemeContextProvider
+// ХУК 1: Возвращает только название темы ('light' | 'dark'), если нужно для Lottie или сторонних библиотек
+export const useAppThemeMode = () => {
+  const context = use(ThemeContext);
+  return context.theme;
 };
 
-// Кастомный хук для удобного и быстрого доступа к теме в стиле React 19
-export const useAppTheme = () => {
-  const context = use(ThemeContext); // Используем новый хук 'use' из React 19
-  return context.theme;
+// ХУК 2: Глобальный хук для моментального получения палитры цветов во всех компонентах!
+export const useAppColors = () => {
+  const context = use(ThemeContext);
+  return context.colors;
 };
