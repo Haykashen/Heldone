@@ -4,6 +4,7 @@ import AgendaItem from '@/components/items/AgendaItem';
 import ListEmptyComponent from "@/components/items/ListEmptyComponent";
 import Header from '@/components/TabHeader';
 import { TaskContext } from '@/context/TaskContext';
+import { useAppColors } from '@/context/ThemeContext';
 import { completeTask } from '@/utils/taskUtils';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
 import { router } from "expo-router";
@@ -34,7 +35,7 @@ const CALENDAR_THEME = {
   'stylesheet.calendar.header': {
     dayTextAtIndex5: { color: '#4ca0fa' },
     dayTextAtIndex6: { color: '#4ca0fa' },
-  },
+  },  
   arrowColor: 'black',
 };
 
@@ -44,7 +45,7 @@ const CALENDAR_THEME = {
 const CalendarScreen = () => {
   // React 19 API: замена useContext на use
   const { task, setTask } = use(TaskContext);
-
+  const colors = useAppColors(); // Вся палитра доступна здесь автоматически!
   const today = useMemo(() => getFormatedDay(new Date()), []);
   const [selDate, setDate] = useState(today);
   
@@ -127,7 +128,7 @@ const CalendarScreen = () => {
   }), [dayTasks]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.containerBg }]}>
       <Header title='Календарь' text='в месячном и недельном виде' />
       <CalendarProvider
         date={selDate}
@@ -146,11 +147,12 @@ const CalendarScreen = () => {
           onCalendarToggled={handleCalendarToggled}
         />
         <AgendaList
-          dayFormat='dddd d MMM'
+          dayFormat='dddd, d MMM'
           markToday={false}
+          contentContainerStyle={styles.contentContainerStyle}
           sections={dayTasks}
           ListEmptyComponent={listEmptyComponent}
-          sectionStyle={styles.sectionStyle}
+          sectionStyle={{...styles.sectionStyle, backgroundColor: colors.containerBg}}    
           renderItem={renderAgendaItem}
         />
       </CalendarProvider>
@@ -162,7 +164,7 @@ const CalendarScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#031F2B',
+    //backgroundColor: '#031F2B',
     paddingTop: 5,
     flexDirection: 'column',
     gap: 10,
@@ -184,8 +186,11 @@ const styles = StyleSheet.create({
     height: 24,
     resizeMode: 'contain',
   },
+  contentContainerStyle:{
+    paddingBottom:100
+  },
   sectionStyle: {
-    backgroundColor: '#031F2B',
+    //backgroundColor: '#031F2B',
   },
   dayContainer: {
     gap: 2,

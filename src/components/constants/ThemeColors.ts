@@ -20,7 +20,6 @@ export interface IAppColors {
   badgeText: string;
   missedBadgeBg: string;
   completedBadgeBg: string;
-  bulletColor: string;
   
   checkboxOutline: string;
   bellOff: string;
@@ -55,7 +54,6 @@ const darkTheme: IAppColors = {
   badgeText: '#FFFFFF',
   missedBadgeBg: 'rgba(255, 69, 58, 0.2)',
   completedBadgeBg: 'rgba(76, 217, 100, 0.2)',
-  bulletColor: '#263238',
   
   checkboxOutline: '#7A92A5',
   bellOff: '#7A92A5',
@@ -90,7 +88,6 @@ const lightTheme: IAppColors = {
   badgeText: '#334155',
   missedBadgeBg: '#FEE2E2',
   completedBadgeBg: '#DCFCE7',
-  bulletColor: '#E2E8F0',
   
   checkboxOutline: '#94A3B8',
   bellOff: '#94A3B8',
