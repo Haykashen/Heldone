@@ -1,5 +1,5 @@
 // MaterialCommunityIcons
-import { TDataDir } from "../components/types/typesData"
+import { TDataDir, TDataItem } from "../components/types/typesData";
 
 const CategoryData:TDataDir = {
     Home: {
@@ -188,3 +188,5 @@ const CategoryData:TDataDir = {
 }
 
 export default CategoryData
+
+export const CATEGORIES_ARRAY:ArrayLike<TDataItem> = Object.values(CategoryData);

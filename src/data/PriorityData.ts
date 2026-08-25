@@ -1,4 +1,4 @@
-import { TDataDir } from "../components/types/typesData"
+import { TDataDir, TDataItem } from "../components/types/typesData";
 
 const PriorityData:TDataDir = {
     High: {
@@ -33,3 +33,5 @@ const PriorityData:TDataDir = {
 }
 
 export default PriorityData
+
+export const PRIORITIES_ARRAY:ArrayLike<TDataItem> = Object.values(PriorityData);

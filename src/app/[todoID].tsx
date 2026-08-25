@@ -1,16 +1,15 @@
-import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
 import FilesBottomSheet from '@/components/bottomSheet/FilesBottomSheet';
-import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
 import CardRow from '@/components/CardRow';
 import CardRowSwitch from '@/components/CardRowSwitch';
 import { SettingContext } from '@/context/SettingContext';
 import { TaskContext } from '@/context/TaskContext';
-import CategoryData from '@/data/CategoryData';
-import PriorityData from '@/data/PriorityData';
+import CategoryData, { CATEGORIES_ARRAY } from '@/data/CategoryData';
+import PriorityData, { PRIORITIES_ARRAY } from '@/data/PriorityData';
 import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { openFile, shareFileWithCustomName } from '@/utils/fileUtils';
 //import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
+import SelectionBottomSheet from '@/components/bottomSheet/SelectionBottomSheet';
 import { TFileDataObject } from '@/components/types/types';
 import { TTask } from '@/components/types/typesTask';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
@@ -46,8 +45,8 @@ const TaskCardScreen = () => {
 
   // Ссылки для управления BottomSheets
   const sheetRef = useRef<BottomSheet>(null);
-  const sheetCategoryRef = useRef<BottomSheet>(null);
-  const sheetPriorityRef = useRef<BottomSheet>(null);
+  const categorySheetRef = useRef<BottomSheet>(null);
+  const prioritySheetRef = useRef<BottomSheet>(null);
   const sheetFilesRef = useRef<BottomSheet>(null);
 
   // Состояния для Пикера Дат и Фокусировки
@@ -310,14 +309,14 @@ const TaskCardScreen = () => {
                 text={currTask.category.name.ru || 'Нет'}
                 icon={currTask.category.icon}
                 iconColor={currTask.category.color}
-                onPress={() => setSheetRef(sheetCategoryRef, 0)}
+                onPress={() => setSheetRef(categorySheetRef, 0)}
               />
               <CardRow
                 title="Приоритет"
                 text={currTask.priority.name.ru || 'Нет'}
                 icon="flag"
                 iconColor={currTask.priority?.color || 'white'}
-                onPress={() => setSheetRef(sheetPriorityRef, 0)} />
+                onPress={() => setSheetRef(prioritySheetRef, 0)} />
               <CardRow
                 title="Вложения"
                 text={`${currTask.files?.length || 0} шт.`}
@@ -349,26 +348,28 @@ const TaskCardScreen = () => {
                 <Text style={styles.deleteButtonText}>Удалить</Text>
               </Pressable>
             </View>)}
-            <CategoryBottomSheet
-              currentId={currTask.category.id}
-              setValue={changeCategory}
-              setRef={setSheetRef}
-              sheetRef={sheetCategoryRef}
-            />
-            <PriorityBottomSheet
-              currentId={currTask.priority.id}
-              setValue={changePriority}
-              setRef={setSheetRef}
-              sheetRef={sheetPriorityRef}
-            />
-            <FilesBottomSheet
-              files={currTask.files}
-              onPick={pickDocument}
-              onDelete={deleteFile}
-              onShare={handleShareFile}
-              onOpen={handleOpenFile}              
-              sheetRef={sheetFilesRef}
-            />
+              <SelectionBottomSheet
+                sheetRef={categorySheetRef}
+                currentId={currTask.category.id}
+                setValue={changeCategory}
+                setRef={setSheetRef}
+                data={CATEGORIES_ARRAY}
+              />
+              <SelectionBottomSheet
+                sheetRef={prioritySheetRef}
+                currentId={currTask.priority.id}
+                setValue={changePriority}
+                setRef={setSheetRef}
+                data={PRIORITIES_ARRAY}
+              />
+              <FilesBottomSheet
+                files={currTask.files}
+                onPick={pickDocument}
+                onDelete={deleteFile}
+                onShare={handleShareFile}
+                onOpen={handleOpenFile}
+                sheetRef={sheetFilesRef}
+              />
             </KeyboardAvoidingView>
           </BottomSheetScrollView>
         </BottomSheet>       

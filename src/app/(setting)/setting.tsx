@@ -1,11 +1,10 @@
-import CategoryBottomSheet from '@/components/bottomSheet/CategoryBottomSheet';
-import PriorityBottomSheet from '@/components/bottomSheet/PriorityBottomSheet';
+import SelectionBottomSheet from '@/components/bottomSheet/SelectionBottomSheet';
 import NavigationButton from '@/components/buttons/NavigationButton';
 import CardRow from '@/components/CardRow';
 import CardRowSwitch from '@/components/CardRowSwitch';
 import { SettingContext } from '@/context/SettingContext';
 import CategoryData from '@/data/CategoryData';
-import PriorityData from '@/data/PriorityData';
+import PriorityData, { PRIORITIES_ARRAY } from '@/data/PriorityData';
 import { setData } from '@/store/setData';
 import { notifyMessage } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
@@ -38,8 +37,8 @@ const SettingsScreen = () => {
   });
   
   const [show, setShow] = useState(false);
-  const sheetPriorityRef = useRef<BottomSheet>(null);
-  const sheetCategoryRef = useRef<BottomSheet>(null);
+  const prioritySheetRef = useRef<BottomSheet>(null);
+  //const sheetCategoryRef = useRef<BottomSheet>(null);
 
   // ОПТИМИЗАЦИЯ: Мемоизируем методы для безопасного открытия BottomSheets
   // const handleSnapBottomSheet = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
@@ -159,7 +158,7 @@ const SettingsScreen = () => {
               text={priorityName}
               icon={priorityIcon}
               iconColor={priorityColor}
-              onPress={() => setSheetRef(sheetPriorityRef, 0)}
+              onPress={() => setSheetRef(prioritySheetRef, 0)}
             />
             <CardRow
               title='Категория'
@@ -188,19 +187,13 @@ const SettingsScreen = () => {
       )}    
          
       </View>
-      <CategoryBottomSheet
-        currentId={defaultCategory}
-        setValue={changeDefaultCategory}
-        setRef={setSheetRef}
-        sheetRef={sheetCategoryRef}
-      />          
-      <PriorityBottomSheet
+      <SelectionBottomSheet
+        sheetRef={prioritySheetRef}
         currentId={defaultPriority}
         setValue={changeDefaultPriority}
         setRef={setSheetRef}
-        sheetRef={sheetPriorityRef}
-      />
-              
+        data={PRIORITIES_ARRAY}
+      />              
     </SafeAreaView>
   );
 };

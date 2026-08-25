@@ -9,7 +9,7 @@ import { useContext, useRef, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const OnboardingScreen = ({ path, titleFirst, titleSecond, text }: { path: string, titleFirst: string, titleSecond: string, text: string, }) => {
+const OnboardingPage = ({ path, titleFirst, titleSecond, text }: { path: string, titleFirst: string, titleSecond: string, text: string, }) => {
 
   return (
     <View style={{ height: '100%', flexDirection: 'column', padding:10 }}>
@@ -25,7 +25,7 @@ const OnboardingScreen = ({ path, titleFirst, titleSecond, text }: { path: strin
   )
 }
 
-const onboarding = () => {
+const OnboardingScreen = () => {
   const [page, setPage] = useState(0)
   const pagerRef = useRef<PagerViewRef>(null);
   const { setOnboarded } = useContext(OnboardingContext);
@@ -63,25 +63,25 @@ const onboarding = () => {
             </View>
  {/* <ImageBackground source={require('@/assets/images/icon.png')} style={{ width: 'auto', height: '91%', justifyContent: 'flex-end', gap: 10, padding: 20 }}> </ImageBackground>*/}
           </View>        
-          <OnboardingScreen
+          <OnboardingPage
             path={screen}
             titleFirst='Наведите порядок'
             titleSecond='в хаосе дел'
             text='Создавайте задачи и равномерно распределяйте их по датам, чтобы избежать суеты'
           />
-          <OnboardingScreen
+          <OnboardingPage
             path={require('@/assets/animation/Growth_Assistance.json')}
             titleFirst="Повышайте"
             titleSecond='эффективность'
             text='Ежедневный контроль выполнения задач - гарантия результативного проведения дня'
           />
-          <OnboardingScreen
+          <OnboardingPage
             path={require('@/assets/animation/Rotate_a_chart.json')}
             titleFirst='Анализируйте'
             titleSecond='план задач'
             text="Систематически анализируйте список задач для равномерного распределения усилий"
           />
-          <OnboardingScreen
+          <OnboardingPage
             path={require('@/assets/animation/Successful_target.json')}
             titleFirst='Достигайте'
             titleSecond='целей'
@@ -111,7 +111,7 @@ const onboarding = () => {
   )
 }
 
-export default onboarding
+export default OnboardingScreen
 
 const styles = StyleSheet.create({
   onboarding_title:{ 

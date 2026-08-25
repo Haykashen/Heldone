@@ -47,8 +47,8 @@ const AgendaItem = (props: TListItem) => {
     <Pressable onPress={onItemPress} style={styles.item}>
       {/* Левая часть: Иконка категории (Фиксированный размер лучше процентов) */}
       <View style={styles.categoryContainer}>
-        <View style={[styles.iconWrapper, { backgroundColor: category?.backColor || '#grey' }]}>
-          <MaterialDesignIcons name={(category?.icon as any) || 'folder'} color={category?.color || 'white'} size={32} />
+        <View style={[styles.iconWrapper, { backgroundColor: category.color || '#grey' }]}>
+          <MaterialDesignIcons name={(category?.icon as any) || 'folder'} color={'white'} size={32} />
         </View>
       </View>
 
