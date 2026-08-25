@@ -6,7 +6,7 @@ import React, { useCallback, useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, Vibration, View } from 'react-native';
 
 const AgendaItem = (props: TListItem) => {
-  const { id, date, title, category, status, priority, files, sendNotify, onItemPress, onCompletePress } = props;
+  const { id, date, title, category, status, priority, files, sendNotify, onItemPress, onCompletePress, showDate } = props;
   const scale = useRef(new Animated.Value(1)).current;
   const isCompleted = status?.id === 'Completed';
   const colors = useAppColors(); // Вся палитра доступна здесь автоматически!
@@ -22,6 +22,10 @@ const AgendaItem = (props: TListItem) => {
 
   const formattedTime = date instanceof Date 
     ? date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+    : '00:00';
+
+  const formattedDate = date instanceof Date 
+    ? date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
     : '00:00';
 
   const handlePressIn = useCallback(() => {
@@ -66,9 +70,9 @@ const AgendaItem = (props: TListItem) => {
         
         <View style={styles.metaRow}>
           <View style={styles.metaGroup}>
-          <MaterialDesignIcons name={bellIcon as any} color={bellColor} size={14} />
-          <Text style={[styles.metaText, { color: colors.metaText }]}>{formattedTime}</Text>            
-          </View>
+            <MaterialDesignIcons name={bellIcon as any} color={bellColor} size={14} />
+            <Text style={[styles.metaText, { color: colors.metaText }]}>{formattedTime} {showDate&&formattedDate}</Text>            
+          </View>   
           <Text style={[styles.bullet, { color: colors.metaText }]}>•</Text>
           <View style={styles.metaGroup}>
             <MaterialDesignIcons name={(priority?.icon as any) || 'flag'} color={priority?.color || colors.metaText} size={14} />

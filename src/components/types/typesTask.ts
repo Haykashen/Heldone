@@ -14,4 +14,4 @@ export type TTask = {
     files:any[]    
 };
 
-export type TListItem = TTask & {onItemPress: (() => void), onCompletePress: (() => void) };
+export type TListItem = TTask & {onItemPress: (() => void), onCompletePress: (() => void), showDate?: boolean };

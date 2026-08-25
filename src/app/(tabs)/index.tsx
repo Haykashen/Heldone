@@ -110,7 +110,7 @@ export default function Index() {
     });
   }, [task, setTask, scale]);
 
-  const renderItem = useCallback(({ item }: { item: TTask }) => (
+  const renderItem = useCallback(({ item, section }: { item: TTask, section: any }) => (
     <AgendaItem
       id={item.id}
       date={item.date}
@@ -123,6 +123,7 @@ export default function Index() {
       files={item.files}
       onCompletePress={() => handleComplete(item.id)}
       onItemPress={() => handlePress(item.id)}
+      showDate = {section.isMissed}
     />
   ), [handleComplete, handlePress]);
 
