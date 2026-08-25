@@ -27,6 +27,10 @@ export interface IAppColors {
   shadowColor: string;
   shadowOpacity: number;
   fabBg: string;
+
+  filterTabActiveBg: string;
+  filterTabInactiveBg: string;
+  filterTabTextInactive: string;  
 }
 
 // 🌑 Палитра для Темной Темы
@@ -57,7 +61,11 @@ const darkTheme: IAppColors = {
   bellOff: '#7A92A5',
   shadowColor: '#000000',
   shadowOpacity: 0.3,
-  fabBg: '#007AFF'
+  fabBg: '#007AFF', 
+
+  filterTabActiveBg: '#007AFF',
+  filterTabInactiveBg: '#1C3542', // Используем цвет наших карточек вместо #042f41
+  filterTabTextInactive: '#9BB0C1',  
 };
 
 // ☀️ Палитра для Светлой Темы
@@ -88,7 +96,11 @@ const lightTheme: IAppColors = {
   bellOff: '#94A3B8',
   shadowColor: '#0F172A',
   shadowOpacity: 0.15,
-  fabBg: '#007AFF'
+  fabBg: '#007AFF',
+
+  filterTabActiveBg: '#007AFF',
+  filterTabInactiveBg: '#E2E8F0', // Мягкий пастельный серый
+  filterTabTextInactive: '#64748B',  
 };
 
 export const ThemeColors = {
