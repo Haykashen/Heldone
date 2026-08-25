@@ -1,5 +1,5 @@
 // MaterialCommunityIcons
-import { TDataDir } from "../utils/types"
+import { TDataDir } from "../components/types/typesData"
 
 export const StatusData: TDataDir = {
     Completed: {
@@ -10,7 +10,6 @@ export const StatusData: TDataDir = {
         },
         icon: 'checkbox-outline',
         color: "green",
-        clockIcon:'clock-check-outline',
 
     },
     Upcoming: {
@@ -20,8 +19,7 @@ export const StatusData: TDataDir = {
             en: 'Upcoming'
         },
         icon: 'checkbox-blank-outline',
-        color: 'silver',
-        clockIcon:'clock-alert-outline',        
+        color: 'silver',  
     },
 }
 //'#ea820b'

@@ -1,4 +1,5 @@
 import Add from '@/components/buttons/Add';
+import CustomDay from '@/components/calendar/CustomDay';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEmptyComponent from "@/components/items/ListEmptyComponent";
 import Header from '@/components/TabHeader';
@@ -6,8 +7,8 @@ import { TaskContext } from '@/context/TaskContext';
 import { completeTask } from '@/utils/taskUtils';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
 import { router } from "expo-router";
-import { memo, use, useCallback, useMemo, useRef, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { use, useCallback, useMemo, useRef, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text } from 'react-native';
 import { AgendaList, CalendarProvider, DateData, ExpandableCalendar, LocaleConfig } from 'react-native-calendars';
 import { DayState } from 'react-native-calendars/src/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -37,45 +38,7 @@ const CALENDAR_THEME = {
   arrowColor: 'black',
 };
 
-// --- Выделенный мемоизированный компонент дня ---
-interface CustomDayProps {
-  date?: DateData;
-  selDate: string;
-  today: string;
-  dayData?: { dots: Array<{ color: string }> };
-  onSelect: (dateString: string) => void;
-}
 
-const CustomDay = memo(({ date, selDate, today, dayData, onSelect }: CustomDayProps) => {
-  if (!date) return null;
-
-  const isToday = date.dateString === today;
-  const isSelected = date.dateString === selDate;
-
-  return (
-    <Pressable style={styles.dayContainer} onPress={() => onSelect(date.dateString)}>
-      <Text style={[
-        styles.dayText,
-        isToday && styles.todayText,
-        isSelected && styles.selectedDayText
-      ]}>
-        {date.day}
-      </Text>
-      
-      {dayData && (
-        <View style={styles.dotsContainer}>
-          {dayData.dots[0] && <View style={[styles.dot, { backgroundColor: dayData.dots[0].color }]} />}
-          {dayData.dots[1] && <View style={[styles.dot, { backgroundColor: dayData.dots[1].color }]} />}
-          {dayData.dots.length > 2 && (
-            <Text style={styles.moreDotsText}>
-              +{dayData.dots.length - 2}
-            </Text>
-          )}
-        </View>
-      )}
-    </Pressable>
-  );
-});
 
 // --- Основной экран ---
 const CalendarScreen = () => {

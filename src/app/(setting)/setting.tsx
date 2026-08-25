@@ -94,7 +94,7 @@ const SettingsScreen = () => {
 
   const categoryName = useMemo(() => CategoryData[defaultCategory]?.name?.ru || 'Не указана', [defaultCategory]);
   const categoryIcon = useMemo(() => CategoryData[defaultCategory]?.icon || 'folder', [defaultCategory]);
-  const categoryBackColor = useMemo(() => CategoryData[defaultCategory]?.backColor || '#263238', [defaultCategory]);
+  //const categoryBackColor = useMemo(() => CategoryData[defaultCategory]?.backColor || '#263238', [defaultCategory]);
   const categoryColor = useMemo(() => CategoryData[defaultCategory]?.color || 'white', [defaultCategory]);
 
   const handleGoBack = useCallback(() => router.back(), []);
@@ -165,7 +165,7 @@ const SettingsScreen = () => {
               title='Категория'
               text={categoryName}
               icon={categoryIcon}
-              iconColor={categoryBackColor}
+              iconColor={categoryColor}
               onPress={() => router.push('/DataBottomSheet')}
             />         
           </View>

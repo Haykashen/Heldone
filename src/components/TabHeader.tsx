@@ -20,7 +20,7 @@
 
 
 import NavigationButton from '@/components/buttons/NavigationButton';
-import { THeader } from '@/utils/types';
+import { THeader } from '@/components/types/types';
 import { router } from 'expo-router';
 import { useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';

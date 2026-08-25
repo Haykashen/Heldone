@@ -11,8 +11,9 @@ import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { openFile, shareFileWithCustomName } from '@/utils/fileUtils';
 //import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
+import { TFileDataObject } from '@/components/types/types';
+import { TTask } from '@/components/types/typesTask';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
-import { TFileDataObject, TTask } from '@/utils/types';
 import { getFormatedDay, notifyMessage } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods, BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker, { DateTimePickerChangeEvent } from '@expo/ui/community/datetime-picker';
@@ -308,7 +309,7 @@ const TaskCardScreen = () => {
                 title="Категория"
                 text={currTask.category.name.ru || 'Нет'}
                 icon={currTask.category.icon}
-                iconColor={currTask.category.backColor}
+                iconColor={currTask.category.color}
                 onPress={() => setSheetRef(sheetCategoryRef, 0)}
               />
               <CardRow

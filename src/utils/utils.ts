@@ -75,7 +75,7 @@
 // }
 
 import { Alert, Platform, ToastAndroid } from 'react-native';
-import { TTask } from "./types";
+import { TTask } from "../components/types/types";
 
 /**
  * Возвращает заголовок календаря с заглавной буквы (например, "Август 2026")

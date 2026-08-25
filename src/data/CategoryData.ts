@@ -1,5 +1,5 @@
 // MaterialCommunityIcons
-import { TDataDir } from "../utils/types"
+import { TDataDir } from "../components/types/typesData"
 
 const CategoryData:TDataDir = {
     Home: {
@@ -9,8 +9,7 @@ const CategoryData:TDataDir = {
             en: 'Home'
         },
         icon: 'home',
-        color: 'white',
-        backColor:'#D97706'
+        color:'#D97706'
     }, 
     Hobby:{
         id:'Hobby',
@@ -19,8 +18,7 @@ const CategoryData:TDataDir = {
             en:'Hobby'
         },
         icon:'palette',
-        color:'white',
-        backColor:'#DB2777'
+        color:'#DB2777'
     },  
     Shopping:{
         id:'Shopping',
@@ -29,8 +27,7 @@ const CategoryData:TDataDir = {
             en:'Shopping'
         },
         icon:'cart',
-        color:'white',
-        backColor:'#0D9488'
+        color:'#0D9488'
     },           
     Target: {
         id:'Target',
@@ -39,8 +36,7 @@ const CategoryData:TDataDir = {
             en: 'Target'
         },
         icon: 'bullseye-arrow',
-        color: 'white',
-        backColor:'#4894FE'
+        color:'#4894FE'
     },
     Health:{
         id:'Health',
@@ -49,8 +45,7 @@ const CategoryData:TDataDir = {
             en: 'Health'
         },
         icon:'heart-pulse',
-        color:"white",
-        backColor:'#E11D48'
+        color:'#E11D48'
     },
     Investment:{
         id:'Investment',
@@ -59,8 +54,7 @@ const CategoryData:TDataDir = {
             en: 'Investment'
         },
         icon:'gold',
-        color:"white",
-        backColor:"#ffb900"
+        color:"#ffb900"
     },
     Family: {
         id:'Family',
@@ -69,8 +63,7 @@ const CategoryData:TDataDir = {
             en: 'Family'
         },
         icon: 'account-group',
-        color: 'white',
-        backColor:'#EA580C'
+        color:'#EA580C'
     },       
     Finance:{
         id:'Finance',
@@ -79,8 +72,7 @@ const CategoryData:TDataDir = {
             en: 'Finance'
         },
         icon:'wallet',
-        color:"white",
-        backColor:'#059669'
+        color:'#059669'
     },    
     Education:{
         id:'Education',
@@ -89,8 +81,7 @@ const CategoryData:TDataDir = {
             en: 'Education'
         },
         icon:'school',
-        color:"white",
-        backColor:"#7C3AED"      
+        color:"#7C3AED"      
     },
     Sport:{
         id:'Sport',
@@ -99,8 +90,7 @@ const CategoryData:TDataDir = {
             en: 'Sport'
         },
         icon:'dumbbell',
-        color:"white",
-        backColor:"#DC2626"     
+        color:"#DC2626"     
     },
     Job:{
         id:'Job',
@@ -109,8 +99,7 @@ const CategoryData:TDataDir = {
             en:'Job'
         },
         icon:'briefcase',
-        color:'white',
-        backColor:'#2563EB'
+        color:'#2563EB'
     },
     Love:{
         id:'Love',
@@ -119,8 +108,7 @@ const CategoryData:TDataDir = {
             en:'Love'
         },
         icon:'heart',
-        color:'white',
-        backColor:'#fa1bd9'        
+        color:'#fa1bd9'        
     },    
     Travel:{
         id:'Travel',
@@ -129,8 +117,7 @@ const CategoryData:TDataDir = {
             en:'Travel'
         },
         icon:'airplane',
-        color:'white',
-        backColor:'#0891B2'
+        color:'#0891B2'
     },
     Pets:{
         id:'Pets',
@@ -139,8 +126,7 @@ const CategoryData:TDataDir = {
             en:'Pets'
         },
         icon:'paw',
-        color:'white',
-        backColor:'#B45309'
+        color:'#B45309'
     },    
     SelfDevelopment:{
         id:'SelfDevelopment',
@@ -149,8 +135,7 @@ const CategoryData:TDataDir = {
             en:'Self-development'
         },
         icon:'sprout',
-        color:'white',
-        backColor:'#65A30D'
+        color:'#65A30D'
     },
     Ideas:{
         id:'Ideas',
@@ -159,8 +144,7 @@ const CategoryData:TDataDir = {
             en:'Ideas'
         },
         icon:'lightbulb-on-outline',
-        color:'white',
-        backColor:'#CA8A04'
+        color:'#CA8A04'
     },
     Meetings:{
         id:'Meetings',
@@ -169,8 +153,7 @@ const CategoryData:TDataDir = {
             en:'Meetings'
         },
         icon:'calendar-clock',
-        color:'white',
-        backColor:'#4F46E5'
+        color:'#4F46E5'
     },
     Rest:{
         id:'Rest',
@@ -179,8 +162,7 @@ const CategoryData:TDataDir = {
             en:'Rest'
         },
         icon:'party-popper',
-        color:'white',
-        backColor:'#C026D3'
+        color:'#C026D3'
     },
     Life:{
         id:'Life',
@@ -189,8 +171,7 @@ const CategoryData:TDataDir = {
             en:'Life'
         },
         icon:'clipboard-check-outline',
-        color:'white',
-        backColor:'#57534E'
+        color:'#57534E'
     },
     Projects:{
         id:'Projects',
@@ -199,8 +180,7 @@ const CategoryData:TDataDir = {
             en:'Projects'
         },
         icon:'folder-outline',
-        color:'white',
-        backColor:'#0284C7'
+        color:'#0284C7'
     },
 // Авто
 // #475569

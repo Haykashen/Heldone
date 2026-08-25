@@ -1,5 +1,5 @@
+import { TTask } from "@/components/types/types";
 import { getData } from "@/store/getData";
-import { TTask } from "@/utils/types";
 import { notifyMessage } from "@/utils/utils";
 import { createContext, FC, useEffect, useState } from "react";
 
@@ -53,7 +53,7 @@ const TaskContextProvider: FC<Props> = ({ children }) => {
 }
 
 export {
-  TaskContext,
-  TaskContextProvider
+    TaskContext,
+    TaskContextProvider
 };
 

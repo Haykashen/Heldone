@@ -1,5 +1,5 @@
 // MaterialCommunityIcons
-import { TDataDir } from "../../utils/types";
+import { TDataDir } from "../types/types";
 
 const TimeStatus: TDataDir = {
     Overdue: {

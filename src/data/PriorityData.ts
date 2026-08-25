@@ -1,4 +1,4 @@
-import { TDataDir } from "../utils/types"
+import { TDataDir } from "../components/types/typesData"
 
 const PriorityData:TDataDir = {
     High: {
