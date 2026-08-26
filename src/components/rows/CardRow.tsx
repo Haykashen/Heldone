@@ -7,10 +7,11 @@ export type TCardRow = {
   text: string;
   icon: string;
   iconColor: string;
+  iconRigth?: string;
   onPress: () => void;
 };
 
-const CardRow = ({ title, text, icon, iconColor, onPress }: TCardRow) => {
+const CardRow = ({ title, text, icon, iconColor, iconRigth = 'chevron-right',onPress }: TCardRow) => {
   // Получаем динамическую палитру цветов
   const colors = useAppColors();
 
@@ -40,7 +41,7 @@ const CardRow = ({ title, text, icon, iconColor, onPress }: TCardRow) => {
 
       {/* Правая часть: Шеврон перехода */}
       <View style={styles.chevronContainer}>
-        <MaterialDesignIcons name={'chevron-right'} color={colors.metaText} size={20} />
+        <MaterialDesignIcons name={iconRigth as any} color={colors.metaText} size={20} />
       </View>
     </Pressable>
   );

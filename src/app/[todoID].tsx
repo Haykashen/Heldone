@@ -1,6 +1,5 @@
 import FilesBottomSheet from '@/components/bottomSheet/FilesBottomSheet';
 import CardRow from '@/components/rows/CardRow';
-import CardRowSwitch from '@/components/rows/CardRowSwitch';
 import { SettingContext } from '@/context/SettingContext';
 import { TaskContext } from '@/context/TaskContext';
 import { useAppColors } from '@/context/ThemeContext'; // Импортируем хук глобальных цветов
@@ -242,7 +241,7 @@ const TaskCardScreen = () => {
                 </Pressable>
                 <Text style={[styles.headerTitle, { color: colors.titleText }]}>Задача</Text>
                 <Pressable onPress={handleDone} style={styles.navButton}>
-                  <Text style={styles.doneText}>Готово</Text>
+                  <Text style={[styles.doneText,{color: colors.fabBg}]}>Готово</Text>
                 </Pressable>
               </View>
 
@@ -305,12 +304,15 @@ const TaskCardScreen = () => {
               </View>
               <View style={{flexDirection:'row'}}>
                 <View style={{flex:1}}>
-                <CardRowSwitch
+                <CardRow
                   title='Уведомление'
                   text={currTask.sendNotify ? 'Включено' : 'Выключено'}
                   icon={currTask.sendNotify ? 'bell-ring' : 'bell-off'}
-                  value={currTask.sendNotify} iconColor={colors.titleText}
-                  onPress={handleNotify} />
+                  iconColor={colors.titleText}
+                  iconRigth={currTask.sendNotify ? 'check-circle-outline' : 'checkbox-blank-circle-outline'}
+                  //value={currTask.sendNotify} iconColor={colors.titleText}
+                  onPress={handleNotify} 
+                />
                 </View>
                 <View style={{flex:1}}>
                 <CardRow
@@ -418,7 +420,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold', 
   }, 
   doneText: { 
-    color: '#007aff', 
     fontSize: 16, 
     fontWeight: 'bold', 
   }, 

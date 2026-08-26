@@ -120,7 +120,7 @@ const SettingsScreen = () => {
               text={colors.shadowOpacity > 0.2 ? 'Темный' : 'Светлый'} // Динамический текст стиля на основе палитры
               icon='weather-night'
               iconColor={colors.titleText}
-              onPress={() => notifyMessage('Переключение темы происходит автоматически на основе настроек системы')}
+              onPress={() => notifyMessage('Изменяется автоматически на основе настроек системы')}
             />
           </View>
 
