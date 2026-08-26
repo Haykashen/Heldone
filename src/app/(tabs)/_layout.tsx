@@ -1,10 +1,12 @@
+import { useAppColors } from '@/context/ThemeContext';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 
 export default function TabsLayout() {
-
+  
+  const colors = useAppColors(); // Вся палитра доступна здесь автоматически!
 
   return (
     <>
@@ -15,6 +17,10 @@ export default function TabsLayout() {
           tabBarInactiveTintColor: 'grey',
           tabBarShowLabel: false,
           headerShown: false,
+          tabBarStyle:{
+            backgroundColor: colors.cardBg,
+            borderColor: colors.cardBg,  
+          }
         }}>
         <Tabs.Screen name="index" options={{
           title: 'Home',

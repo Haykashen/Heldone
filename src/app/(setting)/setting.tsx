@@ -12,7 +12,7 @@ import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet
 import DateTimePicker, { DateTimePickerChangeEvent } from '@expo/ui/community/datetime-picker';
 import { router } from 'expo-router';
 import { RefObject, use, useCallback, useRef, useState } from 'react'; // React 19: Импортируем 'use'
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const pkg = require('@/../package.json');
@@ -102,7 +102,7 @@ const SettingsScreen = () => {
       </View>    
 
       {/* Основной контейнер контента */}
-      <View style={styles.contentContainer}>
+      <ScrollView style={styles.contentContainer}>
         <View style={styles.sectionsWrapper}>
           
           {/* Блок: Системные */}
@@ -157,7 +157,30 @@ const SettingsScreen = () => {
               onPress={() => router.push('/DataBottomSheet')}
             />         
           </View>
-
+          <Text style={[styles.sectionTitle, { color: colors.sectionTitle }]}>О приложении</Text>
+          <View style={[styles.rowsContainer, { backgroundColor: colors.cardBg, borderColor: colors.borderColor }]}>
+            <CardRow
+              title='Поддержите развитие приложения'
+              text={'Оценить приложение'}
+              icon='star'
+              iconColor={"gold"}
+              onPress={() => null}
+            />
+            <CardRow
+              title='Возможность предложить идею, оставить отзыв или сообщить об ошибке'
+              text={'Присоединиться к сообществу'}
+              icon={'chat-plus'}
+              iconColor={colors.titleText}
+              onPress={() => null}
+            />            
+            <CardRow
+              title='В формате pdf'
+              text={'Политика конфиденциальности'}
+              icon={'file-document'}
+              iconColor={colors.titleText}
+              onPress={() => null}
+            />         
+          </View>
           {/* Версия приложения */}
           <View style={styles.versionContainer}>
             <Text style={[styles.versionText, { color: colors.metaText }]}>Хелдон {APP_VERSION}</Text>
@@ -174,8 +197,7 @@ const SettingsScreen = () => {
             onDismiss={handleDismissTime}
           />
         )}    
-      </View>
-
+      </ScrollView>
       <SelectionBottomSheet
         sheetRef={prioritySheetRef}
         currentId={defaultPriority}
