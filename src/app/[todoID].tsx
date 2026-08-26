@@ -463,7 +463,8 @@ const styles = StyleSheet.create({
   },  
   cardInput: { 
     fontSize: 16, 
-    borderRadius: 10, 
+    borderRadius: 8, 
+    borderWidth: 2,      
     padding: 12, 
     minHeight: 100, 
     width: '100%', 
