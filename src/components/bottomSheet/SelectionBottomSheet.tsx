@@ -1,4 +1,5 @@
 import { TBottomSheet } from '@/components/types/types';
+import { useAppColors } from '@/context/ThemeContext';
 import BottomSheet, { BottomSheetFlatList } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import React, { useCallback } from 'react';
@@ -6,7 +7,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { TDataItem } from '../types/typesData';
 
 const SelectionBottomSheet = ({ currentId, setValue, setRef, sheetRef, data }: TBottomSheet) => {
-
+  // Получаем динамическую палитру цветов
+  const colors = useAppColors();
   // Мемоизируем клик по элементу
   const handleItemPress = useCallback((id: string) => {
     setValue(id);
@@ -25,17 +27,17 @@ const SelectionBottomSheet = ({ currentId, setValue, setRef, sheetRef, data }: T
         onPress={() => handleItemPress(item.id)}
         style={[
           styles.cardRow,
-          { borderColor: isSelected ? 'silver' : '#263238' }
+          { borderColor: isSelected ? 'silver' : colors.borderColor, backgroundColor:  colors.cardBg }
         ]}
       >
-        {/* Иконка элемента */}
-        <View style={[styles.iconContainer, { backgroundColor: item.backColor || '#263238' }]}>
+        {/* Иконка элемента item.backColor || '#263238' */}
+        <View style={styles.iconContainer}>
           <MaterialDesignIcons name={item.icon as any} color={item.color} size={32} />
         </View>
         
         {/* Адаптивный текст названия */}
         <View style={styles.textContainer}>
-          <Text style={styles.itemText}>{item.name.ru}</Text>
+          <Text style={[styles.itemText, {color:colors.badgeText}]}>{item.name.ru}</Text>
         </View>
 
         {/* Рабочая галочка для выбранного элемента */}
@@ -51,15 +53,15 @@ const SelectionBottomSheet = ({ currentId, setValue, setRef, sheetRef, data }: T
       ref={sheetRef}
       index={-1}
       enablePanDownToClose
-      backgroundStyle={styles.sheetBackground}
+      backgroundStyle={[styles.sheetBackground, {backgroundColor:colors.containerBg}]}
       snapPoints={['50%', '100%']}
     >
       <BottomSheetFlatList
         nestedScrollEnabled
-        style={styles.list}
+        style={[styles.list, {backgroundColor:colors.containerBg}]}
         data={data}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, {backgroundColor:colors.containerBg}]}
         ItemSeparatorComponent={renderSeparator}
         renderItem={renderItem}
       />
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
   cardRow: {
     flexDirection: 'row',
     gap: 12,
-    backgroundColor: '#263238',
+    //backgroundColor: '#263238',
     borderRadius: 15,
     alignItems: 'center',
     borderWidth: 2,

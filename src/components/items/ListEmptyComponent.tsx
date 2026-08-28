@@ -1,3 +1,4 @@
+import { useAppColors } from '@/context/ThemeContext';
 import { scaleEnd, scaleStart } from '@/utils/animation';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { router } from "expo-router";
@@ -13,7 +14,8 @@ interface ListEmptyComponentProps {
 
 const ListEmptyComponent = ({ date, title, text, onPress }: ListEmptyComponentProps) => {
   const scale = useRef(new Animated.Value(1)).current; 
-
+  // Получаем динамическую палитру цветов
+  const colors = useAppColors();
   // Мемоизируем обработчик нажатия
   const handlePress = useCallback(() => {
     if (onPress) {
@@ -48,7 +50,7 @@ const ListEmptyComponent = ({ date, title, text, onPress }: ListEmptyComponentPr
         </Animated.View>
         
         <View style={styles.textContainer}>
-          <Text style={styles.titleText}>{title}</Text>
+          <Text style={[styles.titleText, {color:colors.titleText}]}>{title}</Text>
           <Text numberOfLines={2} style={styles.subtitleText}>
             {text}
           </Text>
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   titleText: {
-    color: 'white', // Изменено на white, так как бэкграунд вашего приложения темно-синий (#031F2B)
+   // color: 'white', // Изменено на white, так как бэкграунд вашего приложения темно-синий (#031F2B)
     fontWeight: 'bold',
     fontSize: 16,
     textAlign: 'center',

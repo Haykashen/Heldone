@@ -1,4 +1,5 @@
 import { TFileDataObject } from '@/components/types/types';
+import { useAppColors } from '@/context/ThemeContext';
 import { formatBytes } from '@/utils/fileUtils';
 import BottomSheet, { BottomSheetFlatList, BottomSheetMethods, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
@@ -17,7 +18,9 @@ type TFilesBottomSheet = {
 };
 
 const FilesBottomSheet = ({ files = [], onPick, onOpen, onShare, onDelete, sheetRef }: TFilesBottomSheet) => {
-
+  // Получаем динамическую палитру цветов
+  const colors = useAppColors();
+  
   // Мемоизируем хэндлеры для стабильности ссылок renderItem
   const handleOpenPress = useCallback((uri: string) => {
     onOpen(uri);
@@ -44,7 +47,7 @@ const FilesBottomSheet = ({ files = [], onPick, onOpen, onShare, onDelete, sheet
 
   // Оптимизированный рендер карточки файла
   const renderItem = useCallback(({ item }: { item: TFileDataObject }) => (
-    <View style={styles.fileCard}>
+    <View style={[styles.fileCard,{backgroundColor:  colors.cardBg,  borderColor: colors.borderColor }]}>              
       {/* Кликабельная зона для открытия файла */}
       <Pressable 
         onPress={() => handleOpenPress(item.uri)} 
@@ -54,10 +57,10 @@ const FilesBottomSheet = ({ files = [], onPick, onOpen, onShare, onDelete, sheet
           <MaterialDesignIcons name='file' color='white' size={28} />
         </View>
         <View style={styles.textContainer}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.fileNameText}>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.fileNameText, {color:colors.badgeText}]}>
             {item.name}
           </Text>
-          <Text style={styles.fileSizeText}>
+          <Text style={[styles.fileSizeText, {color:colors.badgeText}]}>
             {formatBytes(item.size)}
           </Text>
         </View>
@@ -68,7 +71,7 @@ const FilesBottomSheet = ({ files = [], onPick, onOpen, onShare, onDelete, sheet
         onPress={() => handleSharePress(item.uri, item.name)} 
         style={styles.actionButton}
       >
-        <MaterialDesignIcons name='share-variant' color='white' size={22} />
+        <MaterialDesignIcons name='share-variant' color={colors.badgeText} size={22} />
       </Pressable>                                
 
       {/* Кнопка Удалить */}
@@ -76,7 +79,7 @@ const FilesBottomSheet = ({ files = [], onPick, onOpen, onShare, onDelete, sheet
         onPress={() => handleDeletePress(item.id, item.uri)} 
         style={styles.actionButton}
       >
-        <MaterialDesignIcons name='delete-outline' color='#ff1744' size={22} />
+        <MaterialDesignIcons name='delete-outline' color={colors.missedSectionTitle} size={22} />
       </Pressable>
     </View>
   ), [handleOpenPress, handleSharePress, handleDeletePress]);
@@ -94,7 +97,7 @@ const FilesBottomSheet = ({ files = [], onPick, onOpen, onShare, onDelete, sheet
       index={-1}
       enablePanDownToClose
       snapPoints={['55%', '85%']}
-      backgroundStyle={styles.sheetBackground}
+      backgroundStyle={[styles.sheetBackground, {backgroundColor:colors.containerBg}]}
     >
       <BottomSheetView style={styles.innerContainer}>
         {/* Кнопка добавления файла */}
@@ -108,10 +111,10 @@ const FilesBottomSheet = ({ files = [], onPick, onOpen, onShare, onDelete, sheet
         {/* Список вложений */}
         <BottomSheetFlatList
           nestedScrollEnabled
-          style={styles.list}
+          style={[styles.list,, {backgroundColor:colors.containerBg}]}
           data={files}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={listContentStyle}
+          contentContainerStyle={[listContentStyle, {backgroundColor:colors.containerBg}]}
           ItemSeparatorComponent={renderSeparator}
           ListEmptyComponent={renderEmpty}
           renderItem={renderItem}
@@ -156,15 +159,16 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingHorizontal: 15,
-    backgroundColor: '#031F2B',
+    //backgroundColor: '#031F2B',
   },
   separator: {
     height: 10,
   },
   fileCard: {
     flexDirection: 'row', 
-    backgroundColor: '#263238', 
+    //backgroundColor: '#263238', 
     borderRadius: 15, 
+    borderWidth: 2,
     alignItems: 'center', 
     paddingHorizontal: 10,
     paddingVertical: 8,
@@ -196,7 +200,7 @@ const styles = StyleSheet.create({
   },
   fileSizeText: {
     fontSize: 12,
-    color: '#7a92a5',
+    //color: '#7a92a5',
     marginTop: 2,
   },
   actionButton: {
