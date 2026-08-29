@@ -1,6 +1,7 @@
 import { TBottomSheet } from '@/components/types/types';
 import { TDataItem } from '@/components/types/typesData';
 import { SettingContext } from '@/context/SettingContext';
+import { useAppColors } from '@/context/ThemeContext';
 import CategoryData from '@/data/CategoryData';
 import BottomSheet, { BottomSheetFlatList, BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
@@ -17,7 +18,7 @@ const CategoryBottomSheet = ({ }: TBottomSheet) => {
   const { 
     defaultCategory, setDefaultCategory, 
   } = useContext(SettingContext);
-  
+  const colors = useAppColors();  
   const sheetCategoryRef = useRef<BottomSheet>(null);
 
   const setSheetRef = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
@@ -49,7 +50,7 @@ const CategoryBottomSheet = ({ }: TBottomSheet) => {
         onPress={() => handleItemPress(item.id)}
         style={[
           styles.cardRow,
-          { borderColor: isSelected ? 'silver' : '#263238' }
+          { borderColor: isSelected ? 'silver' : colors.borderColor, backgroundColor:  colors.cardBg }
         ]}
       >
         {/* Иконка категории */}
@@ -59,7 +60,7 @@ const CategoryBottomSheet = ({ }: TBottomSheet) => {
         
         {/* Текстовая область */}
         <View style={styles.textContainer}>
-          <Text style={styles.categoryText}>{item.name.ru}</Text>
+          <Text style={[styles.categoryText, {color:colors.badgeText}]}>{item.name.ru}</Text>
         </View>
 
         {/* Опционально: галочка для выбранного элемента для улучшения UX */}
@@ -76,15 +77,15 @@ const CategoryBottomSheet = ({ }: TBottomSheet) => {
       index={0}
       snapPoints={['50%', '100%']} // Немного уменьшили стартовую высоту для аккуратности
       enablePanDownToClose
-      backgroundStyle={styles.sheetBackground}
+      backgroundStyle={[styles.sheetBackground, {backgroundColor:colors.containerBg}]}
       onClose={handleClose}       
     >
       <BottomSheetFlatList
         nestedScrollEnabled
-        style={styles.list}
+        style={[styles.list, {backgroundColor:colors.containerBg}]}
         data={CATEGORIES_ARRAY}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, {backgroundColor:colors.containerBg}]}
         ItemSeparatorComponent={renderSeparator}
         renderItem={renderItem}
       />

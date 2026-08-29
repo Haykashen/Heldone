@@ -29,9 +29,8 @@ const TaskCardScreen = () => {
   const { todoID, day } = useLocalSearchParams();
   const { task, setTask } = useContext(TaskContext);
   const { defaultCategory, defaultPriority, defaultTime, defaultNotify } = useContext(SettingContext);
-
-  // Получаем динамическую палитру цветов
-  const colors = useAppColors();
+  const colors = useAppColors();// Получаем динамическую палитру цветов
+  const [emptyTitle, setEmptyTitle] = useState(false)
 
   // Оставляем этот единственный useMemo, так как getNewTask генерирует тяжелый объект 
   // начальной структуры новой задачи, и его критически важно зафиксировать при монтировании.
@@ -117,6 +116,8 @@ const TaskCardScreen = () => {
 
   const handleDone = useCallback(async () => {
     if (!currTask.date || !currTask.title) {
+      setEmptyTitle(true)
+      notifyMessage('Заполните название задачи');      
       Vibration.vibrate(50);
       return;
     }
@@ -253,7 +254,7 @@ const TaskCardScreen = () => {
               <TextInput
                 style={[
                   styles.titleInput,
-                  { backgroundColor: colors.cardBg, color: colors.titleText, borderColor: colors.borderColor }, !currTask.title && styles.titleInputEmpty
+                  { backgroundColor: colors.cardBg, color: colors.titleText, borderColor: colors.borderColor }, emptyTitle &&  !currTask.title && styles.titleInputEmpty
                 ]}
                 value={currTask.title}
                 onChangeText={changeTitle}
@@ -403,8 +404,9 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     marginBottom: 10
   },
+  //'#ffb900'"orange"#dfa00c #EA580C#FBBF24
   dataChangeText:{ 
-    color: '#ffb900', 
+    color: "#EA580C", 
     fontSize: 12
   },
   navButton: { 
@@ -442,7 +444,8 @@ const styles = StyleSheet.create({
   },
   deleteButton: { 
     backgroundColor: '#E11D48', 
-    padding: 14, 
+    paddingHorizontal: 45, 
+    paddingVertical: 10,  
     borderRadius: 8, 
     alignItems: 'center',
     justifyContent: 'center',
