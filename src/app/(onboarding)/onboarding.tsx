@@ -34,15 +34,15 @@ const OnboardingScreen = () => {
   
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+      <View style={styles.close_container}>
         <Pressable style={styles.close_button} onPress={OnboardingDone}>
           <MaterialDesignIcons name='window-close' color={'silver'} size={36} />
         </Pressable>
       </View>
-      <View style={{ height: '70%' }}>
+      <View style={styles.pager_view_container}>
         <PagerView
           ref={pagerRef}
-          style={{ flex: 1 }}
+          style={styles.pager_view}
           initialPage={0}
           onPageSelected={event => {
             setPage(event.nativeEvent.position)
@@ -80,8 +80,8 @@ const OnboardingScreen = () => {
           />                   
         </PagerView>
       </View>
-      <View style={{ flexDirection: 'column', alignItems: 'center', gap: 15 }}>
-        <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <View style={styles.footer__container}>
+        <View style={styles.pagination_container}>
           <PaginationItem onPress={() => pagerRef.current?.setPage(0)} value={0} currentValue={page} />
           <PaginationItem onPress={() => pagerRef.current?.setPage(1)} value={1} currentValue={page} />
           <PaginationItem onPress={() => pagerRef.current?.setPage(2)} value={2} currentValue={page} />
@@ -91,7 +91,7 @@ const OnboardingScreen = () => {
         </View>
         <Pressable
           onPress={OnboardingDone}
-          style={[page === endIndex && {backgroundColor: '#007aff'},{ padding: 5, borderRadius: 5, width: '50%', margin: 'auto', justifyContent: 'center', alignItems: 'center' }]}>
+          style={[page === endIndex && {backgroundColor: '#007aff'}, styles.done_button]}>
           <Text style={{ color: page === endIndex? 'white':'#031F2B', fontWeight: 'bold', fontSize: 20 }}>Разрешить</Text>
         </Pressable>
       </View>
@@ -118,6 +118,30 @@ const styles = StyleSheet.create({
     borderRadius: 15, 
     borderWidth: 2, 
     borderColor: 'silver' 
+  },
+  pager_view_container:{
+    height: '70%'
+  },
+  pager_view:{
+    flex: 1
+  },
+  footer__container:{ 
+    flexDirection: 'column', 
+    alignItems: 'center', 
+    gap: 15 
+  },
+  pagination_container:{ 
+    width: '50%', 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between' 
+  },
+  done_button:{
+    padding: 5, 
+    borderRadius: 5, 
+    width: '50%', 
+    margin: 'auto', 
+    justifyContent: 'center', 
+    alignItems: 'center'
   }
-
 });

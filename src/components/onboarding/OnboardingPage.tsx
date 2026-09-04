@@ -1,9 +1,9 @@
 import LottieView from "lottie-react-native"
 import { StyleSheet, Text, View } from "react-native"
 
+type TOnboardingPage ={ path: string, titleFirst: string, titleSecond: string, text: string }
 
-
-const OnboardingPage = ({ path, titleFirst, titleSecond, text }: { path: string, titleFirst: string, titleSecond: string, text: string, }) => {
+const OnboardingPage = ({ path, titleFirst, titleSecond, text }: TOnboardingPage) => {
 
   return (
     <View style={styles.onboarding_container}>
