@@ -25,6 +25,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 type DateTimePickerMode = "date" | "time";
 
+const getSafeDateForPicker = (originalDate: Date) => {
+  const safeDate = new Date(originalDate);
+  safeDate.setHours(12, 0, 0, 0); // Ставим 12 часов дня
+  return safeDate;
+};
+
 const TaskCardScreen = () => {
   const { todoID, day } = useLocalSearchParams();
   const { task, setTask } = useContext(TaskContext);
@@ -245,7 +251,6 @@ const TaskCardScreen = () => {
                   <Text style={[styles.doneText,{color: colors.fabBg}]}>Готово</Text>
                 </Pressable>
               </View>
-
               <View style={styles.dataChangeContainer}>
                 <Text style={styles.dataChangeText}>{dataChanged ? 'Имеются несохраненные изменения' : ''}</Text>
               </View>
@@ -326,10 +331,12 @@ const TaskCardScreen = () => {
                 </View>
               </View>              
               </View>
-              {/* Нативные пикеры и кастомные BottomSheets для модального выбора */}
+              {/* Нативные пикеры и кастомные BottomSheets для модального выбора currTask.date || new Date()*/}
               {show && (<DateTimePicker
-                value={currTask.date || new Date()}
-                mode={mode} is24Hour={true}
+                value={mode=== "date" ?getSafeDateForPicker(currTask.date):currTask.date}             
+                mode={mode} 
+                is24Hour={true}
+                locale='ru_RU'
                 onValueChange={changeDate}
                 onDismiss={() => setShow(false)} />)}
               {/* ПОЛЕ ВВОДА ПРИМЕЧАНИЯ (CARD_INPUT) */}

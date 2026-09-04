@@ -14,7 +14,7 @@ export function getCalendarTitle(date: Date): string {
  * Безопасное форматирование даты в YYYY-MM-DD без привязки к локали устройства
  */
 export function getFormatedDay(date: Date): string {
-  const d = new Date(date);
+  const d = date;//new Date(date);
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
