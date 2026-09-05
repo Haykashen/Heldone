@@ -19,7 +19,7 @@ const OnboardingContextProvider: FC<Props> = ({ children }) => {
         setOnboarded(onboard ?  onboard : false)
       }
       catch (e) {
-        notifyMessage('Ошибка при загрузке приветсвия приложения. Переоткройте приложение.')
+        notifyMessage('Ошибка при загрузке приветствия приложения. Переоткройте приложение.')
       }
       finally {
         setLoad(true)

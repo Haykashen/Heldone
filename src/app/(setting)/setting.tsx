@@ -50,10 +50,10 @@ const SettingsScreen = () => {
     ref.current?.snapToIndex(index);
   }, []);
 
-  const changeDefaultCategory = useCallback((id: string) => {
-    setDefaultCategory(id);
-    setData('defaultCategory', JSON.stringify(id));
-  }, [setDefaultCategory]);
+  // const changeDefaultCategory = useCallback((id: string) => {
+  //   setDefaultCategory(id);
+  //   setData('defaultCategory', JSON.stringify(id));
+  // }, [setDefaultCategory]);
 
   const changeDefaultPriority = useCallback((id: string) => {
     setDefaultPriority(id);

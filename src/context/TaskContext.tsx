@@ -30,7 +30,7 @@ const TaskContextProvider: FC<Props> = ({ children }) => {
         }   
       }
       catch (e) {
-        notifyMessage('Ошибка при загрузке настроек приложения. Переоткройте приложение.')
+        notifyMessage('Ошибка при загрузке списка задач. Переоткройте приложение.')
       }
       finally {
         setLoad(true)

@@ -42,16 +42,14 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   // Фактическая тема для компонентов
-  const activeTheme: ActiveTheme = 
-    theme === 'system' 
-      ? (systemScheme === 'light' ? 'light' : 'dark') 
-      : theme;
-
+  const activeTheme: ActiveTheme = (theme === 'system') ? (systemScheme === 'light' ? 'light' : 'dark') : theme;
+     
+    
   // Асинхронная функция смены темы с сохранением в память
   const setTheme = async (newTheme: ThemeMode) => {
     try {
       setThemeState(newTheme);
-      await setData(STORAGE_KEY, newTheme);
+      await setData(STORAGE_KEY, JSON.stringify(newTheme));
     } catch (error) {
       //console.error('Ошибка при сохранении темы:', error);
     }

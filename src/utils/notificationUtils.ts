@@ -40,13 +40,11 @@ export const deleteAllNotification = async () =>{
 }
 
 export const deletelNotification = async (notId:string) =>{
-  if(typeof(notId) !== 'string')
+  if(typeof(notId) === 'string' && notId)
   {
-    alert("typeof(notId) !== 'string'")
-    alert(typeof(notId))
-    alert('notId = '+notId)
+    await Notifications.cancelScheduledNotificationAsync(notId);
   }  
-  await Notifications.cancelScheduledNotificationAsync(notId);
+
 }
 
 export const checkPermissions = async () =>{

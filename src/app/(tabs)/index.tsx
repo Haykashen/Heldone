@@ -241,8 +241,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   confetti: {
-    top: 90,
-    height: 200,
+    top: 150,
+    height: 120,
     width: '100%',
     position: 'absolute',
     zIndex: 10,
