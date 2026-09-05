@@ -1,4 +1,4 @@
-// MaterialCommunityIcons
+// MaterialCommunityIcons'#D97706'
 import { TDataDir, TDataItem } from "../components/types/typesData";
 
 const CategoryData:TDataDir = {
@@ -9,35 +9,8 @@ const CategoryData:TDataDir = {
             en: 'Home'
         },
         icon: 'home',
-        color:'#D97706'
+        color: '#4CAF50'
     }, 
-    Hobby:{
-        id:'Hobby',
-        name:{
-            ru:'Хобби',
-            en:'Hobby'
-        },
-        icon:'palette',
-        color:'#DB2777'
-    },  
-    Shopping:{
-        id:'Shopping',
-        name:{
-            ru:'Покупки',
-            en:'Shopping'
-        },
-        icon:'cart',
-        color:'#0D9488'
-    },           
-    Target: {
-        id:'Target',
-        name: {
-            ru: 'Цель',
-            en: 'Target'
-        },
-        icon: 'bullseye-arrow',
-        color:'#4894FE'
-    },
     Health:{
         id:'Health',
         name:{
@@ -46,6 +19,15 @@ const CategoryData:TDataDir = {
         },
         icon:'heart-pulse',
         color:'#E11D48'
+    },       
+    Target: {
+        id:'Target',
+        name: {
+            ru: 'Цель',
+            en: 'Target'
+        },
+        icon: 'bullseye-arrow',
+        color:'#4894FE'
     },
     Investment:{
         id:'Investment',
@@ -56,6 +38,33 @@ const CategoryData:TDataDir = {
         icon:'gold',
         color:"#ffb900"
     },
+    Rest:{
+        id:'Rest',
+        name:{
+            ru:'Отдых',
+            en:'Rest'
+        },
+        icon:'party-popper',
+        color:'#C026D3'
+    },    
+    Shopping:{
+        id:'Shopping',
+        name:{
+            ru:'Покупки',
+            en:'Shopping'
+        },
+        icon:'cart',
+        color:'#0D9488'
+    },          
+    Hobby:{
+        id:'Hobby',
+        name:{
+            ru:'Хобби',
+            en:'Hobby'
+        },
+        icon:'palette',
+        color:'#DB2777'
+    },  
     Family: {
         id:'Family',
         name: {
@@ -155,24 +164,6 @@ const CategoryData:TDataDir = {
         icon:'calendar-clock',
         color:'#4F46E5'
     },
-    Rest:{
-        id:'Rest',
-        name:{
-            ru:'Отдых',
-            en:'Rest'
-        },
-        icon:'party-popper',
-        color:'#C026D3'
-    },
-    Life:{
-        id:'Life',
-        name:{
-            ru:'Быт',
-            en:'Life'
-        },
-        icon:'clipboard-check-outline',
-        color:'#57534E'
-    },
     Projects:{
         id:'Projects',
         name:{
@@ -182,9 +173,8 @@ const CategoryData:TDataDir = {
         icon:'folder-outline',
         color:'#0284C7'
     },
-// Авто
-// #475569
-// ti-car
+
+    
 }
 
 export default CategoryData
