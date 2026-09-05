@@ -89,7 +89,7 @@ const TaskCardScreen = () => {
   }, []);
 
   const handleNotify = useCallback(() => {
-    setCurrentTask(prev => prev ? { ...prev, sendNotify: !prev.sendNotify} : undefined);
+    setCurrentTask(prev => prev ? { ...prev, sendNotify: !prev.sendNotify } : undefined);
   }, []);
 
   const changeStatus = useCallback(() => {
@@ -123,7 +123,7 @@ const TaskCardScreen = () => {
   const handleDone = useCallback(async () => {
     if (!currTask.date || !currTask.title) {
       setEmptyTitle(true)
-      notifyMessage('Заполните название задачи');      
+      notifyMessage('Заполните название задачи');
       Vibration.vibrate(50);
       return;
     }
@@ -186,7 +186,7 @@ const TaskCardScreen = () => {
     }
   }, []);
 
-  const deleteFile = useCallback(async(id: string) => {
+  const deleteFile = useCallback(async (id: string) => {
     setCurrentTask(prev => {
       if (!prev) return undefined;
       return {
@@ -224,117 +224,115 @@ const TaskCardScreen = () => {
     });
     setShow(false);
   }, [mode]);
-  
+
   const refreshNotify = async () => {
     // Внутренняя логика уведомлений оставлена без изменений
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container}>
-        <BottomSheet
-          ref={sheetRef}
-          index={0}
-          onClose={handleClose}
-          enablePanDownToClose
-          backgroundStyle={{ backgroundColor: colors.containerBg }} // Применили цвет из темы
-        >
-          <BottomSheetScrollView style={[styles.innerContainer, { backgroundColor: colors.containerBg }]}>
+    <SafeAreaView style={styles.container}>
+      <BottomSheet
+        ref={sheetRef}
+        index={0}
+        onClose={handleClose}
+        enablePanDownToClose
+        backgroundStyle={{ backgroundColor: colors.containerBg }} // Применили цвет из темы
+      >
+        <BottomSheetScrollView style={[styles.innerContainer, { backgroundColor: colors.containerBg }]}>
+          <View style={styles.topBar}>
+            <Pressable onPress={handleBack} style={styles.navButton}>
+              <Text style={styles.cancelText}>Отмена</Text>
+            </Pressable>
+            <Text style={[styles.headerTitle, { color: colors.titleText }]}>Задача</Text>
+            <Pressable onPress={handleDone} style={styles.navButton}>
+              <Text style={[styles.doneText, { color: colors.fabBg }]}>Готово</Text>
+            </Pressable>
+          </View>
+          <View style={styles.dataChangeContainer}>
+            <Text style={styles.dataChangeText}>{dataChanged ? 'Имеются несохраненные изменения' : ''}</Text>
+          </View>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <KeyboardAvoidingView style={styles.container}>
-              {/* Панель управления (Верхняя шапка карточки) */}
-              <View style={styles.topBar}>
-                <Pressable onPress={handleBack} style={styles.navButton}>
-                  <Text style={styles.cancelText}>Отмена</Text>
-                </Pressable>
-                <Text style={[styles.headerTitle, { color: colors.titleText }]}>Задача</Text>
-                <Pressable onPress={handleDone} style={styles.navButton}>
-                  <Text style={[styles.doneText,{color: colors.fabBg}]}>Готово</Text>
-                </Pressable>
-              </View>
-              <View style={styles.dataChangeContainer}>
-                <Text style={styles.dataChangeText}>{dataChanged ? 'Имеются несохраненные изменения' : ''}</Text>
-              </View>
-
               {/* Поле ввода заголовка задачи */}
               <TextInput
                 style={[
                   styles.titleInput,
-                  { backgroundColor: colors.cardBg, color: colors.titleText, borderColor: colors.borderColor }, emptyTitle &&  !currTask.title && styles.titleInputEmpty
+                  { backgroundColor: colors.cardBg, color: colors.titleText, borderColor: colors.borderColor }, emptyTitle && !currTask.title && styles.titleInputEmpty
                 ]}
                 value={currTask.title}
                 onChangeText={changeTitle}
                 placeholder="Название задачи"
-                placeholderTextColor={colors.metaText} 
+                placeholderTextColor={colors.metaText}
               />
               {/* Строки параметров на основе компонента CardRow */}
               <View style={[styles.rowsContainer, { backgroundColor: colors.cardBg, borderColor: colors.borderColor }]}>
-              <View style={{flexDirection:'row'}}>
-                <View style={{flex:1}}>
-                <CardRow
-                  title="Дата"
-                  text={dateText}
-                  icon="calendar"
-                  iconColor={colors.titleText}
-                  onPress={() => showDatepicker('date')} 
-                />
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flex: 1 }}>
+                    <CardRow
+                      title="Дата"
+                      text={dateText}
+                      icon="calendar"
+                      iconColor={colors.titleText}
+                      onPress={() => showDatepicker('date')}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <CardRow
+                      title="Время"
+                      text={timeText}
+                      icon='clock-outline'
+                      iconColor={colors.titleText}
+                      onPress={() => showDatepicker('time')}
+                    />
+                  </View>
                 </View>
-                <View style={{flex:1}}>
-                <CardRow
-                  title="Время"
-                  text={timeText}
-                  icon='clock-outline'
-                  iconColor={colors.titleText}
-                  onPress={() => showDatepicker('time')}
-                />                  
-                </View>                
-              </View>
-              <View style={{flexDirection:'row'}}>
-                <View style={{flex:1}}>
-                <CardRow
-                  title="Категория"
-                  text={currTask.category.name.ru || 'Нет'}
-                  icon={currTask.category.icon}
-                  iconColor={currTask.category.color}
-                  onPress={() => setSheetRef(categorySheetRef, 0)}
-                />
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flex: 1 }}>
+                    <CardRow
+                      title="Категория"
+                      text={currTask.category.name.ru || 'Нет'}
+                      icon={currTask.category.icon}
+                      iconColor={currTask.category.color}
+                      onPress={() => setSheetRef(categorySheetRef, 0)}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <CardRow
+                      title="Приоритет"
+                      text={currTask.priority.name.ru || 'Нет'}
+                      icon="flag"
+                      iconColor={currTask.priority?.color || colors.titleText}
+                      onPress={() => setSheetRef(prioritySheetRef, 0)}
+                    />
+                  </View>
                 </View>
-                <View style={{flex:1}}>
-                <CardRow
-                  title="Приоритет"
-                  text={currTask.priority.name.ru || 'Нет'}
-                  icon="flag"
-                  iconColor={currTask.priority?.color || colors.titleText}
-                  onPress={() => setSheetRef(prioritySheetRef, 0)}
-                />                
-                </View>                
-              </View>
-              <View style={{flexDirection:'row'}}>
-                <View style={{flex:1}}>
-                <CardRow
-                  title='Уведомление'
-                  text={currTask.sendNotify ? 'Включено' : 'Выключено'}
-                  icon={currTask.sendNotify ? 'bell-ring-outline' : 'bell-off-outline'}
-                  iconColor={colors.titleText}
-                  iconRigth={currTask.sendNotify ? 'check-circle-outline' : 'checkbox-blank-circle-outline'}
-                  //value={currTask.sendNotify} iconColor={colors.titleText}
-                  onPress={handleNotify} 
-                />
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flex: 1 }}>
+                    <CardRow
+                      title='Уведомление'
+                      text={currTask.sendNotify ? 'Включено' : 'Выключено'}
+                      icon={currTask.sendNotify ? 'bell-ring-outline' : 'bell-off-outline'}
+                      iconColor={colors.titleText}
+                      iconRigth={currTask.sendNotify ? 'check-circle-outline' : 'checkbox-blank-circle-outline'}
+                      //value={currTask.sendNotify} iconColor={colors.titleText}
+                      onPress={handleNotify}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <CardRow
+                      title="Вложения"
+                      text={`${currTask.files?.length || 0} шт.`}
+                      icon="paperclip"
+                      iconColor={colors.titleText}
+                      onPress={() => setSheetRef(sheetFilesRef, 0)}
+                    />
+                  </View>
                 </View>
-                <View style={{flex:1}}>
-                <CardRow
-                  title="Вложения"
-                  text={`${currTask.files?.length || 0} шт.`}
-                  icon="paperclip"
-                  iconColor={colors.titleText}
-                  onPress={() => setSheetRef(sheetFilesRef, 0)}
-                />
-                </View>
-              </View>              
               </View>
               {/* Нативные пикеры и кастомные BottomSheets для модального выбора currTask.date || new Date()*/}
               {show && (<DateTimePicker
-                value={mode=== "date" ?getSafeDateForPicker(currTask.date):currTask.date}             
-                mode={mode} 
+                value={mode === "date" ? getSafeDateForPicker(currTask.date) : currTask.date}
+                mode={mode}
                 is24Hour={true}
                 locale='ru_RU'
                 onValueChange={changeDate}
@@ -348,7 +346,7 @@ const TaskCardScreen = () => {
                 placeholderTextColor={colors.metaText}
                 multiline={true}
                 numberOfLines={4}
-                textAlignVertical="top" 
+                textAlignVertical="top"
               />
               {todoID !== 'new' && (
                 <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginBottom: 20 }}>
@@ -382,10 +380,10 @@ const TaskCardScreen = () => {
                 sheetRef={sheetFilesRef}
               />
             </KeyboardAvoidingView>
-          </BottomSheetScrollView>
-        </BottomSheet>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </BottomSheetScrollView>
+      </BottomSheet>
+    </SafeAreaView>
   );
 };
 
@@ -399,49 +397,49 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 15,
   },
-  topBar: { 
-    width: '100%', 
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    alignItems: 'center', 
-    paddingVertical: 10, 
-  }, 
-  dataChangeContainer: { 
-    justifyContent: 'center', 
-    alignItems: 'center', 
+  topBar: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  dataChangeContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 10
   },
   //'#ffb900'"orange"#dfa00c #EA580C#FBBF24
-  dataChangeText:{ 
-    color: "#EA580C", 
+  dataChangeText: {
+    color: "#EA580C",
     fontSize: 12
   },
-  navButton: { 
-    paddingHorizontal: 10, 
-  }, 
-  cancelText: { 
-    color: 'silver', 
-    fontSize: 16, 
-    fontWeight: 'bold', 
-  }, 
-  headerTitle: { 
-    fontSize: 18, 
-    fontWeight: 'bold', 
-  }, 
-  doneText: { 
-    fontSize: 16, 
-    fontWeight: 'bold', 
-  }, 
-  titleInput: { 
-    fontSize: 18, 
-    borderRadius: 8, 
-    padding: 12, 
+  navButton: {
+    paddingHorizontal: 10,
+  },
+  cancelText: {
+    color: 'silver',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  doneText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  titleInput: {
+    fontSize: 18,
+    borderRadius: 8,
+    padding: 12,
     marginBottom: 20,
-    width: '100%', 
-    borderWidth: 2    
-  }, 
-  titleInputEmpty:{
-    borderColor: '#E11D48', 
+    width: '100%',
+    borderWidth: 2
+  },
+  titleInputEmpty: {
+    borderColor: '#E11D48',
   },
   rowsContainer: {
     borderWidth: 1,
@@ -449,11 +447,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden', // Чтобы углы дочерних CardRow не вылезали за радиус скругления
     marginBottom: 24,
   },
-  deleteButton: { 
-    backgroundColor: '#E11D48', 
-    paddingHorizontal: 45, 
-    paddingVertical: 10,  
-    borderRadius: 8, 
+  deleteButton: {
+    backgroundColor: '#E11D48',
+    paddingHorizontal: 45,
+    paddingVertical: 10,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 'auto',
@@ -470,14 +468,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
     paddingHorizontal: 5,
-  },  
-  cardInput: { 
-    fontSize: 16, 
-    borderRadius: 8, 
-    borderWidth: 2,      
-    padding: 12, 
-    minHeight: 100, 
-    width: '100%', 
-    marginBottom: 25, 
+  },
+  cardInput: {
+    fontSize: 16,
+    borderRadius: 8,
+    borderWidth: 2,
+    padding: 12,
+    minHeight: 100,
+    width: '100%',
+    marginBottom: 25,
   },
 });
