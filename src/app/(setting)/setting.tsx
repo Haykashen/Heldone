@@ -11,6 +11,7 @@ import { setData } from '@/store/setData';
 import { notifyMessage } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
 import DateTimePicker, { DateTimePickerChangeEvent } from '@expo/ui/community/datetime-picker';
+import * as Linking from 'expo-linking';
 import { router } from 'expo-router';
 import { RefObject, use, useCallback, useRef, useState } from 'react'; // React 19: Импортируем 'use'
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -18,15 +19,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const pkg = require('@/../package.json');
 const APP_VERSION = pkg.version || '1.0.0';
-  // Массив настроек для рендера кнопок{ id: ThemeMode; label: string; iconName: string }[]
-// const themeOptions: ArrayLike<TDataItem> = [
-//     { id: 'system', name: {ru:'Как в системе'}, icon: 'theme-light-dark', color:'gray'},
-//     { id: 'light', name: {ru:'Светлая'}, icon: 'weather-sunny', color:'gold'},
-//     { id: 'dark', name: {ru:'Темная'}, icon: 'weather-night', color:'#5656f0'},
-// ];
 
 const SettingsScreen = () => {
-  // React 19: Получаем данные контекста настроек через 'use'
+
   const { 
     defaultCategory, setDefaultCategory, 
     defaultPriority, setDefaultPriority, 
@@ -184,7 +179,7 @@ const SettingsScreen = () => {
               text={'Присоединиться к сообществу'}
               icon={'chat-plus'}
               iconColor={colors.titleText}
-              onPress={() => null}
+              onPress={() => Linking.openURL('https://t.me/+pk77TObzou85YmZi')} 
             />            
             <CardRow
               title='В формате pdf'
