@@ -282,7 +282,7 @@ const TaskCardScreen = () => {
                 <CardRow
                   title="Время"
                   text={timeText}
-                  icon="clock"
+                  icon='clock-outline'
                   iconColor={colors.titleText}
                   onPress={() => showDatepicker('time')}
                 />                  
@@ -313,7 +313,7 @@ const TaskCardScreen = () => {
                 <CardRow
                   title='Уведомление'
                   text={currTask.sendNotify ? 'Включено' : 'Выключено'}
-                  icon={currTask.sendNotify ? 'bell-ring' : 'bell-off'}
+                  icon={currTask.sendNotify ? 'bell-ring-outline' : 'bell-off-outline'}
                   iconColor={colors.titleText}
                   iconRigth={currTask.sendNotify ? 'check-circle-outline' : 'checkbox-blank-circle-outline'}
                   //value={currTask.sendNotify} iconColor={colors.titleText}

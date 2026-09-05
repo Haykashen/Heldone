@@ -3,9 +3,10 @@ import NavigationButton from '@/components/buttons/NavigationButton';
 import CardRow from '@/components/rows/CardRow';
 import CardRowSwitch from '@/components/rows/CardRowSwitch';
 import { SettingContext } from '@/context/SettingContext';
-import { useAppColors } from '@/context/ThemeContext'; // Импортируем хук цветов
+import { ThemeMode, useAppColors, useThemeSettings } from '@/context/ThemeContext'; // Импортируем хук цветов
 import CategoryData from '@/data/CategoryData';
 import PriorityData, { PRIORITIES_ARRAY } from '@/data/PriorityData';
+import ThemeData, { THEME_ARRAY } from '@/data/ThemeData';
 import { setData } from '@/store/setData';
 import { notifyMessage } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
@@ -17,6 +18,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const pkg = require('@/../package.json');
 const APP_VERSION = pkg.version || '1.0.0';
+  // Массив настроек для рендера кнопок{ id: ThemeMode; label: string; iconName: string }[]
+// const themeOptions: ArrayLike<TDataItem> = [
+//     { id: 'system', name: {ru:'Как в системе'}, icon: 'theme-light-dark', color:'gray'},
+//     { id: 'light', name: {ru:'Светлая'}, icon: 'weather-sunny', color:'gold'},
+//     { id: 'dark', name: {ru:'Темная'}, icon: 'weather-night', color:'#5656f0'},
+// ];
 
 const SettingsScreen = () => {
   // React 19: Получаем данные контекста настроек через 'use'
@@ -29,7 +36,8 @@ const SettingsScreen = () => {
 
   // Получаем глобальные цвета для темной/светлой темы
   const colors = useAppColors();
-
+  const { currentTheme, setTheme } = useThemeSettings();
+  
   const [time, setTime] = useState(() => {
     const d = new Date();
     if (defaultTime) {
@@ -41,6 +49,7 @@ const SettingsScreen = () => {
   
   const [show, setShow] = useState(false);
   const prioritySheetRef = useRef<BottomSheet>(null);
+  const themeSheetRef = useRef<BottomSheet>(null);
 
   const setSheetRef = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
     ref.current?.snapToIndex(index);
@@ -61,6 +70,10 @@ const SettingsScreen = () => {
     setDefaultNotify(newValue);      
     setData('defaultNotify', JSON.stringify(newValue)); 
   }, [defaultNotify, setDefaultNotify]);
+
+  const changeTheme = (id:string)=>{
+    setTheme(id as ThemeMode)
+  }  
 
   const handleTimeChange = useCallback((event: DateTimePickerChangeEvent, selectedDate?: Date) => {
     if (!selectedDate) {
@@ -117,10 +130,10 @@ const SettingsScreen = () => {
             />
             <CardRow
               title='Стиль'
-              text={colors.shadowOpacity > 0.2 ? 'Темный' : 'Светлый'} // Динамический текст стиля на основе палитры
-              icon='weather-night'
-              iconColor={colors.titleText}
-              onPress={() => notifyMessage('Изменяется автоматически на основе настроек системы')}
+              text={ThemeData[currentTheme].name.ru} // Динамический текст стиля на основе палитры() => notifyMessage('Изменяется автоматически на основе настроек системы')
+              icon={ThemeData[currentTheme].icon}
+              iconColor={ThemeData[currentTheme].color}
+              onPress={() => setSheetRef(themeSheetRef, 0)}
             />
           </View>
 
@@ -130,14 +143,14 @@ const SettingsScreen = () => {
             <CardRow
               title='Время'
               text={defaultTime}
-              icon='clock'
+              icon='clock-outline'
               iconColor={colors.titleText}
               onPress={() => setShow(true)}
             />
             <CardRowSwitch
               title='Создание уведомлений'
               text={defaultNotify ? 'Включено' : 'Выключено'}
-              icon={defaultNotify ? 'bell-ring' : 'bell-off'}
+              icon={defaultNotify ? 'bell-ring-outline' : 'bell-off-outline'}
               value={defaultNotify}
               iconColor={colors.titleText}
               onPress={changeDefaultNotify}
@@ -204,7 +217,14 @@ const SettingsScreen = () => {
         setValue={changeDefaultPriority}
         setRef={setSheetRef}
         data={PRIORITIES_ARRAY}
-      />              
+      />     
+      <SelectionBottomSheet
+        sheetRef={themeSheetRef}
+        currentId={currentTheme}
+        setValue={changeTheme}
+        setRef={setSheetRef}
+        data={THEME_ARRAY}
+      />                       
     </SafeAreaView>
   );
 };

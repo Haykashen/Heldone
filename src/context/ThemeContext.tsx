@@ -1,41 +1,85 @@
 import { IAppColors, ThemeColors } from '@/components/constants/ThemeColors';
-import React, { createContext, use } from 'react';
+import { getData } from '@/store/getData';
+import { setData } from '@/store/setData';
+import React, { createContext, use, useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
 
-type ThemeMode = 'light' | 'dark';
+export type ThemeMode = 'light' | 'dark' | 'system';
+type ActiveTheme = 'light' | 'dark';
 
 interface ThemeContextProps {
   theme: ThemeMode;
-  colors: IAppColors; // Добавляем объект цветов в контекст
+  activeTheme: ActiveTheme;
+  colors: IAppColors;
+  setTheme: (theme: ThemeMode) => Promise<void>; // Теперь функция асинхронная
 }
 
-export const ThemeContext = createContext<ThemeContextProps>({
-  theme: 'dark',
-  colors: ThemeColors.dark,
-});
+const STORAGE_KEY = '@app_theme_mode';
+
+export const ThemeContext = createContext<ThemeContextProps | null>(null);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const systemScheme = useColorScheme();
-  const theme: ThemeMode = systemScheme === 'light' ? 'light' : 'dark';
+  
+  // Состояние темы. На старте ставим 'dark', пока идет чтение из AsyncStorage
+  const [theme, setThemeState] = useState<ThemeMode>('dark');
 
-  // Выбираем нужную палитру на основе темы
-  const colors = ThemeColors[theme];
+  // Читаем сохраненную тему при монтировании компонента
+  useEffect(() => {
+    const loadTheme = async () => {
+      try {
+        const savedTheme = await getData(STORAGE_KEY);
+        
+        if (savedTheme) {
+          setThemeState(savedTheme as ThemeMode);
+        }
+      } catch (error) {
+        //console.error('Ошибка при загрузке темы:', error);
+      }
+    };
+
+    loadTheme();
+  }, []);
+
+  // Фактическая тема для компонентов
+  const activeTheme: ActiveTheme = 
+    theme === 'system' 
+      ? (systemScheme === 'light' ? 'light' : 'dark') 
+      : theme;
+
+  // Асинхронная функция смены темы с сохранением в память
+  const setTheme = async (newTheme: ThemeMode) => {
+    try {
+      setThemeState(newTheme);
+      await setData(STORAGE_KEY, newTheme);
+    } catch (error) {
+      //console.error('Ошибка при сохранении темы:', error);
+    }
+  };
+
+  const colors = ThemeColors[activeTheme];
 
   return (
-    <ThemeContext.Provider value={{ theme, colors }}>
+    <ThemeContext.Provider value={{ theme, activeTheme, colors, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
-// ХУК 1: Возвращает только название темы ('light' | 'dark'), если нужно для Lottie или сторонних библиотек
-export const useAppThemeMode = () => {
+// Внутренний хелпер
+const useThemeContext = () => {
   const context = use(ThemeContext);
-  return context.theme;
+  if (!context) {
+    throw new Error('useThemeContext must be used within a ThemeProvider');
+  }
+  return context;
 };
 
-// ХУК 2: Глобальный хук для моментального получения палитры цветов во всех компонентах!
-export const useAppColors = () => {
-  const context = use(ThemeContext);
-  return context.colors;
+// ХУКИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОМПОНЕНТАХ
+export const useAppThemeMode = () => useThemeContext().activeTheme;
+export const useAppColors = () => useThemeContext().colors;
+
+export const useThemeSettings = () => {
+  const { theme, setTheme } = useThemeContext();
+  return { currentTheme: theme, setTheme };
 };
