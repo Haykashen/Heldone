@@ -35,8 +35,9 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   cancelText: {
+    color: 'silver',
     fontSize: 16,
-    color: '#007AFF', // Или ваш дефолтный цвет для отмены
+
   },
   headerTitle: {
     fontSize: 18,
