@@ -2,6 +2,7 @@ import { useAppColors } from '@/context/ThemeContext';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { Pressable } from 'react-native';
 
 
 export default function TabsLayout() {
@@ -17,9 +18,16 @@ export default function TabsLayout() {
           tabBarInactiveTintColor: 'grey',
           tabBarShowLabel: false,
           headerShown: false,
-          tabBarStyle:{
+          tabBarButton: (props: any) => (
+            <Pressable
+              {...props}
+              // 1. Убираем эффект волны (ripple) на Android
+              android_ripple={null}
+            />
+          ),
+          tabBarStyle: {
             backgroundColor: colors.cardBg,
-            borderColor: colors.cardBg,  
+            borderColor: colors.cardBg,
           }
         }}>
         <Tabs.Screen name="index" options={{
