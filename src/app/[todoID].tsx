@@ -245,9 +245,20 @@ const pickDocument = useCallback(async () => {
   }
 }, []);
 
+const deleteFile = async (id: string) => {
+  try {
+    // 1. Поиск файла
+    const fileToDiskDelete = currTask?.files.find((item: TFileDataObject) => item.id === id);
 
+    // 2. Физическое удаление
+    if (fileToDiskDelete?.uri) {
+      const fileInstance = new File(fileToDiskDelete.uri);
+      if (fileInstance.exists) {
+        await fileInstance.delete();
+      }
+    }
 
-  const deleteFile = useCallback(async (id: string) => {
+    // 3. Обновление стейта
     setCurrentTask(prev => {
       if (!prev) return undefined;
       return {
@@ -255,7 +266,23 @@ const pickDocument = useCallback(async () => {
         files: prev.files.filter((item: TFileDataObject) => item.id !== id)
       };
     });
-  }, []);
+
+  } catch (error) {
+    console.error("Ошибка при физическом удалении файла:", error);
+    notifyMessage("Не удалось полностью удалить файл с устройства");
+  }
+};
+
+
+  // const deleteFile = useCallback(async (id: string) => {
+  //   setCurrentTask(prev => {
+  //     if (!prev) return undefined;
+  //     return {
+  //       ...prev,
+  //       files: prev.files.filter((item: TFileDataObject) => item.id !== id)
+  //     };
+  //   });
+  // }, []);
 
   const handleShareFile = (uri: string, fileName: string) => {
     shareFileWithCustomName(uri, fileName);
