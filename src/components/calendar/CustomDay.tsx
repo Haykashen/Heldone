@@ -16,12 +16,22 @@ const CustomDay = memo(({ date, selDate, today, dayData, onSelect }: CustomDayPr
   const isToday = date.dateString === today;
   const isSelected = date.dateString === selDate;
 
+  const dayDate = new Date(date.dateString)
+  const selDayDate = new Date(selDate)
+
+  const isOtherMonth = dayDate.getMonth() !== selDayDate.getMonth();
+
+  const dayNumber = dayDate.getDay();
+  const weekend = dayNumber === 0 || dayNumber === 6;
+  const showWeekend = !isToday && !isSelected && weekend
   return (
     <Pressable style={styles.dayContainer} onPress={() => onSelect(date.dateString)}>
       <Text style={[
         styles.dayText,
         isToday && styles.todayText,
-        isSelected && styles.selectedDayText
+        isSelected && styles.selectedDayText,
+        showWeekend && styles.weekendDayText,
+        isOtherMonth && styles.otherMonthDayText, 
       ]}>
         {date.day}
       </Text>
@@ -60,6 +70,13 @@ const styles = StyleSheet.create({
   todayText: {
     color: '#007aff',
   },
+  weekendDayText:{
+    color: '#74b9fa',    
+  },  
+  otherMonthDayText:{
+    color:'#D3D3D3',
+    fontStyle:'italic',
+  },   
   selectedDayText: {
     backgroundColor: '#c0defa',
   },

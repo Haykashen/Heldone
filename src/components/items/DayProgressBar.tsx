@@ -81,7 +81,7 @@ const DayProgressBar = ({ completedCount, totalCount, scaleAnimatedValue }: DayP
             </Animated.View>
             <Text style={[styles.whiteBoldText, { color: colors.titleText }]}>из {totalCount}</Text>
           </View>
-          <View style={[styles.progressBarTrack, { backgroundColor: colors.containerBg }]}>
+          <View style={styles.progressBarTrack}>
             <View style={[styles.progressBarFill, progressBarSubStyle]} />
           </View>
         </View>
@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 10,
     overflow: 'hidden',
+    backgroundColor: '#D3D3D3'
   },
   progressBarFill: {
     height: '100%',

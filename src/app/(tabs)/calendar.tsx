@@ -33,8 +33,8 @@ const PROVIDER_THEME = {
 
 const CALENDAR_THEME = {
   'stylesheet.calendar.header': {
-    dayTextAtIndex5: { color: '#4ca0fa' },
-    dayTextAtIndex6: { color: '#4ca0fa' },
+    dayTextAtIndex5: { color: '#8bc4f9' },
+    dayTextAtIndex6: { color: '#8bc4f9' },
   },  
   arrowColor: 'black',
 };
