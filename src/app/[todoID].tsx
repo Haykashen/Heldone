@@ -18,6 +18,7 @@ import BottomSheet, { BottomSheetMethods, BottomSheetScrollView } from '@expo/ui
 import DateTimePicker, { DateTimePickerChangeEvent } from '@expo/ui/community/datetime-picker';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
 import * as DocumentPicker from 'expo-document-picker';
+import { File, Paths } from 'expo-file-system';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
 import { RefObject, useCallback, useContext, useMemo, useRef, useState } from "react";
 import { Keyboard, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native";
@@ -157,34 +158,94 @@ const TaskCardScreen = () => {
     }
   }, []);
 
-  const pickDocument = useCallback(async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: '*/*',
-        multiple: false,
-        copyToCacheDirectory: true
-      });
-      if (result.canceled !== false)
-        return;
-      setCurrentTask(prev => {
-        if (!prev) return undefined;
-        return {
-          ...prev,
-          files: [
-            ...prev.files,
-            {
-              id: result.assets[0].name + (new Date().toISOString()),
-              name: result.assets[0].name,
-              size: result.assets[0].size || 0,
-              uri: result.assets[0].uri
-            }
-          ]
-        };
-      });
-    } catch (error) {
-      notifyMessage("Ошибка при попытке выбора файла");
+  // const pickDocument = useCallback(async () => {
+  //   try {
+  //     const result = await DocumentPicker.getDocumentAsync({
+  //       type: '*/*',
+  //       multiple: false,
+  //       copyToCacheDirectory: true
+  //     });
+  //     if (result.canceled !== false)
+  //       return;
+  //     setCurrentTask(prev => {
+  //       if (!prev) return undefined;
+  //       return {
+  //         ...prev,
+  //         files: [
+  //           ...prev.files,
+  //           {
+  //             id: result.assets[0].name + (new Date().toISOString()),
+  //             name: result.assets[0].name,
+  //             size: result.assets[0].size || 0,
+  //             uri: result.assets[0].uri
+  //           }
+  //         ]
+  //       };
+  //     });
+  //   } catch (error) {
+  //     notifyMessage("Ошибка при попытке выбора файла");
+  //   }
+  // }, []);
+
+
+
+
+// ... внутри вашего компонента
+
+
+// ... внутри вашего компонента
+
+const pickDocument = useCallback(async () => {
+  try {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: '*/*',
+      multiple: false,
+      copyToCacheDirectory: false // Читаем напрямую из исходного места
+    });
+
+    if (result.canceled || !result.assets || result.assets.length === 0) {
+      return;
     }
-  }, []);
+
+    const pickedFile = result.assets[0];
+    
+    // 1. Создаем объект исходного файла по его URI
+    const sourceFile = new File(pickedFile.uri);
+
+    // 2. Формируем уникальное имя файла для сохранения
+    const timestamp = Date.now();
+    const permanentFileName = `${timestamp}_${pickedFile.name}`;
+
+    // 3. Создаем целевой объект File, передавая директорию Paths.document и имя файла
+    const destinationFile = new File(Paths.document, permanentFileName);
+
+    // 4. Копируем один объект файла в другой
+    await sourceFile.copy(destinationFile);
+
+    // 5. Сохраняем постоянный URI в стейт задачи
+    setCurrentTask(prev => {
+      if (!prev) return undefined;
+      return {
+        ...prev,
+        files: [
+          ...prev.files,
+          {
+            id: pickedFile.name + new Date().toISOString(),
+            name: pickedFile.name,
+            size: pickedFile.size || 0,
+            uri: destinationFile.uri // destinationFile.uri содержит стабильный рабочий путь
+          }
+        ]
+      };
+    });
+
+  } catch (error) {
+    console.error("Ошибка при сохранении файла:", error);
+    notifyMessage("Ошибка при попытке выбора и сохранения файла");
+  }
+}, []);
+
+
 
   const deleteFile = useCallback(async (id: string) => {
     setCurrentTask(prev => {
