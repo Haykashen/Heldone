@@ -1,8 +1,8 @@
 import Add from '@/components/buttons/Add';
 import CustomDay from '@/components/calendar/CustomDay';
+import Header from '@/components/headers/TabHeader';
 import AgendaItem from '@/components/items/AgendaItem';
 import ListEmptyComponent from "@/components/items/ListEmptyComponent";
-import Header from '@/components/TabHeader';
 import { TaskContext } from '@/context/TaskContext';
 import { useAppColors } from '@/context/ThemeContext';
 import { completeTask } from '@/utils/taskUtils';

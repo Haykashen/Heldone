@@ -1,8 +1,8 @@
 import Add from '@/components/buttons/Add';
+import Header from '@/components/headers/TabHeader';
 import AgendaItem from '@/components/items/AgendaItem';
 import DayProgressBar from '@/components/items/DayProgressBar';
 import ListEmptyComponent from "@/components/items/ListEmptyComponent";
-import Header from '@/components/TabHeader';
 import { TTask } from '@/components/types/typesTask';
 import { OnboardingContext } from '@/context/OnboardingContext';
 import { TaskContext } from '@/context/TaskContext';

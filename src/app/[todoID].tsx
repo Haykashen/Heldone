@@ -9,6 +9,7 @@ import { setData } from '@/store/setData';
 import { openFile, shareFileWithCustomName } from '@/utils/fileUtils';
 //import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
 import SelectionBottomSheet from '@/components/bottomSheet/SelectionBottomSheet';
+import ScreenHeader from '@/components/headers/ScreenHeader';
 import { TFileDataObject } from '@/components/types/types';
 import { TTask } from '@/components/types/typesTask';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
@@ -40,8 +41,6 @@ const TaskCardScreen = () => {
   const colors = useAppColors();
   const [emptyTitle, setEmptyTitle] = useState(false)
 
-  // Оставляем этот единственный useMemo, так как getNewTask генерирует тяжелый объект 
-  // начальной структуры новой задачи, и его критически важно зафиксировать при монтировании.
   const initialTask = useMemo(() => {
     if (todoID === 'new') {
       return getNewTask(day as string, defaultCategory, defaultPriority, defaultTime, defaultNotify);
@@ -177,91 +176,83 @@ const TaskCardScreen = () => {
   //   }
   // }, []);
 
+  const pickDocument = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: '*/*',
+        multiple: false,
+        copyToCacheDirectory: false // Читаем напрямую из исходного места
+      });
 
-
-
-// ... внутри вашего компонента
-
-
-// ... внутри вашего компонента
-
-const pickDocument = async () => {
-  try {
-    const result = await DocumentPicker.getDocumentAsync({
-      type: '*/*',
-      multiple: false,
-      copyToCacheDirectory: false // Читаем напрямую из исходного места
-    });
-
-    if (result.canceled || !result.assets || result.assets.length === 0) {
-      return;
-    }
-
-    const pickedFile = result.assets[0];
-    
-    // 1. Создаем объект исходного файла по его URI
-    const sourceFile = new File(pickedFile.uri);
-
-    // 2. Формируем уникальное имя файла для сохранения
-    const timestamp = Date.now();
-    const permanentFileName = `${timestamp}_${pickedFile.name}`;
-
-    // 3. Создаем целевой объект File, передавая директорию Paths.document и имя файла
-    const destinationFile = new File(Paths.document, permanentFileName);
-
-    // 4. Копируем один объект файла в другой
-    await sourceFile.copy(destinationFile);
-
-    // 5. Сохраняем постоянный URI в стейт задачи
-    setCurrentTask(prev => {
-      if (!prev) return undefined;
-      return {
-        ...prev,
-        files: [
-          ...prev.files,
-          {
-            id: pickedFile.name + new Date().toISOString(),
-            name: pickedFile.name,
-            size: pickedFile.size || 0,
-            uri: destinationFile.uri // destinationFile.uri содержит стабильный рабочий путь
-          }
-        ]
-      };
-    });
-
-  } catch (error) {
-    console.error("Ошибка при сохранении файла:", error);
-    notifyMessage("Ошибка при попытке выбора и сохранения файла");
-  }
-};
-
-const deleteFile = async (id: string) => {
-  try {
-    // 1. Поиск файла
-    const fileToDiskDelete = currTask?.files.find((item: TFileDataObject) => item.id === id);
-
-    // 2. Физическое удаление
-    if (fileToDiskDelete?.uri) {
-      const fileInstance = new File(fileToDiskDelete.uri);
-      if (fileInstance.exists) {
-        await fileInstance.delete();
+      if (result.canceled || !result.assets || result.assets.length === 0) {
+        return;
       }
+
+      const pickedFile = result.assets[0];
+
+      // 1. Создаем объект исходного файла по его URI
+      const sourceFile = new File(pickedFile.uri);
+
+      // 2. Формируем уникальное имя файла для сохранения
+      const timestamp = Date.now();
+      const permanentFileName = `${timestamp}_${pickedFile.name}`;
+
+      // 3. Создаем целевой объект File, передавая директорию Paths.document и имя файла
+      const destinationFile = new File(Paths.document, permanentFileName);
+
+      // 4. Копируем один объект файла в другой
+      await sourceFile.copy(destinationFile);
+
+      // 5. Сохраняем постоянный URI в стейт задачи
+      setCurrentTask(prev => {
+        if (!prev) return undefined;
+        return {
+          ...prev,
+          files: [
+            ...prev.files,
+            {
+              id: pickedFile.name + new Date().toISOString(),
+              name: pickedFile.name,
+              size: pickedFile.size || 0,
+              uri: destinationFile.uri // destinationFile.uri содержит стабильный рабочий путь
+            }
+          ]
+        };
+      });
+
+    } catch (error) {
+      console.error("Ошибка при сохранении файла:", error);
+      notifyMessage("Ошибка при попытке выбора и сохранения файла");
     }
+  };
 
-    // 3. Обновление стейта
-    setCurrentTask(prev => {
-      if (!prev) return undefined;
-      return {
-        ...prev,
-        files: prev.files.filter((item: TFileDataObject) => item.id !== id)
-      };
-    });
+  const deleteFile = async (id: string) => {
+    try {
+      // 1. Поиск файла
+      const fileToDiskDelete = currTask?.files.find((item: TFileDataObject) => item.id === id);
 
-  } catch (error) {
-    console.error("Ошибка при физическом удалении файла:", error);
-    notifyMessage("Не удалось полностью удалить файл с устройства");
-  }
-};
+      // 2. Физическое удаление
+      if (fileToDiskDelete?.uri) {
+        const fileInstance = new File(fileToDiskDelete.uri);
+        if (fileInstance.exists) {
+          await fileInstance.delete();
+        }
+      }
+
+      // 3. Обновление стейта
+      setCurrentTask(prev => {
+        if (!prev) return undefined;
+        return {
+          ...prev,
+          files: prev.files.filter((item: TFileDataObject) => item.id !== id)
+        };
+      });
+
+    } catch (error) {
+      console.error("Ошибка при физическом удалении файла:", error);
+      notifyMessage("Не удалось полностью удалить файл с устройства");
+    }
+  };
 
   const handleShareFile = (uri: string, fileName: string) => {
     shareFileWithCustomName(uri, fileName);
@@ -324,15 +315,13 @@ const deleteFile = async (id: string) => {
         backgroundStyle={{ backgroundColor: colors.containerBg }} // Применили цвет из темы
       >
         <BottomSheetScrollView style={[styles.innerContainer, { backgroundColor: colors.containerBg }]}>
-          <View style={styles.topBar}>
-            <Pressable onPress={handleBack} style={styles.navButton}>
-              <Text style={styles.cancelText}>Отмена</Text>
-            </Pressable>
-            <Text style={[styles.headerTitle, { color: colors.titleText }]}>Задача</Text>
-            <Pressable onPress={handleDone} style={styles.navButton}>
-              <Text style={[styles.doneText, { color: colors.fabBg }]}>Готово</Text>
-            </Pressable>
-          </View>
+          <ScreenHeader
+            title="Задача"
+            onCancel={handleBack}
+            onDone={handleDone}
+            titleColor={colors.titleText}
+            actionColor={colors.fabBg}
+          />
           <View style={styles.dataChangeContainer}>
             <Text style={styles.dataChangeText}>{dataChanged ? 'Имеются несохраненные изменения' : ''}</Text>
           </View>
@@ -482,13 +471,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 15,
   },
-  topBar: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
   dataChangeContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -498,22 +480,6 @@ const styles = StyleSheet.create({
   dataChangeText: {
     color: "#EA580C",
     fontSize: 12
-  },
-  navButton: {
-    paddingHorizontal: 10,
-  },
-  cancelText: {
-    color: 'silver',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  doneText: {
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   titleInput: {
     fontSize: 18,
