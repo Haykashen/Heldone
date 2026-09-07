@@ -37,15 +37,15 @@ const styles = StyleSheet.create({
   cancelText: {
     color: 'silver',
     fontSize: 16,
-
+    fontWeight: 'bold',
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
   doneText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
 });
 
