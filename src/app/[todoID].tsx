@@ -5,7 +5,6 @@ import { TaskContext } from '@/context/TaskContext';
 import { useAppColors } from '@/context/ThemeContext'; // Импортируем хук глобальных цветов
 import CategoryData, { CATEGORIES_ARRAY } from '@/data/CategoryData';
 import PriorityData, { PRIORITIES_ARRAY } from '@/data/PriorityData';
-import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { openFile, shareFileWithCustomName } from '@/utils/fileUtils';
 //import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
@@ -20,7 +19,7 @@ import MaterialDesignIcons from '@react-native-vector-icons/material-design-icon
 import * as DocumentPicker from 'expo-document-picker';
 import { File, Paths } from 'expo-file-system';
 import { Redirect, router, useLocalSearchParams } from "expo-router";
-import { RefObject, useCallback, useContext, useMemo, useRef, useState } from "react";
+import { RefObject, use, useMemo, useRef, useState } from "react";
 import { Keyboard, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Vibration, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -34,9 +33,11 @@ const getSafeDateForPicker = (originalDate: Date) => {
 
 const TaskCardScreen = () => {
   const { todoID, day } = useLocalSearchParams();
-  const { task, setTask } = useContext(TaskContext);
-  const { defaultCategory, defaultPriority, defaultTime, defaultNotify } = useContext(SettingContext);
-  const colors = useAppColors();// Получаем динамическую палитру цветов
+
+  const { task, setTask } = use(TaskContext);
+  const { defaultCategory, defaultPriority, defaultTime, defaultNotify } = use(SettingContext);
+
+  const colors = useAppColors();
   const [emptyTitle, setEmptyTitle] = useState(false)
 
   // Оставляем этот единственный useMemo, так как getNewTask генерирует тяжелый объект 
@@ -68,60 +69,49 @@ const TaskCardScreen = () => {
     return <Redirect href="/" />;
   }
 
-  // ОПТИМИЗАЦИЯ ПОД REACT 19: Лишние ручные useMemo удалены.
-  // Строки дат, времени и флаг изменений теперь автоматически кэшируются React Compiler.
   const dateText = currTask.date.toLocaleDateString();
   const timeText = currTask.date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
   const dataChanged = originalTaskRef.current !== JSON.stringify(currTask) && todoID !== 'new';
 
   // Управление открытием пикеров
-  const showMode = useCallback((currentMode: DateTimePickerMode | undefined) => {
+  const showMode = (currentMode: DateTimePickerMode | undefined) => {
     setMode(currentMode);
     setShow(true);
-  }, []);
+  };
 
-  const showDatepicker = useCallback((currentMode: DateTimePickerMode) => {
+  const showDatepicker = (currentMode: DateTimePickerMode) => {
     showMode(currentMode);
-  }, [showMode]);
+  };
 
-  // Оригинальные useCallback для апдейта полей
-  const changeTitle = useCallback((newTitle: string) => {
+  const changeTitle = (newTitle: string) => {
     setCurrentTask(prev => prev ? { ...prev, title: newTitle } : undefined);
-  }, []);
+  };
 
-  const handleNotify = useCallback(() => {
+  const handleNotify = () => {
     setCurrentTask(prev => prev ? { ...prev, sendNotify: !prev.sendNotify } : undefined);
-  }, []);
+  };
 
-  const changeStatus = useCallback(() => {
-    setCurrentTask(prev => {
-      if (!prev) return undefined;
-      const newStatus = (prev.status.id === StatusData.Upcoming.id) ? StatusData.Completed : StatusData.Upcoming;
-      return { ...prev, status: newStatus };
-    });
-  }, []);
-
-  const changePriority = useCallback((key: string) => {
+  const changePriority = (key: string) => {
     setCurrentTask(prev => prev ? { ...prev, priority: PriorityData[key] } : undefined);
-  }, []);
+  };
 
-  const changeCategory = useCallback((key: string) => {
+  const changeCategory = (key: string) => {
     setCurrentTask(prev => prev ? { ...prev, category: CategoryData[key] } : undefined);
-  }, []);
+  };
 
-  const changeNotes = useCallback((newNotes: string) => {
+  const changeNotes = (newNotes: string) => {
     setCurrentTask(prev => prev ? { ...prev, notes: newNotes } : undefined);
-  }, []);
+  };
 
-  const setSheetRef = useCallback((ref: RefObject<BottomSheetMethods | null>, index: number) => {
+  const setSheetRef = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
     ref.current?.snapToIndex(index);
-  }, []);
+  };
 
-  const handleBack = useCallback(async () => {
+  const handleBack = async () => {
     setSheetRef(sheetRef, -1);
-  }, [setSheetRef]);
+  };
 
-  const handleDone = useCallback(async () => {
+  const handleDone = async () => {
     if (!currTask.date || !currTask.title) {
       setEmptyTitle(true)
       notifyMessage('Заполните название задачи');
@@ -140,23 +130,23 @@ const TaskCardScreen = () => {
     setData("todo", JSON.stringify(sortedArray));
     notifyMessage('Данные успешно сохранены!');
     handleBack();
-  }, [currTask, todoID, task, setTask, handleBack]);
+  };
 
-  const handleDelete = useCallback(async () => {
+  const handleDelete = async () => {
     if (todoID !== 'new') {
       deleteTask(currTask.id, task, setTask);
     }
     Vibration.vibrate(70);
     handleBack();
-  }, [todoID, currTask.id, task, setTask, handleBack]);
+  };
 
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     if (router.canGoBack()) {
       router.back();
     } else {
       router.push('/');
     }
-  }, []);
+  };
 
   // const pickDocument = useCallback(async () => {
   //   try {
@@ -195,7 +185,7 @@ const TaskCardScreen = () => {
 
 // ... внутри вашего компонента
 
-const pickDocument = useCallback(async () => {
+const pickDocument = async () => {
   try {
     const result = await DocumentPicker.getDocumentAsync({
       type: '*/*',
@@ -243,7 +233,7 @@ const pickDocument = useCallback(async () => {
     console.error("Ошибка при сохранении файла:", error);
     notifyMessage("Ошибка при попытке выбора и сохранения файла");
   }
-}, []);
+};
 
 const deleteFile = async (id: string) => {
   try {
@@ -273,17 +263,6 @@ const deleteFile = async (id: string) => {
   }
 };
 
-
-  // const deleteFile = useCallback(async (id: string) => {
-  //   setCurrentTask(prev => {
-  //     if (!prev) return undefined;
-  //     return {
-  //       ...prev,
-  //       files: prev.files.filter((item: TFileDataObject) => item.id !== id)
-  //     };
-  //   });
-  // }, []);
-
   const handleShareFile = (uri: string, fileName: string) => {
     shareFileWithCustomName(uri, fileName);
   };
@@ -292,7 +271,7 @@ const deleteFile = async (id: string) => {
     openFile(uri);
   };
 
-  const changeDate = useCallback((event: DateTimePickerChangeEvent, selectedDate?: Date) => {
+  const changeDate = (event: DateTimePickerChangeEvent, selectedDate?: Date) => {
     if (!selectedDate) {
       setShow(false);
       return;
@@ -311,10 +290,28 @@ const deleteFile = async (id: string) => {
       return { ...prev, date: res, dateString: getFormatedDay(res) };
     });
     setShow(false);
-  }, [mode]);
+  };
 
   const refreshNotify = async () => {
-    // Внутренняя логика уведомлений оставлена без изменений
+    // if (currTask.notifyId) {
+    //   await deletelNotification(currTask.notifyId)
+    // }
+    // if (!currTask.sendNotify) {
+    //   //setCurrentTask({ ...currTask, notifyId: '' })
+    //   setCurrentTask(prev => prev ? { ...prev, notifyId: ''} : undefined);
+    //   return;
+    // }
+
+    // if (currTask.status.id !== StatusData.Completed.id) {
+    //   const finalStatus = await checkPermissions();
+    //   // if (finalStatus !== 'granted') {
+    //   //   notifyMessage('Уведомления от приложения отключены!');
+    //   // }
+    //   let notId = '';
+    //   if (finalStatus === 'granted')
+    //     notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
+    //   setCurrentTask(prev => prev ? { ...prev, notifyId: notId} : undefined);
+    // }
   };
 
   return (
