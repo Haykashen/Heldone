@@ -27,7 +27,7 @@ const OnboardingScreen = () => {
     if(page !== endIndex)
       return;
     await checkPermissions()
-    await OnboardingClose
+    await OnboardingClose()
   }
 
   const OnboardingClose = async() => {
