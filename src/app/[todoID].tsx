@@ -425,7 +425,7 @@ const TaskCardScreen = () => {
               {todoID !== 'new' && (
                 <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginBottom: 20 }}>
                   <Pressable style={styles.deleteButton} onPress={handleDelete}>
-                    <MaterialDesignIcons name={'trash-can-outline'} color="white" size={34} />
+                    <MaterialDesignIcons name={'trash-can-outline'} color="white" size={24} />
                     <Text style={styles.deleteButtonText}>Удалить</Text>
                   </Pressable>
                 </View>
@@ -485,7 +485,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderRadius: 8,
     padding: 12,
-    marginBottom: 20,
+    marginBottom: 10,
     width: '100%',
     borderWidth: 2
   },
@@ -494,9 +494,9 @@ const styles = StyleSheet.create({
   },
   rowsContainer: {
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: 10,
     overflow: 'hidden', // Чтобы углы дочерних CardRow не вылезали за радиус скругления
-    marginBottom: 24,
+    marginBottom: 10,
   },
   deleteButton: {
     backgroundColor: '#E11D48',
