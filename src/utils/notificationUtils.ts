@@ -11,6 +11,7 @@ export const createNotificationChannel = async () => {
     name: 'Heldone notifications',
     importance: Notifications.AndroidImportance.HIGH,
     sound: 'notification_sound.wav', // <- for Android 8.0+, see channelId property below
+    enableVibrate: true,
     vibrationPattern: [0, 250, 250, 250],
   });
 }

@@ -1,17 +1,18 @@
 import FilesBottomSheet from '@/components/bottomSheet/FilesBottomSheet';
+import SelectionBottomSheet from '@/components/bottomSheet/SelectionBottomSheet';
+import ScreenHeader from '@/components/headers/ScreenHeader';
 import CardRow from '@/components/rows/CardRow';
+import { TFileDataObject } from '@/components/types/types';
+import { TTask } from '@/components/types/typesTask';
 import { SettingContext } from '@/context/SettingContext';
 import { TaskContext } from '@/context/TaskContext';
 import { useAppColors } from '@/context/ThemeContext'; // Импортируем хук глобальных цветов
 import CategoryData, { CATEGORIES_ARRAY } from '@/data/CategoryData';
 import PriorityData, { PRIORITIES_ARRAY } from '@/data/PriorityData';
+import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { openFile, shareFileWithCustomName } from '@/utils/fileUtils';
-//import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
-import SelectionBottomSheet from '@/components/bottomSheet/SelectionBottomSheet';
-import ScreenHeader from '@/components/headers/ScreenHeader';
-import { TFileDataObject } from '@/components/types/types';
-import { TTask } from '@/components/types/typesTask';
+import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
 import { getFormatedDay, notifyMessage } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods, BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
@@ -133,6 +134,9 @@ const TaskCardScreen = () => {
 
   const handleDelete = async () => {
     if (todoID !== 'new') {
+      if (currTask.notifyId) {
+        await deletelNotification(currTask.notifyId)
+      }
       deleteTask(currTask.id, task, setTask);
     }
     Vibration.vibrate(70);
@@ -284,25 +288,25 @@ const TaskCardScreen = () => {
   };
 
   const refreshNotify = async () => {
-    // if (currTask.notifyId) {
-    //   await deletelNotification(currTask.notifyId)
-    // }
-    // if (!currTask.sendNotify) {
-    //   //setCurrentTask({ ...currTask, notifyId: '' })
-    //   setCurrentTask(prev => prev ? { ...prev, notifyId: ''} : undefined);
-    //   return;
-    // }
+    if (currTask.notifyId) {
+      await deletelNotification(currTask.notifyId)
+    }
+    if (!currTask.sendNotify) {
+      //setCurrentTask({ ...currTask, notifyId: '' })
+      setCurrentTask(prev => prev ? { ...prev, notifyId: '' } : undefined);
+      return;
+    }
 
-    // if (currTask.status.id !== StatusData.Completed.id) {
-    //   const finalStatus = await checkPermissions();
-    //   // if (finalStatus !== 'granted') {
-    //   //   notifyMessage('Уведомления от приложения отключены!');
-    //   // }
-    //   let notId = '';
-    //   if (finalStatus === 'granted')
-    //     notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
-    //   setCurrentTask(prev => prev ? { ...prev, notifyId: notId} : undefined);
-    // }
+    if (currTask.status.id !== StatusData.Completed.id) {
+      const finalStatus = await checkPermissions();
+      // if (finalStatus !== 'granted') {
+      //   notifyMessage('Уведомления от приложения отключены!');
+      // }
+      let notId = '';
+      if (finalStatus === 'granted')
+        notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
+      setCurrentTask(prev => prev ? { ...prev, notifyId: notId } : undefined);
+    }
   };
 
   return (
