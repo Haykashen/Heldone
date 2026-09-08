@@ -26,11 +26,11 @@ const OnboardingScreen = () => {
   const OnboardingDone = async() => {
     if(page !== endIndex)
       return;
+    await checkPermissions()
     await OnboardingClose
   }
 
   const OnboardingClose = async() => {
-    await checkPermissions()
     await setData('onboarded', JSON.stringify(true))
     await setOnboarded(true)
     router.push('/')
