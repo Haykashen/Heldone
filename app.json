@@ -6,9 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "heldone",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "",
     "ios": {
-      "icon": "./assets/images/ios-icon-default.png"
+      "icon": "./assets/images/iosIcons/ios-icon-default.png"
     },
     "android": {
       "permissions": [
@@ -23,9 +23,9 @@
       ],
       "adaptiveIcon": {
         "backgroundColor": "#ffffff",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/androidIcons/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/androidIcons/android-icon-background.png",
+        "monochromeImage": "./assets/images/androidIcons/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.aratta.Heldone"
