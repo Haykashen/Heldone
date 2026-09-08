@@ -9,13 +9,13 @@ import { completeTask } from '@/utils/taskUtils';
 import { getCalendarTitle, getDayTasks, getFormatedDay, getMultiDotsDays } from '@/utils/utils';
 import { router } from "expo-router";
 import { use, useCallback, useMemo, useRef, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import { AgendaList, CalendarProvider, DateData, ExpandableCalendar, LocaleConfig } from 'react-native-calendars';
 import { DayState } from 'react-native-calendars/src/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const CHEVRON_IMG_TOP = require('@/assets/images/arrow_up.png'); // Укажи свой путь к верхнему шеврону
-const CHEVRON_IMG_BOTTOM = require('@/assets/images/arrow_down.png'); // Укажи свой путь к нижнему шеврону
+//const CHEVRON_IMG_TOP = require('@/assets/images/arrow_up.png'); // Укажи свой путь к верхнему шеврону
+//const CHEVRON_IMG_BOTTOM = require('@/assets/images/arrow_down.png'); // Укажи свой путь к нижнему шеврону
 
 LocaleConfig.locales['rus'] = {
   monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
@@ -65,15 +65,15 @@ const CalendarScreen = () => {
 
   const renderHeader = useCallback((renderDate: string | Date) => {
     const title = getCalendarTitle(new Date(renderDate));
-    const chevronSource = isCalendarOpen ? CHEVRON_IMG_TOP : CHEVRON_IMG_BOTTOM;
+   // const chevronSource = isCalendarOpen ? CHEVRON_IMG_TOP : CHEVRON_IMG_BOTTOM;
 
     return (
       <Pressable style={styles.headerPressable} onPress={toggleCalendarExpansion}>
         <Text style={styles.headerText}>{title}</Text>
-        <Image 
+        {/* <Image 
           source={chevronSource}
           style={styles.chevron}
-        />
+        /> */}
       </Pressable>
     );
   }, [toggleCalendarExpansion, isCalendarOpen]);
@@ -152,7 +152,7 @@ const CalendarScreen = () => {
           contentContainerStyle={styles.contentContainerStyle}
           sections={dayTasks}
           ListEmptyComponent={listEmptyComponent}
-          sectionStyle={{...styles.sectionStyle, backgroundColor: colors.containerBg}}    
+          sectionStyle={{backgroundColor: colors.containerBg}}    
           renderItem={renderAgendaItem}
         />
       </CalendarProvider>
@@ -188,9 +188,6 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle:{
     paddingBottom:100
-  },
-  sectionStyle: {
-    //backgroundColor: '#031F2B',
   },
   dayContainer: {
     gap: 2,
