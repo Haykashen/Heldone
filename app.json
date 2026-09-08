@@ -8,7 +8,7 @@
     "scheme": "heldone",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/images/ios-icon-default.png"
     },
     "android": {
       "permissions": [

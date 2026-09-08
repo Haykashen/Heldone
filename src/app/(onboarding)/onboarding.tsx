@@ -26,16 +26,19 @@ const OnboardingScreen = () => {
   const OnboardingDone = async() => {
     if(page !== endIndex)
       return;
+    await OnboardingClose
+  }
+
+  const OnboardingClose = async() => {
     await checkPermissions()
     await setData('onboarded', JSON.stringify(true))
     await setOnboarded(true)
     router.push('/')
-  }
-  
+  }  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.close_container}>
-        <Pressable style={styles.close_button} onPress={OnboardingDone}>
+        <Pressable style={styles.close_button} onPress={OnboardingClose}>
           <MaterialDesignIcons name='window-close' color={'silver'} size={36} />
         </Pressable>
       </View>
