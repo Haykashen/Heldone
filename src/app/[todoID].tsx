@@ -132,17 +132,50 @@ const TaskCardScreen = () => {
     handleBack();
   };
 
+  // const handleDelete = async () => {
+  //   if (todoID !== 'new') {
+  //     if (currTask.notifyId) {
+  //       await deletelNotification(currTask.notifyId)
+  //     }
+  //     deleteTask(currTask.id, task, setTask);
+  //   }
+  //   Vibration.vibrate(70);
+  //   handleBack();
+  // };
   const handleDelete = async () => {
-    if (todoID !== 'new') {
-      if (currTask.notifyId) {
-        await deletelNotification(currTask.notifyId)
+    try {
+      // 1. Физически удаляем ВСЕ прикрепленные файлы с диска устройства
+      if (currTask?.files && currTask.files.length > 0) {
+        // Используем Promise.all для одновременного удаления всех файлов
+        await Promise.all(
+          currTask.files.map(async (fileData: TFileDataObject) => {
+            if (fileData.uri) {
+              const fileInstance = new File(fileData.uri);
+              if (fileInstance.exists) {
+                await fileInstance.delete();
+              }
+            }
+          })
+        );
       }
-      deleteTask(currTask.id, task, setTask);
-    }
-    Vibration.vibrate(70);
-    handleBack();
-  };
 
+      // 2. Логика удаления уведомлений и самой задачи (ваша оригинальная часть)
+      if (todoID !== 'new') {
+        if (currTask.notifyId) {
+          await deletelNotification(currTask.notifyId);
+        }
+        deleteTask(currTask.id, task, setTask);
+      }
+
+      // 3. Обратная связь и закрытие экрана
+      Vibration.vibrate(70);
+      handleBack();
+
+    } catch (error) {
+      //console.error("Ошибка при полном удалении задачи и её файлов:", error);
+      notifyMessage("Произошла ошибка при удалении данных");
+    }
+  };
   const handleClose = () => {
     if (router.canGoBack()) {
       router.back();
@@ -225,7 +258,7 @@ const TaskCardScreen = () => {
       });
 
     } catch (error) {
-      console.error("Ошибка при сохранении файла:", error);
+      //console.error("Ошибка при сохранении файла:", error);
       notifyMessage("Ошибка при попытке выбора и сохранения файла");
     }
   };
@@ -253,7 +286,7 @@ const TaskCardScreen = () => {
       });
 
     } catch (error) {
-      console.error("Ошибка при физическом удалении файла:", error);
+      //console.error("Ошибка при физическом удалении файла:", error);
       notifyMessage("Не удалось полностью удалить файл с устройства");
     }
   };
