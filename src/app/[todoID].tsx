@@ -27,6 +27,22 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 type DateTimePickerMode = "date" | "time";
 
+const physicalDeleteFiles = async (uris: string[]) => {
+  if (uris.length === 0) return;
+  try {
+    await Promise.all(
+      uris.map(async (uri) => {
+        const fileInstance = new File(uri);
+        if (fileInstance.exists) {
+          await fileInstance.delete();
+        }
+      })
+    );
+  } catch (error) {
+    console.error("Ошибка при физической зачистке файлов:", error);
+  }
+};
+
 const getSafeDateForPicker = (originalDate: Date) => {
   const safeDate = new Date(originalDate);
   safeDate.setHours(12, 0, 0, 0); // Ставим 12 часов дня
@@ -60,6 +76,10 @@ const TaskCardScreen = () => {
   const prioritySheetRef = useRef<BottomSheet>(null);
   const sheetFilesRef = useRef<BottomSheet>(null);
 
+  // Хранит URI файлов, которые нужно удалить физически только при нажатии "Готово"
+  const filesToDeleteRef = useRef<string[]>([]);
+  // Хранит URI файлов, которые были добавлены за текущую сессию (для очистки при отмене)
+  const addedFilesRef = useRef<string[]>([]);
   // Состояния для Пикера Дат и Фокусировки
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState<DateTimePickerMode | undefined>('date');
@@ -119,6 +139,12 @@ const TaskCardScreen = () => {
       return;
     }
     await refreshNotify();
+    // ФИЗИЧЕСКОЕ УДАЛЕНИЕ: Зачищаем файлы, от которых пользователь отказался
+    if (filesToDeleteRef.current.length > 0) {
+      await physicalDeleteFiles(filesToDeleteRef.current);
+      filesToDeleteRef.current = [];
+    }
+    addedFilesRef.current = []; // Сбрасываем, так как задача сохранена успешно
 
     const resArray = (todoID === 'new')
       ? [...task, currTask]
@@ -132,32 +158,29 @@ const TaskCardScreen = () => {
     handleBack();
   };
 
-  // const handleDelete = async () => {
-  //   if (todoID !== 'new') {
-  //     if (currTask.notifyId) {
-  //       await deletelNotification(currTask.notifyId)
-  //     }
-  //     deleteTask(currTask.id, task, setTask);
-  //   }
-  //   Vibration.vibrate(70);
-  //   handleBack();
-  // };
   const handleDelete = async () => {
     try {
-      // 1. Физически удаляем ВСЕ прикрепленные файлы с диска устройства
-      if (currTask?.files && currTask.files.length > 0) {
-        // Используем Promise.all для одновременного удаления всех файлов
-        await Promise.all(
-          currTask.files.map(async (fileData: TFileDataObject) => {
-            if (fileData.uri) {
-              const fileInstance = new File(fileData.uri);
-              if (fileInstance.exists) {
-                await fileInstance.delete();
-              }
-            }
-          })
-        );
+      // 1. Собираем уникальные URI всех файлов, которые нужно стереть с диска
+      const urisToDelete = new Set<string>();
+
+      // Добавляем файлы, которые привязаны к задаче в текущем UI-стейт
+      currTask?.files?.forEach((fileData: TFileDataObject) => {
+        if (fileData.uri) urisToDelete.add(fileData.uri);
+      });
+
+      // Добавляем файлы, которые были созданы/добавлены во время текущей сессии редактирования
+      addedFilesRef.current.forEach((uri) => {
+        if (uri) urisToDelete.add(uri);
+      });
+
+      // 2. Физически удаляем все собранные файлы с диска устройства
+      if (urisToDelete.size > 0) {
+        await physicalDeleteFiles(Array.from(urisToDelete));
       }
+
+      // 3. Очищаем рефы, так как задача полностью уничтожается
+      addedFilesRef.current = [];
+      filesToDeleteRef.current = [];
 
       // 2. Логика удаления уведомлений и самой задачи (ваша оригинальная часть)
       if (todoID !== 'new') {
@@ -176,6 +199,7 @@ const TaskCardScreen = () => {
       notifyMessage("Произошла ошибка при удалении данных");
     }
   };
+
   const handleClose = () => {
     if (router.canGoBack()) {
       router.back();
@@ -184,34 +208,24 @@ const TaskCardScreen = () => {
     }
   };
 
-  // const pickDocument = useCallback(async () => {
-  //   try {
-  //     const result = await DocumentPicker.getDocumentAsync({
-  //       type: '*/*',
-  //       multiple: false,
-  //       copyToCacheDirectory: true
-  //     });
-  //     if (result.canceled !== false)
-  //       return;
-  //     setCurrentTask(prev => {
-  //       if (!prev) return undefined;
-  //       return {
-  //         ...prev,
-  //         files: [
-  //           ...prev.files,
-  //           {
-  //             id: result.assets[0].name + (new Date().toISOString()),
-  //             name: result.assets[0].name,
-  //             size: result.assets[0].size || 0,
-  //             uri: result.assets[0].uri
-  //           }
-  //         ]
-  //       };
-  //     });
-  //   } catch (error) {
-  //     notifyMessage("Ошибка при попытке выбора файла");
-  //   }
-  // }, []);
+  // Универсальный метод выхода, который сработает при "Отмене"
+  const handleCancelLeaved = async () => {
+    // Нам нужно удалить только те новые файлы, которые всё еще остались в стейте currTask
+    // (если пользователь добавил файл и сразу нажал крестик, он уже в filesToDeleteRef)
+    const currentTaskUris = currTask?.files.map(f => f.uri) || [];
+    const filesToClean = addedFilesRef.current.filter(uri => currentTaskUris.includes(uri));
+
+    if (filesToClean.length > 0) {
+      await physicalDeleteFiles(filesToClean);
+    }
+
+    // Очищаем рефы на всякий случай
+    addedFilesRef.current = [];
+    filesToDeleteRef.current = [];
+
+    // Вызываем закрытие интерфейса
+    handleClose();
+  };
 
   const pickDocument = async () => {
     try {
@@ -240,6 +254,7 @@ const TaskCardScreen = () => {
       // 4. Копируем один объект файла в другой
       await sourceFile.copy(destinationFile);
 
+      addedFilesRef.current.push(destinationFile.uri);
       // 5. Сохраняем постоянный URI в стейт задачи
       setCurrentTask(prev => {
         if (!prev) return undefined;
@@ -263,32 +278,23 @@ const TaskCardScreen = () => {
     }
   };
 
-  const deleteFile = async (id: string) => {
-    try {
-      // 1. Поиск файла
-      const fileToDiskDelete = currTask?.files.find((item: TFileDataObject) => item.id === id);
+  const deleteFile = (id: string) => {
+    // 1. Находим файл, чтобы забрать его URI
+    const fileToPendingDelete = currTask?.files.find((item: TFileDataObject) => item.id === id);
 
-      // 2. Физическое удаление
-      if (fileToDiskDelete?.uri) {
-        const fileInstance = new File(fileToDiskDelete.uri);
-        if (fileInstance.exists) {
-          await fileInstance.delete();
-        }
-      }
-
-      // 3. Обновление стейта
-      setCurrentTask(prev => {
-        if (!prev) return undefined;
-        return {
-          ...prev,
-          files: prev.files.filter((item: TFileDataObject) => item.id !== id)
-        };
-      });
-
-    } catch (error) {
-      //console.error("Ошибка при физическом удалении файла:", error);
-      notifyMessage("Не удалось полностью удалить файл с устройства");
+    // 2. Если у файла есть путь, откладываем его удаление
+    if (fileToPendingDelete?.uri) {
+      filesToDeleteRef.current.push(fileToPendingDelete.uri);
     }
+
+    // 3. Убираем файл из локального стейта (из интерфейса он исчезнет сразу)
+    setCurrentTask(prev => {
+      if (!prev) return undefined;
+      return {
+        ...prev,
+        files: prev.files.filter((item: TFileDataObject) => item.id !== id)
+      };
+    });
   };
 
   const handleShareFile = (uri: string, fileName: string) => {
@@ -347,14 +353,14 @@ const TaskCardScreen = () => {
       <BottomSheet
         ref={sheetRef}
         index={0}
-        onClose={handleClose}
+        onClose={handleCancelLeaved}
         enablePanDownToClose
         backgroundStyle={{ backgroundColor: colors.containerBg }} // Применили цвет из темы
       >
         <BottomSheetScrollView style={[styles.innerContainer, { backgroundColor: colors.containerBg }]}>
           <ScreenHeader
             title="Задача"
-            onCancel={handleBack}
+            onCancel={handleCancelLeaved}
             onDone={handleDone}
             titleColor={colors.titleText}
             actionColor={colors.fabBg}
