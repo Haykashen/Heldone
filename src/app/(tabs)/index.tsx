@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   },
   confetti: {
     top: 150,
-    height: 120,
+    height: 150,
     width: '100%',
     position: 'absolute',
     zIndex: 10,
