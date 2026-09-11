@@ -583,10 +583,10 @@ import { TaskContext } from '@/context/TaskContext';
 import { useAppColors } from '@/context/ThemeContext';
 import CategoryData, { CATEGORIES_ARRAY } from '@/data/CategoryData';
 import PriorityData, { PRIORITIES_ARRAY } from '@/data/PriorityData';
-import { StatusData } from '@/data/StatusData';
+//import { StatusData } from '@/data/StatusData';
 import { setData } from '@/store/setData';
 import { openFile, shareFileWithCustomName } from '@/utils/fileUtils';
-import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
+//import { checkPermissions, createNotification, deletelNotification } from '@/utils/notificationUtils';
 import { deleteTask, getNewTask } from '@/utils/taskUtils';
 import { getFormatedDay, notifyMessage } from '@/utils/utils';
 import BottomSheet, { BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
@@ -800,9 +800,9 @@ const TaskCardScreen = () => {
         filesToDeleteRef.current = [];
 
         if (todoID !== 'new') {
-          if (currTask.notifyId) {
-            await deletelNotification(currTask.notifyId);
-          }
+          // if (currTask.notifyId) {
+          //   await deletelNotification(currTask.notifyId);
+          // }
           deleteTask(currTask.id, task, setTask);
         }
       });
@@ -899,25 +899,25 @@ const TaskCardScreen = () => {
   };
 
   const refreshNotify = async () => {
-    if (currTask.notifyId) {
-      await deletelNotification(currTask.notifyId)
-    }
-    if (!currTask.sendNotify) {
-      //setCurrentTask({ ...currTask, notifyId: '' })
-      setCurrentTask(prev => prev ? { ...prev, notifyId: '' } : undefined);
-      return;
-    }
+    // if (currTask.notifyId) {
+    //   await deletelNotification(currTask.notifyId)
+    // }
+    // if (!currTask.sendNotify) {
+    //   //setCurrentTask({ ...currTask, notifyId: '' })
+    //   setCurrentTask(prev => prev ? { ...prev, notifyId: '' } : undefined);
+    //   return;
+    // }
 
-    if (currTask.status.id !== StatusData.Completed.id) {
-      const finalStatus = await checkPermissions();
-      // if (finalStatus !== 'granted') {
-      //   notifyMessage('Уведомления от приложения отключены!');
-      // }
-      let notId = '';
-      if (finalStatus === 'granted')
-        notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
-      setCurrentTask(prev => prev ? { ...prev, notifyId: notId } : undefined);
-    }
+    // if (currTask.status.id !== StatusData.Completed.id) {
+    //   const finalStatus = await checkPermissions();
+    //   // if (finalStatus !== 'granted') {
+    //   //   notifyMessage('Уведомления от приложения отключены!');
+    //   // }
+    //   let notId = '';
+    //   if (finalStatus === 'granted')
+    //     notId = await createNotification('Пора выполнить задачу!', currTask.title, currTask.date)
+    //   setCurrentTask(prev => prev ? { ...prev, notifyId: notId } : undefined);
+    // }
   };
   return (
     <View style={[styles.rootContainer, { backgroundColor: colors.containerBg }]}>
