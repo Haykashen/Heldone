@@ -94,3 +94,29 @@ export const formatBytes = (bytes:number, decimals = 2) => {
 		return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 	}
 }
+
+export const physicalDeleteFiles = async (uris: string[]) => {
+  if (uris.length === 0) return;
+  try {
+    await Promise.all(
+      uris.map(async (uri) => {
+        const fileInstance = new File(uri);
+        if (fileInstance.exists) {
+          await fileInstance.delete();
+        }
+      })
+    );
+  } catch (error) {
+    notifyMessage("Ошибка при удалении файлов");
+  }
+};
+
+export const copyPickedDocument = async (asset: any): Promise<string> => {
+  const sourceFile = new File(asset.uri);
+  const timestamp = Date.now();
+  const permanentFileName = `${timestamp}_${asset.name}`;
+  const destinationFile = new File(Paths.document, permanentFileName);
+
+  await sourceFile.copy(destinationFile);
+  return destinationFile.uri;
+};
