@@ -174,7 +174,7 @@ const TaskCardScreen = () => {
         setData("todo", JSON.stringify(sortedArray));
         notifyMessage('Данные успешно сохранены!');
       } catch (error) {
-        console.error("Ошибка при сохранении:", error);
+        notifyMessage("Ошибка при сохранении");
       }
     });
   };
