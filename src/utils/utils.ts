@@ -1,3 +1,4 @@
+import CategoryData from '@/data/CategoryData';
 import { Alert, Platform, ToastAndroid } from 'react-native';
 import { TTask } from "../components/types/typesTask";
 
@@ -67,7 +68,7 @@ export function getMultiDotsDays(task: TTask[]) {
     if (!colorSets[item.dateString]) {
       colorSets[item.dateString] = new Array<string>();
     }
-    colorSets[item.dateString].push(item.category.color);
+    colorSets[item.dateString].push(CategoryData[item.category].color);
   });
 
   // Преобразуем Set-ы в формат, который требует react-native-calendars

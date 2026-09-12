@@ -1,7 +1,5 @@
-import PriorityData from '@/data/PriorityData';
 import uuid from 'react-native-uuid';
 import { TTask } from '../components/types/typesTask';
-import Categorys from '../data/CategoryData';
 import { StatusData } from '../data/StatusData';
 import { setData } from '../store/setData';
 import { getFormatedDay } from './utils';
@@ -60,10 +58,10 @@ export const getNewTask = (
     date: date,
     dateString: getFormatedDay(date),
     title: '',
-    category: Categorys[defaultCategory],
+    category: defaultCategory,
     status: StatusData.Upcoming,
     notes: '',
-    priority: PriorityData[defaultPriority],
+    priority: defaultPriority,
     sendNotify: defaultNotify,
     files: []
   };

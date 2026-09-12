@@ -1,5 +1,7 @@
 import { TListItem } from "@/components/types/typesTask";
 import { useAppColors } from "@/context/ThemeContext"; // Импортируем наш хук
+import CategoryData from '@/data/CategoryData';
+import PriorityData from '@/data/PriorityData';
 import { scaleEnd, scaleStart } from '@/utils/animation';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import React, { useCallback, useRef } from 'react';
@@ -52,8 +54,8 @@ const AgendaItem = (props: TListItem) => {
         }
       ]}
     >
-      <View style={[styles.iconWrapper, { backgroundColor: category.color || '#64748B' }]}>
-        <MaterialDesignIcons name={(category?.icon as any) || 'folder'} color={'white'} size={24} />
+      <View style={[styles.iconWrapper, { backgroundColor: CategoryData[category]?.color || '#64748B' }]}>
+        <MaterialDesignIcons name={(CategoryData[category]?.icon as any) || 'folder'} color={'white'} size={24} />
       </View>
 
       <View style={styles.contentContainer}>
@@ -75,9 +77,9 @@ const AgendaItem = (props: TListItem) => {
           </View>   
           <Text style={[styles.bullet, { color: colors.metaText }]}>•</Text>
           <View style={styles.metaGroup}>
-            <MaterialDesignIcons name={(priority?.icon as any) || 'flag'} color={priority?.color || colors.metaText} size={14} />
+            <MaterialDesignIcons name={(PriorityData[priority]?.icon as any) || 'flag'} color={PriorityData[priority]?.color} size={14} />
             <Text style={[styles.metaText, { color: colors.metaText }]} numberOfLines={1}>
-              {priority?.name?.ru || 'Без приоритета'}
+              {PriorityData[priority]?.name?.ru || 'Без приоритета'}
             </Text>
           </View>
           {files && files.length > 0 && (

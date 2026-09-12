@@ -123,11 +123,11 @@ const TaskCardScreen = () => {
   };
 
   const changePriority = (key: string) => {
-    setCurrentTask(prev => prev ? { ...prev, priority: PriorityData[key] } : undefined);
+    setCurrentTask(prev => prev ? { ...prev, priority: key } : undefined);
   };
 
   const changeCategory = (key: string) => {
-    setCurrentTask(prev => prev ? { ...prev, category: CategoryData[key] } : undefined);
+    setCurrentTask(prev => prev ? { ...prev, category: key } : undefined);
   };
 
   const setSheetRef = (ref: RefObject<BottomSheetMethods | null>, index: number) => {
@@ -376,18 +376,18 @@ const TaskCardScreen = () => {
               <View style={{ flex: 1 }}>
                 <CardRow
                   title="Категория"
-                  text={currTask.category.name.ru || 'Нет'}
-                  icon={currTask.category.icon}
-                  iconColor={currTask.category.color}
+                  text={CategoryData[currTask.category]?.name.ru}
+                  icon={CategoryData[currTask.category]?.icon}
+                  iconColor={CategoryData[currTask.category]?.color}
                   onPress={() => setSheetRef(categorySheetRef, 0)}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <CardRow
                   title="Приоритет"
-                  text={currTask.priority.name.ru || 'Нет'}
+                  text={PriorityData[currTask.priority]?.name.ru}
                   icon="flag"
-                  iconColor={currTask.priority?.color || colors.titleText}
+                  iconColor={PriorityData[currTask.priority]?.color}
                   onPress={() => setSheetRef(prioritySheetRef, 0)}
                 />
               </View>
@@ -448,14 +448,14 @@ const TaskCardScreen = () => {
 
           <SelectionBottomSheet
             sheetRef={categorySheetRef}
-            currentId={currTask.category.id}
+            currentId={currTask.category}
             setValue={changeCategory}
             setRef={setSheetRef}
             data={CATEGORIES_ARRAY}
           />
           <SelectionBottomSheet
             sheetRef={prioritySheetRef}
-            currentId={currTask.priority.id}
+            currentId={currTask.priority}
             setValue={changePriority}
             setRef={setSheetRef}
             data={PRIORITIES_ARRAY}
