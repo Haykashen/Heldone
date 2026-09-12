@@ -3,7 +3,7 @@ import OnboardingPage from '@/components/onboarding/OnboardingPage';
 import PaginationItem from '@/components/onboarding/PaginationItem';
 import { OnboardingContext } from '@/context/OnboardingContext';
 import { setData } from '@/store/setData';
-//import { checkPermissions } from '@/utils/notificationUtils';
+import { checkPermissions } from '@/utils/notificationUtils';
 import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
 import { router } from 'expo-router';
@@ -26,7 +26,7 @@ const OnboardingScreen = () => {
   const OnboardingDone = async() => {
     if(page !== endIndex)
       return;
-    //await checkPermissions()
+    await checkPermissions()
     await OnboardingClose()
   }
 
