@@ -3,6 +3,7 @@ import { TDataItem } from '@/components/types/typesData';
 import { SettingContext } from '@/context/SettingContext';
 import { useAppColors } from '@/context/ThemeContext';
 import CategoryData from '@/data/CategoryData';
+import { setData } from '@/store/setData';
 import BottomSheet, { BottomSheetFlatList, BottomSheetMethods } from '@expo/ui/community/bottom-sheet';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { router } from 'expo-router';
@@ -26,8 +27,9 @@ const CategoryBottomSheet = ({ }: TBottomSheet) => {
   }, []);
 
   // Мемоизируем обработчик клика по категории
-  const handleItemPress = useCallback((id: string) => {
+  const handleItemPress = useCallback(async (id: string) => {
     setDefaultCategory(id);
+    await setData('defaultCategory', JSON.stringify(id));
     setSheetRef(sheetCategoryRef, -1); // Закрываем шторку
   }, [setDefaultCategory, setSheetRef, sheetCategoryRef]);
   
